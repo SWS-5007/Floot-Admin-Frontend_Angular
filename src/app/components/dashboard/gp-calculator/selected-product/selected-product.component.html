@@ -1,0 +1,131 @@
+<div class="row">
+  <div class="col-12">
+    <h2 class="mb-4" *ngIf="addProduct">Add Product</h2>
+    <h2 class="mb-4" *ngIf="showSelectedProductComponent && !addProduct">Edit Product</h2>
+  </div>
+  <div class="col-12">
+
+    <form [formGroup]="selectedProductForm" *ngIf="this.showSelectedProductComponent;">
+
+      <mat-form-field class="example-full-width mr-4" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="nameControl" id="name-input" (keyup)="updateProductName($event)" type="string"
+          name="name" value={{this.name}}>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mr-4" appearance="outline">
+        <mat-label>List price</mat-label>
+        £<input matInput formControlName="listPriceControl" id="list-price-input" (keyup)="updateListPrice($event)"
+          type="number" name="listPrice" placeholder="0" value={{this.gross}}>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mr-4" appearance="outline">
+        <mat-label>Garnish</mat-label>
+        <input matInput id="name-input" formControlName="garnishControl" (keyup)="updateGarnishDescription($event)"
+          type="string" name="name" value={{this.garnish_description}} />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mr-4" appearance="outline">
+        <mat-label>Preparation</mat-label>
+        <input matInput id="name-input" formControlName="preparationControl" (keyup)="updatePrepartionMethod($event)"
+          type="string" name="name" value={{this.preparation_method}} />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Glass</mat-label>
+        <input matInput id="name-input" formControlName="glassControl" (keyup)="updateGlassToUse($event)" type="string"
+          name="name" value={{this.glass_to_use}} />
+      </mat-form-field>
+
+      <div class="col-12">
+        <p class="font-18">Ingredients</p>
+      </div>
+      <div class="col-12">
+        <!-- <h2>Ml's</h2> -->
+        <div class="mt-5">
+          <!-- <div id="ingredients-list-headers">
+          <h2><span>Name</span></h2>
+          <h2><span>Price per Ml</span></h2>
+          <h2><span>Milliletres</span></h2>
+
+        </div> -->
+
+
+          <ng-container formArrayName="ingredients">
+            <ng-container *ngFor="let ingredientForm of ingredients; let i = index">
+              <app-ingredient class="ingredient-row" (remove)="remove(ingredientForm)" [ingredient]="ingredientForm"
+                [list]="ingredientsList"></app-ingredient>
+            </ng-container>
+          </ng-container>
+          <div class="add-ingredient-row ingredient-row">
+            <button class="addingredient m-0" (click)='addIngredient()'>
+              <span>Add Ingredient +</span>
+            </button>
+          </div>
+
+
+        </div>
+
+
+        <div class="garnish">
+          <!-- <p (click)="toggleGarnish()"> {{checkGarnishInput()}} <mat-checkbox name="garnish"
+            checked="checkGarnishInput()">Check to account for fresh
+            fruit, garnish, etc
+          </mat-checkbox>
+        </p> -->
+          <p (click)="toggleGarnish()">{{checkGarnishInput()}}<input id="garnish-input" name="garnish"
+              checked="checkGarnishInput()" type="checkbox" /> <span class="ml-3">Check to account for fresh fruit,
+              garnish, etc</span>
+          </p>
+          <p (click)="toggleLive()">{{checkLiveInput()}}<input id="live-input" name="garnish" checked="checkLiveInput()"
+              type="checkbox" /> <span class="ml-3">Live on list</span></p>
+
+        </div>
+        <div class="d-flex align-items-baseline">
+          <button class="logdata m-0 mt-3 mr-3" (click)="logData()"><span> Log Data </span></button>
+          <div id="margin-row" class="w-100">
+            <h2><span class="mr-2">Margin = </span> {{calculateGPPTotal()}}%</h2>
+          </div>
+        </div>
+        <div class="margin-specs justify-content-end ">
+
+          <div id="product-save-delete-create-button-row" class="justify-content-end" *ngIf="this.id; else newProduct">
+            <button class="addtospace m-0" (click)="saveProduct()"><span>Add to Specs</span></button>
+            <!-- <button class="create-save-button" (click)="saveProduct()">Add to Specs</button> -->
+            <!-- <button class="create-save-button mx-2" (click)="clearForm()"><span>Create New Product</span></button> -->
+            <!-- <button class="deleteproduct mx-2" (click)="deleteProduct()"><span>Delete
+                Product</span></button> -->
+          </div>
+          <ng-template #newProduct>
+            <button class="create-save-button m-0" (click)="createProduct()"><span>Create
+                Product</span></button>
+          </ng-template>
+        </div>
+      </div>
+      <!-- <div id="ingredients-list">
+      <div id="ingredients-list-headers">
+        <h2><span>Name</span></h2>
+        <h2><span>Price per bottle</span></h2>
+        <h2><span>Milliletres</span></h2>
+
+      </div>
+      <div formArrayName="ingredients" *ngFor="let ingredient of selectedProductForm.value.ingredients">
+        <app-ingredient class="ingredient-row" (remove)="remove(ingredient)" [ingredient]="ingredient" [list]="ingredientsList"></app-ingredient>
+      </div>
+      <div class="add-ingredient-row ingredient-row">
+        <button id="addIngredientButton" class="mat-rasied-button" (click)='addIngredient()'>
+          <h2><span>Add Ingredient +</span></h2>
+        </button>
+      </div>
+    </div> -->
+
+
+    </form>
+  </div>
+  <!-- <ng-template #selectProduct>
+    <div id="selectProduct">
+      <h2>Please select a product or</h2>
+      <button class="create-save-button" (click)="addForm()"> <span>Create a Product</span> </button>
+    </div>
+  </ng-template> -->
+</div>

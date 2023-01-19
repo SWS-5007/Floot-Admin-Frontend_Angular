@@ -1,0 +1,70 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/venue-admins']">Venue Admins</a></li>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/venue-admins', 'edit-venue-admin', accountId]">Edit Venue Admin Account</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+<h1>Edit Venue Admin Account</h1>
+<div class="card" [formGroup]='editVenueAdminForm'>
+    <div class="card-header">
+      Edit Venue Admin Account
+    </div>
+    <div class="card-body">
+      <div *ngIf='displayEmailExistsModal' class='alert alert-danger'>
+        This email address has already been registered.
+        <a type="button" href='#' (click)='displayEmailExistsModal = false;' class='close'>&times;</a>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+              [class.text-danger]='(editVenueAdminForm.controls.firstName.dirty && editVenueAdminForm.controls.firstName.errors)'
+              >First Name</label>
+              <input formControlName='firstName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(editVenueAdminForm.controls.lastName.dirty && editVenueAdminForm.controls.lastName.errors)'
+              >Last Name</label>
+              <input formControlName='lastName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(editVenueAdminForm.controls.email.dirty && editVenueAdminForm.controls.email.errors)'
+              >Email</label>
+              <input formControlName='email' (change)='onUserInputEvent()' class="form-control" type="email" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label>Assigned Venue</label>
+            <mat-form-field hideRequiredMarker>
+              <mat-select formControlName="assignedVenue" (change)='onUserInputEvent()' multiple>
+                <mat-select-trigger>
+                  {{'Venues selected: '+assignedVenue.value.length}}
+                </mat-select-trigger>
+                <ng-container *ngFor="let venue of venues">
+                  <mat-option *ngIf="assignedVenue.value.includes(venue.id)" [value]="venue.id">
+                    {{ venue.name ? venue.name : "Not Found" }} - {{ venue.address ? venue.address : "Not Found" }}
+                  </mat-option>
+                </ng-container>
+                <ng-container *ngFor="let venue of venues">
+                  <mat-option *ngIf="!assignedVenue.value.includes(venue.id)" [value]="venue.id">
+                    {{ venue.name ? venue.name : "Not Found" }} - {{ venue.address ? venue.address : "Not Found" }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-primary float-right" [disabled]='!editVenueAdminForm.valid' (click)='saveChanges()'>Save Changes</button>
+  </div>
+</div>

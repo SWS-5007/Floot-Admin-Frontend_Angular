@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Contact Information</h2>
+<div mat-dialog-content>
+    <form [formGroup]="contactInfoForm">
+    <div class='form-group'>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter the email" formControlName="text" type="email">
+          </mat-form-field>
+    </div>
+    <div class='form-group'>
+        <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Enter the phone number" formControlName="text" type="tel">
+          </mat-form-field>
+  </div>
+</form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onUpdate()" [disabled]="!contactInfoForm.valid">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

@@ -1,0 +1,67 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/supplier-list">Suppliers</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/supplier-list', 'profile', supplierId]">{{ supplierName }}</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/supplier-list', 'edit-supplier']">Edit Supplier</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit Supplier</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit Supplier
+    </div>
+    <div class="card-body" [formGroup]="editSupplierForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Business Name</label>
+                <input class="form-control" formControlName="name" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Company Logo (max 50mb)</label>
+            <input *ngIf="!existingProfileImageUrl" class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onProfileImageSelected($event)' type="file" />
+            <div *ngIf="existingProfileImageUrl">
+              <img [src]="existingProfileImageUrl ? existingProfileImageUrl : '../.././../../assets/template-image.png'" alt="" style="object-fit: contain; max-height: 100px; max-width: 200px">
+              <button class="btn btn-danger btn-sm ml-2" (click)="removeProfileImage()">Remove</button>
+            </div>
+            <p class="text-danger" *ngIf="profileImageError" >File too large!</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Call to Action</label>
+            <input class="form-control" formControlName="tagline" (change)='onUserInputEvent()' type="text" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Website Url (please include https://www.)</label>
+              <input class="form-control" formControlName="website" (change)='onUserInputEvent()' type="url" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Marketing Image (max 50mb)</label>
+            <input *ngIf="!existingCoverImageUrl" class="form-control-file" formControlName="coverImage" accept=".png,.jpg,.jpeg" (change)='onCoverImageSelected($event)' type="file" />
+            <div *ngIf="existingCoverImageUrl">
+              <img [src]="existingCoverImageUrl ? existingCoverImageUrl : '../.././../../assets/template-image.png'" alt="" style="object-fit: contain; max-height: 150px; max-width: 200px">
+              
+              <button class="btn btn-danger btn-sm ml-2" (click)="removeCoverImage()">Remove</button>
+            </div>
+            <p class="text-danger" *ngIf="coverImageError" >File too large!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!editSupplierForm.valid || !websiteValidator.test(editSupplierForm.value.website) || coverImageError || profileImageError'
+          class="btn btn-primary float-right"
+          (click)="editSupplier()"
+      >Save Changes</button>
+    </div>
+  </div>
+</div>

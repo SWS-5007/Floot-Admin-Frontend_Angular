@@ -1,0 +1,52 @@
+<app-section-container>
+    <div class="heading">
+        <span>VRM Info</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onUpdateVrm()">Edit</button>
+    </div>
+    <div class="section-content">
+        <div class="vrm-info-wrap">
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Status</div>
+                <div class="value col-md-8 col-6">{{ vrm?.status ? vrm.status : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Last Visited By</div>
+                <div class="value col-md-8 col-6">{{ vrm?.lastVisitBy ? vrm.lastVisitBy : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Last Visit</div>
+                <div class="value col-md-8 col-6">{{ vrm?.lastVisit ? vrm.lastVisit : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Logins Provided</div>
+                <div class="value col-md-8 col-6">{{ vrm?.loginsGiven ? vrm.loginsGiven : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Venue Marketing Consent</div>
+                <div class="value col-md-8 col-6">{{ vrm?.marketingConsent ? vrm.marketingConsent : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Last Photoshoot</div>
+                <div class="value col-md-8 col-6">{{ vrm?.lastPhotoshoot ? vrm.lastPhotoshoot : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Google Drive</div>
+                <div class="value col-md-8 col-6">{{ vrm?.cloudDir ? vrm.cloudDir : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Locale</div>
+                <div class="value col-md-8 col-6">{{localeString}}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Assignee</div>
+                <div class="value col-md-8 col-6">{{ vrm?.assignee ? vrm.assignee : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Note</div>
+                <div class="value col-md-8 col-6">{{ vrm?.note ? vrm.note : "No Info" }}</div>
+            </div>
+        </div>
+    </div>
+</app-section-container>

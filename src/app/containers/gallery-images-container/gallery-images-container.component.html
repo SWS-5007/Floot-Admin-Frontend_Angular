@@ -1,0 +1,13 @@
+<app-section-container>
+    <div class="heading">Gallery images (12 max)</div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onAddImage()">Add</button>
+    </div>
+    <div class="section-content">
+        <div class="image-wrap" *ngFor="let image of galleryImages">
+            <img [src]="image.url" alt=""/>
+            <mat-icon (click)="onDeleteImage(image.id)">cancel</mat-icon>
+        </div>
+        <div class="image-wrap empty" *ngIf="galleryImages.length < 12" appDragDrop (fileDropped)="onFileDrop($event)" (click)="onAddImage()">+</div>
+    </div>
+</app-section-container>

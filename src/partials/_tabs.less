@@ -1,0 +1,23 @@
+﻿@import '_variables';
+
+.nav-tabs {
+    .nav-link {
+        border-radius: 0;
+        color: var(--primary-secondary);
+        background-color: var(--colour-grey);
+        &.active, &.show {
+            color: var(--colour-pink);
+            background-color: var(--colour-white);
+        }
+        &:first-child {
+            &.active, &.show {
+                border-top-left-radius: 0.15rem;
+            }
+        }
+        &:last-child {
+            &.active, &.show {
+                border-top-right-radius: 0.15rem;
+            }
+        }
+    }
+}

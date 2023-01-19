@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Sales Entry</h2>
+<div mat-dialog-content>
+  <form>
+    <div class="form-group" *ngFor="let date of dates">
+        <p>{{date | date:'MMMM d, y - EEEE'}}</p>
+        <div class="controls-wrap">
+            <mat-form-field appearance="outline">
+                <mat-label>Gross</mat-label>
+                <input matInput type='tel'>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cash</mat-label>
+                <input matInput type='tel'>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Card</mat-label>
+                <input matInput type='tel'>
+            </mat-form-field>
+        </div>
+        <p>Variance: 0</p>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="null" [disabled]="">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

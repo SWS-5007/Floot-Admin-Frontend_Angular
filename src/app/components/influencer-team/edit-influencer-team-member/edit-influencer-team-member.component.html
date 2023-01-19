@@ -1,0 +1,47 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/influencer-team']">Influencer Team</a></li>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/influencer-team', 'edit-influencer-team-member', accountId]">Edit Influencer Team Member</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+<h1>Edit Team Member</h1>
+<div class="card" [formGroup]='editInfluencerAdminForm'>
+    <div class="card-header">
+      Edit Team Member
+    </div>
+    <div class="card-body">
+      <div *ngIf='displayEmailExistsModal' class='alert alert-danger'>
+        This email address has already been registered.
+        <a type="button" href='#' (click)='displayEmailExistsModal = false;' class='close'>&times;</a>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+              [class.text-danger]='(editInfluencerAdminForm.controls.firstName.dirty && editInfluencerAdminForm.controls.firstName.errors)'
+              >First Name</label>
+              <input formControlName='firstName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(editInfluencerAdminForm.controls.lastName.dirty && editInfluencerAdminForm.controls.lastName.errors)'
+              >Last Name</label>
+              <input formControlName='lastName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(editInfluencerAdminForm.controls.email.dirty && editInfluencerAdminForm.controls.email.errors)'
+              >Email</label>
+              <input formControlName='email' (change)='onUserInputEvent()' class="form-control" type="email" />
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-primary float-right" [disabled]='!editInfluencerAdminForm.valid' (click)='saveChanges()'>Save Changes</button>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <app-selected-product [selectedProduct]="selectedProduct" (loadProducts)="loadProducts(venue_id)"
+        [selectedProductId]="selectedProductId"></app-selected-product>
+      <!-- <div *ngIf="this.productList; else noProductListMessage">
+        <app-product-list (selectedProductId)="recieveSelectedProductId($event)" [productList]="productList">
+        </app-product-list>
+      </div> -->
+      <!-- <div id="title-action-bar">
+          <h1 id="gp-calculator-title">
+            GP Calculator
+          </h1>
+          <div id="actions">
+            <div id="action-buttons">
+              <div class="print">
+                <i class="fa fa-print"></i>
+              </div>
+              <div class="send">
+                <i class="fa fa-paper-plane"></i>
+              </div>
+              <div class="download">
+                <i class="fa fa-download"></i>
+              </div>
+            </div>
+            <div class="searchProductList">
+              <h1><span>Search for Product:</span> <input id="search-input" (keyup)="searchProductList($event)" type="string"
+                  name="search" /></h1>
+            </div>
+          </div>
+        </div> -->
+
+
+      <ng-template #noProductListMessage>
+        No Products. Please create one
+      </ng-template>
+      <!-- <div id="calendar">
+        <app-calendar></app-calendar>
+      </div> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4 mt-4">
+      <div class="pdetails">
+        <div class="header px-3 pt-3">
+          <h2 class="mb-0">
+            <strong>GP</strong> Calculator
+          </h2>
+        </div>
+        <div class="p-3">
+          <mat-form-field class="w-25" appearance="outline">
+            <mat-label>Search for Product</mat-label>
+            <input id="search-input" matInput placeholder="Search for Product" (keyup)="searchProductList($event)"
+              type="string" name="search" />
+          </mat-form-field>
+          <button class="float-right create-save-product" (click)="onSelect()">Create New Product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-product-list (selectedProductId)="recieveSelectedProductId($event)"
+    *ngIf="this.productList; else noProductListMessage" class="row productlist" [productList]="productList">
+  </app-product-list>
+</div>
+<!-- <app-selected-product id="selected-Product" [selectedProduct]="selectedProduct"
+          (loadProducts)="loadProducts(venue_id)" [selectedProductId]="selectedProductId"></app-selected-product> -->

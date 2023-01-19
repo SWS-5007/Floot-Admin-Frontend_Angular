@@ -1,0 +1,48 @@
+.section-content {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  .image-wrap {
+        display: flex;
+        place-items: center;
+        justify-content: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 1rem;
+        position: relative;
+        padding: 0.75rem;
+    p{
+        margin: 0;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .menu-title{
+        cursor: pointer;
+        padding: 0.25rem;
+    }
+    &.empty{
+        background-color: #f0f0f0;
+        border: 1px dashed;
+        color: #a0a0a0;
+        font-size: 2rem;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+    }
+    mat-icon{
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+        color: white;
+        background: #707070;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+  }
+  
+}

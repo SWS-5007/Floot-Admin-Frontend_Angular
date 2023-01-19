@@ -1,0 +1,11 @@
+[
+
+	{"wc":"2022-09-05T22:00:00.000Z","time":"9 am","wind":"54.0","temperature": "16"	,"clouds": "0", "rain" : "0"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"11 am","wind":"40"	,"temperature": "19"	,"clouds": "2", "rain" : "2"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"1 pm","wind":"26.0","temperature": "21"	,"clouds": "5", "rain" : "5"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"3 pm","wind":"20"	,"temperature": "20.5"	,"clouds": "2", "rain" : "6"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"5 pm","wind":"18"	,"temperature": "19"	,"clouds": "0", "rain" : "4"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"7 pm","wind":"18"	,"temperature": "19.7"	,"clouds": "5", "rain" : "8"},
+	{"wc":"2022-09-05T22:00:00.000Z","time":"9 pm","wind":"17.0","temperature": "18"	,"clouds": "3", "rain" : "3"}
+	
+]

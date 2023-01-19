@@ -1,0 +1,42 @@
+﻿@import '_variables';
+
+.btn {
+  padding: .5rem 1.2rem;
+  border: 1px solid var(--primary-secondary);
+  font-weight: 600;
+
+  &.btn-primary {
+      &, &.dropdown-toggle {
+          color: white;
+          border: none;
+          background-color: var(--primary-brand) !important;
+
+          &:not(:disabled):not(.disabled):active, &:hover {
+              color: var(--primary-brand) !important;
+              border: var(--primary-brand) !important;
+              background-color: white !important;
+          }
+      }
+  }
+
+  &.btn-secondary {
+      &, &.dropdown-toggle {
+          color: white;
+          border: none;
+          background-color: var(--primary-secondary);
+
+          &:not(:disabled):not(.disabled):active, &:hover {
+              background-color: var(--primary-secondary);
+          }
+      }
+  }
+
+  &.btn-link {
+      background-color: var(--primary-secondary);
+      color: white;
+
+      &:not(:disabled):not(.disabled):active, &:hover {
+          background-color: var(--primary-secondary)
+      }
+  }
+}

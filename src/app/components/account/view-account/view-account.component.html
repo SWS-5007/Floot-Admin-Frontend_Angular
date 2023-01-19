@@ -1,0 +1,140 @@
+<div class='modal fade change-password'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='updatePasswordFormGroup'>
+              <div class='modal-header'>
+                  Change user password <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='alert alert-danger' *ngIf='passwordMustMatchError'>
+                      The passwords that you entered must match.
+                  </div>
+                  <div class='form-group'>
+                      <label>Password</label>
+                      <input formControlName='password' class='form-control' type='password'>
+                  </div>
+                  <div class='form-group'>
+                      <label>Confirm password</label>
+                      <input formControlName='confirmPassword' class='form-control' type='password'>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal'
+                  [disabled]='
+                    !validatePassword(updatePasswordFormGroup.value.password) ||
+                    updatePasswordFormGroup.controls.password.pristine ||
+                    updatePasswordFormGroup.controls.confirmPassword.pristine ||
+                    updatePasswordFormGroup.errors' (click)='updatePasswordFormSubmit()' class='btn btn-primary'>Change Password</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item active'><a type="button" [routerLink]="['/account', 'view-account']">Your Account</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Your Account</h1>
+  <div class="card">
+      <form [formGroup]='userFormGroup'>
+          <div class="card-header">
+              Edit Account Details
+          </div>
+          <div class="card-body">
+              <div class='alert alert-success' *ngIf='passwordWasUpdated'>
+                  You have updated your password.
+                  <a type="button" class='close' (click)='passwordWasUpdated = false'>&times;</a>
+              </div>
+
+              <div class='alert alert-success' *ngIf='accountIsUpdated'>
+                You have updated your account details.
+                <a type="button" class='close' (click)='accountIsUpdated = false'>&times;</a>
+            </div>
+
+              <div class="row">
+                  <div class="col-12 col-md-6">
+                      <div class="form-group">
+                          <label
+                          [class.text-danger]='(userFormGroup.controls.firstName.dirty && userFormGroup.controls.firstName.errors)'
+                          >First Name</label>
+                          <input formControlName='firstName' (change)='onUserInputEvent()' class="form-control" type="text" />
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="form-group">
+                          <label
+                              [class.text-danger]='(userFormGroup.controls.lastName.dirty && userFormGroup.controls.lastName.errors)'
+                          >Last Name</label>
+                          <input formControlName='lastName' (change)='onUserInputEvent()' class="form-control" type="text" />
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="form-group">
+                          <label
+
+                          >Email</label>
+                          <input disabled='disabled' formControlName='email' (change)='onUserInputEvent()' class="form-control" type="email" />
+                      </div>
+                  </div>
+
+                  <div class='col-md-12'>
+                      <br><br>
+
+                      <h5 class='text-primary'>
+                          Information
+                      </h5>
+                      <p>
+                          It is not possible to update the email address, or username of your user account.
+                      </p>
+                  </div>
+
+                  <div class='col-md-12'>
+                      <button data-toggle='modal' data-target='.change-password' class='btn btn-gl btn-primary'>
+                          Change Password
+                      </button>
+                      <button (click)='signOut()' style='margin-left: 15px;' class='btn btn-gl btn-primary'>
+                        Sign Out &amp; Exit
+                    </button>
+                  </div>
+              </div>
+          </div>
+          <div class="card-footer">
+              <button
+                  [disabled]='!userFormGroup.valid'
+                  (click)='saveChanges()'
+                  class="btn btn-primary"
+              >Save Changes</button>
+          </div>
+      </form>
+  </div>
+  <br>
+
+    <div class='card' *ngIf='account && account.lastLogin'>
+        <div class='card-header'>
+            Last Login Information
+        </div>
+        <div class='card-body'>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <table class='table table-stripped'>
+                        <tr>
+                            <td>Last login time</td>
+                            <td>{{formatDate(account.lastLogin.timeStamp)}}
+                        </tr>
+                        <tr>
+                            <td>Last login user agent</td>
+                            <td>{{account.lastLogin.userAgent}}</td>
+                        </tr>
+                        <tr>
+                            <td>Last login IP address</td>
+                            <td>{{account.lastLogin.fromIp}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

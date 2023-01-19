@@ -1,0 +1,14 @@
+<div *ngFor="let product of productList; let i = index" class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+  <div class="pdetails">
+    <button mat-button [matMenuTriggerFor]="menu" class="header-dropdown float-right">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="editAction(product)">Edit</button>
+      <button mat-menu-item (click)="deleteAction(product)">Delete</button>
+    </mat-menu>
+    <app-product (click)="sendSelectedProductId(product)" [productIndex]="i" [product]="product"></app-product>
+  </div>
+</div>
+
+<!-- <app-product (selectedProduct)="selectedProduct(product)" [product]="product"></app-product> -->

@@ -1,0 +1,99 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/supplier-list']">Suppliers</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+    <h1>Search Suppliers</h1>
+    <br>
+    <div *ngIf='supplierDeleted' class='alert alert-success'>
+        The supplier was deleted!
+        <a href='#' (click)='supplierDeleted = false;' class='close'>&times;</a>
+    </div>
+    <div class="card">
+        <div class="card-body" *ngIf="showSuppliers.length === 0">
+          <p>No suppliers in the database.</p>
+        </div>
+        <div class="card-body p-0" *ngIf="showSuppliers.length > 0">
+            <div style="overflow-x: auto;">
+                <table class="table text-nowrap  table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Call to Action</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let supplier of showSuppliers">
+                            <td style="display: flex; flex-direction: row; ">
+                                <img class="mr-2" [src]="supplier.profileImageUrl ? supplier.profileImageUrl : '../.././../../assets/template-image.png'" height="50px" style="object-fit: cover;" />
+                              {{ supplier.name ? supplier.name : "Not Found"}}
+                            </td>
+                            <td>{{ supplier.tagline ? supplier.tagline : "Not Found"}}</td>
+                            <td>
+                                <button class='btn btn-sm btn-primary mr-1' type='submit' [routerLink]="['/supplier-list', 'profile', supplier.id]">
+                                  Details
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer" *ngIf="suppliers.length > 0">
+          <div class="row">
+              <div class="col-12">
+                  <nav>
+                      <ul class="pagination mt-3 justify-content-center">
+                          <li class="page-item disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                              <div *ngFor="let page of availablePages">
+                                  <li class="page-item active" *ngIf="currentPageNo === page">
+                                      <button class="page-link">{{ page }}</button>
+                                  </li>
+                                  <li class="page-item" *ngIf="currentPageNo !== page">
+                                      <button class="page-link" type="submit" (click)="changePageNo(page)">{{ page }}</button>
+                                  </li>
+                              </div>
+                          <li class="page-item page-item-right disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item page-item-right" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+              <div class="col-12">
+                  <p class="text-center">
+                      You're on page <span class="font-weight-bold">{{ currentPageNo }} of {{ totalPageCount }}</span>,
+                      with
+                      <select (change)="changeResultsNo($event.target.value)" value="{{ resultsPerPage }}">
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                      </select>
+                      results per page.
+                  </p>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>

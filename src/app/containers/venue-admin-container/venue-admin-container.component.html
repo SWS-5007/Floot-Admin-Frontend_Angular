@@ -1,0 +1,36 @@
+<app-section-container>
+    <div class="heading">
+        <span>Venue Admins</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="createAdmin.emit()">Create Admin user +</button>
+    </div>
+    <div class="section-content">
+        <table *ngIf="venueAdmins?.length > 0" class="table text-nowrap  table-responsive-sm">
+            <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let admin of venueAdmins">
+                    <td>{{ admin.name ?? "Not Found"}}</td>
+                    <td>{{ admin.email ?? "Not Found"}}</td>
+                    <td>
+                        <button mat-icon-button color="primary" (click)="editAdmin.emit(admin.id)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="danger" (click)="deleteAdmin.emit(admin.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p *ngIf="!venueAdmins?.length" class="m-0">
+            There are no admin users assigned for this venue.
+        </p>
+    </div>
+</app-section-container>

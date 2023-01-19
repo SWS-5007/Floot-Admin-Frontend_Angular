@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Add Menu Card</h2>
+<div mat-dialog-content>
+    <form [formGroup]="addMenuForm">
+    <div class='form-group mb-3'>
+        <div class='form-group'>
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="Enter the menu name" formControlName="title" type="text">
+            </mat-form-field>
+      </div>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="menuFileInput" accept=".pdf" (change)="onMenuChange($event.target.files)">
+                <label class="custom-file-label" for="menuFileInput">{{fileData?.meta?.name || 'Choose a PDF' }}</label>
+            </div>
+        </div>
+        <mat-hint>Max size: 50MB</mat-hint>
+    </div>
+</form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onSave()" [disabled]="!addMenuForm.valid">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

@@ -1,0 +1,17 @@
+<app-section-container>
+    <div class="heading">Menu</div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onAddMenu()">Add</button>
+    </div>
+    <div class="section-content">
+        <div 
+            class="image-wrap" 
+            *ngFor="let menu of menuList; let i = index" 
+            [style.backgroundColor]="colors[(i%colors.length)]"
+        >
+            <p class="menu-title" role="button" tabindex="0" (click)="viewMenu.emit(menu.id)">{{menu.title}}</p>
+            <mat-icon role="button" (click)="onDeleteMenu(menu.id)">cancel</mat-icon>
+        </div>
+        <div class="image-wrap empty" appDragDrop (fileDropped)="onFileDrop($event)" (click)="onAddMenu()">+</div>
+    </div>
+</app-section-container>

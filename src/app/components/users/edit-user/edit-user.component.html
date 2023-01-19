@@ -1,0 +1,61 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/users">Users</a></li>
+
+  <li class='breadcrumb-item active'><a [routerLink]="['/users', userId]">{{ userName }}</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/users', userId, 'edit-user']">Edit User</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit User</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit User
+    </div>
+    <div class="card-body" [formGroup]="editUserForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>First Name</label>
+                <input class="form-control" formControlName="firstName" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Last Name</label>
+              <input class="form-control" formControlName="lastName" (change)='onUserInputEvent()' type="text" />
+          </div>
+      </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Profile Image</label>
+              <input *ngIf="!existingProfileImageUrl" class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+              <div *ngIf="existingProfileImageUrl">
+                <img [src]="existingProfileImageUrl ? existingProfileImageUrl : '../.././../../assets/template-image.png'" alt="" width="100px" height="100px" style="border-radius: 50px; object-fit: cover;">
+                <button class="btn btn-danger btn-sm ml-2" (click)="removeProfileImage()">Remove</button>
+              </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Email</label>
+              <input class="form-control" formControlName="email" (change)='onUserInputEvent()' type="email" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Date of Birth</label>
+              <input class="form-control" formControlName="dateOfBirth" (change)='onUserInputEvent()' type="date" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!editUserForm.valid'
+          class="btn btn-primary float-right"
+          (click)="saveChanges()"
+      >Save Changes</button>
+    </div>
+  </div>
+</div>

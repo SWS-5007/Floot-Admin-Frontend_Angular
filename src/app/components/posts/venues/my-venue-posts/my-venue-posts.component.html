@@ -1,0 +1,156 @@
+<div class='modal fade delete-post'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Post <a type="button" href='#' class='close' data-dismiss="modal" (click)="pendingDeletePostId = null">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to delete this post?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingDeletePostId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='deletePost()' class='btn btn-primary' [disabled]="!pendingDeletePostId">Delete Post</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/my-venue-posts">Posts</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Search {{ selectedVenueName }} Posts</h1>
+  <br>
+  <div *ngIf='postCreated' class='alert alert-success'>
+      The post was created!
+      <a href='#' (click)='postCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postEdited' class='alert alert-success'>
+      The post was edited!
+      <a href='#' (click)='postEdited = false;' class='close'>&times;</a>
+  </div>
+  <form [formGroup]="searchForm">
+      <div class="card">
+          <div class="card-header">
+              Search
+          </div>
+          <div class='card-body'>
+              <div class='row'>
+                  <div class='col-md-6'>
+                      <div class="form-group">
+                          <label>Search</label>
+                          <input class="form-control" placeholder="Search" formControlName="searchText" type="text"/>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <div class="card-footer">
+            <button class='btn btn-primary float-right ml-2 mb-2' (click)="searchPosts()">
+              Search
+            </button>
+            <button class='btn btn-secondary float-right ml-2 mb-2' (click)="clearSearch()">
+              Clear Search
+            </button>
+          </div>
+      </div>
+  </form>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Posts
+      <button class="btn btn-primary btn-sm float-right" [routerLink]="['/venue-posts/create-post']">Create Post +</button>
+    </div>
+      <div class="card-body" *ngIf="showPosts.length === 0">
+        <p>No posts in the database.</p>
+      </div>
+      <div class="card-body p-0" *ngIf="showPosts.length > 0">
+          <div style="overflow-x: auto;">
+              <table class="table text-nowrap  table-responsive-sm">
+                  <thead>
+                      <tr>
+                          <th>Caption</th>
+                          <th>Image</th>
+                          <th>Published</th>
+                          <th>Controls</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let post of showPosts">
+                          <td>{{ post.caption ? post.caption : "Not Found"}}</td>
+                          <td>
+                            <img *ngIf="post.imageUrl" class="mr-2" [src]="post.imageUrl" width="50px" height="50px" style="border-radius: 8px; object-fit: cover;" />
+                            <p *ngIf="!post.imageUrl">No Image</p>
+                          </td>
+                          <td>{{ post.created ? ( post.created | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</td>
+                          <td>
+                              <button class='btn btn-sm btn-primary mr-1' type='submit' [routerLink]="['/venue-posts', 'edit-post', post.id]">
+                                Edit
+                              </button>
+                            <button class='btn btn-sm btn-danger mr-1' type='submit' data-toggle='modal' data-target=".modal.delete-post" (click)="pendingDeletePostId = post.id">
+                              Remove
+                            </button>
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <div class="card-footer" *ngIf="posts.length > 0">
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination mt-3 justify-content-center">
+                        <li class="page-item disabled" *ngIf="currentPageNo === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPageNo > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left disabled" *ngIf="currentPageNo === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left" *ngIf="currentPageNo > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                            <div *ngFor="let page of availablePages">
+                                <li class="page-item active" *ngIf="currentPageNo === page">
+                                    <button class="page-link">{{ page }}</button>
+                                </li>
+                                <li class="page-item" *ngIf="currentPageNo !== page">
+                                    <button class="page-link" type="submit" (click)="changePageNo(page)">{{ page }}</button>
+                                </li>
+                            </div>
+                        <li class="page-item page-item-right disabled" *ngIf="currentPageNo === totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item page-item-right" *ngIf="currentPageNo < totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item disabled" *ngIf="currentPageNo === totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPageNo < totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-12">
+                <p class="text-center">
+                    You're on page <span class="font-weight-bold">{{ currentPageNo }} of {{ totalPageCount }}</span>,
+                    with
+                    <select (change)="changeResultsNo($event.target.value)" value="{{ resultsPerPage }}">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                    results per page.
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

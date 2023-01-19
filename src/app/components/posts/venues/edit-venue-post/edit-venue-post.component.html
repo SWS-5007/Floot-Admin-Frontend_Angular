@@ -1,0 +1,46 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/venue-posts">Posts</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/venue-posts', 'edit-post', postId]">Edit Post</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit Post</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit Post
+    </div>
+    <div class="card-body" [formGroup]="editPostForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Caption (max characters 250)</label>
+            <textarea class="form-control" formControlName="caption" rows="4" cols="50" maxLength="250" (change)='onUserInputEvent()' type="text" ></textarea>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Image</label>
+              <input *ngIf="!existingPostImageUrl" class="form-control-file" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+              <!--<mat-progress-bar *ngIf="progress > 0" mode="determinate" [value]="progress"></mat-progress-bar> 
+              <label *ngIf="progress === 100">Upload Complete ✓</label>-->
+              <div *ngIf="existingPostImageUrl">
+                <img [src]="existingPostImageUrl ? existingPostImageUrl : '../.././../../assets/template-image.png'" alt="" width="100px" height="100px" style="border-radius: 8px; object-fit: cover;">
+                <button class="btn btn-danger btn-sm ml-2" (click)="removeImage()">Remove</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button *ngIf="posting === false"
+          [disabled]='!editPostForm.valid'
+          class="btn btn-primary float-right"
+          (click)="editPost()"
+      >Save Change</button>
+      <mat-spinner *ngIf="posting === true"
+          diameter="40"
+          class="float-right"></mat-spinner>
+    </div>
+  </div>
+</div>

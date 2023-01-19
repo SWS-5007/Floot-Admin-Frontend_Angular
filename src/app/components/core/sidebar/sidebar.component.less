@@ -1,0 +1,101 @@
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #232029;
+
+  .sublist{
+    padding: 0;
+    list-style-type: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.25s ease-in;
+    &.expanded{
+      max-height: 100vh;
+    }
+  }
+
+  .sidebar-list-group{
+    height: 100vh;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+      width: 4px;
+      height: 4px;
+    }
+    &::-webkit-scrollbar-thumb{
+      background-color: silver;
+    }
+  }
+
+  .list-group-item {
+    background-color: transparent;
+    color: white;
+
+    padding: 0;
+    padding-left: 1.25rem;
+
+    border-style: none;
+    height: 48px;
+    line-height: 48px;
+
+    border-radius: 0px;
+    font-weight: normal;
+
+    a {
+      color: inherit;
+    }
+
+    i {
+      padding-right: 15px;
+      color: var(--primary-brand-secondary);
+      font-weight: 100;
+    }
+  }
+
+  .list-group-item:hover {
+    background-color: white;
+    transition-duration: 0.5s;
+
+    color: var(--primary-brand);
+    cursor: pointer;
+
+    i {
+      color: var(--primary-brand);
+    }
+  }
+
+  .list-group-item.parent-item {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+  }
+
+  .list-group-item.child-item {
+    background-color: #0b010d4a;
+    transition-duration: 0.5s;
+
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .list-group-item.child-item:hover {
+    background-color: white;
+    transition-duration: 0.5s;
+
+    color: var(--primary-secondary);
+    cursor: pointer;
+
+    i {
+      color: var(--primary-secondary);
+    }
+  }
+}
+
+li.list-group-item.menuSupport {
+  margin-top: 23%;
+}

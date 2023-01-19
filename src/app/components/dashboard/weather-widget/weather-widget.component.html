@@ -1,0 +1,16 @@
+<!-- <div class="flex-container">
+    <div *ngFor="let interval of timePeriods">
+        <p>{{ interval.dateString }}</p> 
+        <img src="http://openweathermap.org/img/wn/{{interval.iconId}}@2x.png" style="width: 60px; height: 60px;">
+        <p>{{ interval.temperature }}°C</p>
+    </div>
+</div> -->
+<div class="row my-4" *ngIf="timePeriods.length>0">
+    <div *ngFor="let interval of timePeriods" class="col">
+        <div class="col-sm weather">
+            <p>{{ interval.dateString }}</p>
+            <img src="http://openweathermap.org/img/wn/{{interval.iconId}}@2x.png" style="width: 60px; height: 60px;">
+            <p>{{ interval.temperature }}°C</p>
+        </div>
+    </div>
+</div>

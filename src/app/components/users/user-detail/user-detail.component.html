@@ -1,0 +1,117 @@
+<!-- Start ban confirm modal -->
+<div class='modal fade confirm-ban'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm ban
+              <a class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to ban this user?</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='banUser()' class='btn btn-danger'>Ban</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End ban confirm modal-->
+
+<!-- Start unban confirm modal -->
+<div class='modal fade confirm-unban'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm unban
+              <a class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to unban this user?</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='unbanUser()' class='btn btn-success'>Unban</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End unban confirm modal-->
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/users">Users</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/users', userId, 'user-detail']">{{ userInfo && userInfo.name ? userInfo.name : "Loading..." }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>User Detail</h1>
+  <br>
+  <!-- Edited User Popup -->
+  <div *ngIf='userEdited' class='alert alert-success'>
+      The user was edited!
+      <a href='#' (click)='userEdited = false;' class='close'>&times;</a>
+  </div>
+   <!-- Banned User Popup -->
+   <div *ngIf='userBanned' class='alert alert-success'>
+    The user was banned!
+    <a href='#' (click)='userBanned = false;' class='close'>&times;</a>
+</div>
+ <!-- Unbanned User Popup -->
+ <div *ngIf='userUnbanned' class='alert alert-success'>
+  The user was unbanned!
+  <a href='#' (click)='userUnbanned = false;' class='close'>&times;</a>
+</div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      User Info
+      <div>
+        <button type="button" class="btn btn-primary mr-2" [routerLink]="['/users', userId,'edit-user']">Edit</button>
+        <button *ngIf="banned === false" type="button" class="btn btn-danger" data-toggle='modal' data-target='.modal.confirm-ban' >Ban</button>
+        <button *ngIf="banned === true" type="button" class="btn btn-success" data-toggle='modal' data-target='.modal.confirm-unban' >Unban</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Profile Image</dt>
+        <dd class="col-12 col-lg-9">
+          <img [src]="userInfo && userInfo.profileImageUrl ? userInfo.profileImageUrl : './.././../../assets/template-image.png'" width="50px" height="50px" style="border-radius: 25px; object-fit: cover;" />
+        </dd>
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ userInfo && userInfo.name ? userInfo.name : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Banned</dt>
+        <dd class="col-12 col-lg-9">{{ banned ? "Yes" : "No" }}</dd>
+
+        <dt class="col-12 col-lg-3">Email</dt>
+        <dd class="col-12 col-lg-9">{{ userInfo && userInfo.email ? userInfo.email : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Date of Birth</dt>
+        <dd class="col-12 col-lg-9">{{ userInfo && userInfo.dateOfBirth ? ( userInfo.dateOfBirth | date: "dd/MM/yyyy" ) : "Not Found" }}</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Contact Preferences
+    </div>
+    <div class="card-body">
+      <dl class="row">
+
+        <dt class="col-12 col-lg-3">Push Notifications</dt>
+        <dd class="col-12 col-lg-9">{{ contactPreferences ? ( contactPreferences.pushNotifications === true ? "Yes" : "No" ) : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Email Notifications</dt>
+        <dd class="col-12 col-lg-9">{{ contactPreferences ? ( contactPreferences.emailNotifications === true ? "Yes" : "No" ) : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Marketing Emails</dt>
+        <dd class="col-12 col-lg-9">{{ contactPreferences ? ( contactPreferences.marketingEmails === true ? "Yes" : "No" ) : "Not Found" }}</dd>
+
+      </dl>
+    </div>
+  </div>
+  <!-- TODO: User Activity -->
+  <!-- TODO: Favourite Venue -->
+</div>

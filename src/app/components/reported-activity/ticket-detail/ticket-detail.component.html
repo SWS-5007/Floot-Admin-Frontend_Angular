@@ -1,0 +1,141 @@
+<div class='modal fade confirm-resolve-ticket'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Resolve Ticket <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to resolve this ticket?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='resolveTicket()' class='btn btn-success' [disabled]="!ticketId">Resolve Ticket</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade confirm-delete-post'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Post <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to delete this post?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='deletePost()' class='btn btn-danger' [disabled]="!post || !post.id">Delete Post</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/reported-activity">Reported Activity</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/reported-activity', 'ticket', ticketId]">Ticket</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Reported Ticket</h1>
+  <br>
+  <div *ngIf='ticketResolved' class='alert alert-success'>
+    The ticket was resolved!
+    <a href='#' (click)='ticketResolved = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postDeleted' class='alert alert-success'>
+    The post was deleted!
+    <a href='#' (click)='postDeleted = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Ticket Information
+      <div *ngIf="status === 'open'">
+        <button type="button" class="btn btn-success" [disabled]="!ticketId"  data-toggle='modal' data-target=".modal.confirm-resolve-ticket">Resolve Ticket</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Date Reported</dt>
+        <dd class="col-12 col-lg-9">{{ dateReported ? ( dateReported | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Status</dt>
+        <dd class="col-12 col-lg-9" style="text-transform: capitalize">{{ status ? status : "Not Found" }}</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Post
+      <div *ngIf="post && post.id">
+        <button type="button" class="btn btn-danger" [disabled]="!post"  data-toggle='modal' data-target=".modal.confirm-delete-post">Delete Post</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!post">The post's information cannot be found.</p>
+      <dl class="row" *ngIf="post">
+        <dt class="col-12 col-lg-3">Caption</dt>
+        <dd class="col-12 col-lg-9">{{ post.caption ? post.caption : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Image</dt>
+        <dd class="col-12 col-lg-9" *ngIf="post.imageUrl">
+          <img [src]="post.imageUrl ? post.imageUrl : '../.././../../assets/template-image.png'" width="300px" style="border-radius: 25px; object-fit: cover;" />
+        </dd>
+        <dd class="col-12 col-lg-9" *ngIf="!post.imageUrl">No Image Attached</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Venue
+      <div>
+        <button type="button" class="btn btn-primary mr-2" [disabled]="!venue" [routerLink]="['/venues', 'profile', venue ? venue.id : null]">View Venue</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!venue">The venue's information cannot be found.</p>
+      <dl class="row" *ngIf="venue">
+        <dt class="col-12 col-lg-3">Profile Image</dt>
+        <dd class="col-12 col-lg-9">
+          <div style="background-color: lightgrey; width: 50px; height: 50px">
+            <img [src]="venue.profileImageUrl ? venue.profileImageUrl : '../.././../../assets/template-image.png'" width="50px" height="50px" style="border-radius: 25px; object-fit: cover;" />
+          </div>
+        </dd>
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ venue.name ? venue.name : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Address</dt>
+        <dd class="col-12 col-lg-9">{{ venue.address ? venue.address : "Not Found" }}</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Reported By
+      <div>
+        <button type="button" class="btn btn-primary mr-2" [disabled]="!user" [routerLink]="['/users', user ? user.id : null]">View User</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!user">The user's information cannot be found.</p>
+      <dl class="row" *ngIf="user">
+        <dt class="col-12 col-lg-3">Profile Image</dt>
+        <dd class="col-12 col-lg-9">
+          <img [src]=" user.profileImageUrl ? user.profileImageUrl : '../.././../../assets/template-image.png'" width="50px" height="50px" style="border-radius: 25px; object-fit: cover;" />
+        </dd>
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ user.name ? user.name : "Not Found" }}</dd>
+      </dl>
+    </div>
+  </div>
+  <br>
+</div>

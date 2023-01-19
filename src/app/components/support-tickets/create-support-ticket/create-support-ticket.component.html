@@ -1,0 +1,60 @@
+<div class='modal' *ngIf="ticketSubmitted" style='display: block;'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Ticket Submitted <a type="button" href='#' class='close' (click)="ticketSubmitted = false" data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          The support ticket has been submitted.
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="ticketSubmitted = false">Dismiss</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li *ngIf="isFlootAdmin" class='breadcrumb-item'><a routerLink="/support-tickets">Support Tickets</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/support-tickets', 'create-ticket']">{{ isFlootAdmin ? "Create Support Ticket" : "Support" }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Create Support Ticket</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Create Support Ticket
+    </div>
+    <div class="card-body" [formGroup]="createTicketForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Title</label>
+                <input class="form-control" formControlName="title" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Attach Image (max 50mb)</label>
+            <input class="form-control-file" formControlName="attachment" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+            <p class="text-danger" *ngIf="createTicketForm.errors" >File too large!</p>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" formControlName="description" (change)='onUserInputEvent()' rows="4" cols="50" type="text" maxLength="500" ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!createTicketForm.valid'
+          class="btn btn-primary float-right"
+          (click)="createTicket()"
+      >Create Support Ticket</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,953 @@
+<div class='modal fade supplier-contact-form'>
+  <div class='modal-dialog' *ngIf="selectedSupplierIndex !== null && selectedSupplierIndex > -1 && selectedFormIndex !== null && selectedFormIndex > -1 && contactForm">
+      <div class='modal-content'>
+        <div class='modal-header'>
+          {{ selectedSupplierIndex > -1 ? suppliers[selectedSupplierIndex].name : null }} Contact Form <a type="button" class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          <p *ngIf="suppliers[selectedSupplierIndex].contactForms[selectedFormIndex].description">{{ suppliers[selectedSupplierIndex].contactForms[selectedFormIndex].description }}</p>
+          <form *ngIf="contactForm" [formGroup]="contactForm">
+            <div class="form-group" *ngFor="let field of suppliers[selectedSupplierIndex].contactForms[selectedFormIndex].fields">
+              <label>{{ field.label }}</label>
+              <input *ngIf="field.type === 'text'" [formControlName]='field.id' class="form-control" type="text" />
+              <input *ngIf="field.type === 'number'" [formControlName]='field.id' class="form-control" type="number" />
+              <input *ngIf="field.type === 'file'" [formControlName]='field.id' class="form-control-file" type="file" (change)='onFormFileSelected($event)'  />
+            </div>
+          </form>
+        </div>
+        <div class='modal-footer'>
+          <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+          <button data-dismiss='modal' (click)='sendContactForm()' [disabled]="!contactForm.valid" class='btn btn-success'>Send</button>
+      </div>
+      </div>
+  </div>
+</div>
+<div class="mt-5">
+  <hr />
+</div>
+<!-- <ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/supplier-space']">Supplier Space</a></li>
+</ul> -->
+
+<div class='page-content-wrap'>
+  <div class="graph-controls details d-flex px-3 py-2 my-3">
+    <h2 class="m-0">Spec Sheet</h2>
+    <div class="search ml-auto">
+      <i class='fa fa-search'></i>
+      <input matInput type="text" class="form-control"  placeholder="Search">
+  </div>
+    <button class="btn btn-primary  ml-2 d-flex" type="button"> <span class="material-symbols-outlined">
+      add_box
+      </span> <span class="pt-sm-1 pl-1"> Add Spec </span></button>
+</div>
+    <!-- <div *ngIf="suppliers.length === 0" class="card">
+      <div class="card-body">
+        <p>No suppliers found.</p>
+      </div>
+    </div>
+    <div class="container-fluid content-row">
+      <div *ngIf="suppliers.length > 0" class="row">
+        <div *ngFor="let supplier of suppliers; let i = index" class="col-12 col-lg-6 mb-4">
+          <div class="card h-100">
+            <a [ngStyle]="{'pointer-events': !supplier.websiteUrl ? 'none' : null}" [href]="supplier.websiteUrl ? supplier.websiteUrl : null" target="_blank">
+              <img *ngIf="supplier.coverImageUrl" [src]="supplier.coverImageUrl ? supplier.coverImageUrl : '../.././../../assets/template-image.png'" style="display: flex; background-size: cover; background-attachment: fixed; width: 100%; max-height: 300px; object-fit: cover;">
+            </a>
+            <div class="card-body">
+              <div class="row">
+                <div class="ml-3" style="display: flex; flex-direction: column; justify-content: center">
+                  <a [href]="supplier.websiteUrl ? supplier.websiteUrl : null" [ngStyle]="{'pointer-events': !supplier.websiteUrl ? 'none' : null}" target="_blank" >
+                    <img *ngIf="supplier.profileImageUrl" [src]="supplier.profileImageUrl ? supplier.profileImageUrl : '../.././../../assets/template-image.png'" style="object-fit: contain; max-height: 100px; max-width: 200px"/>
+                  </a>
+                  <h2 *ngIf="!supplier.profileImageUrl">{{ supplier.name ? supplier.name : "Not Found" }}</h2>
+                  <br *ngIf="supplier.profileImageUrl">
+                  <p>{{ supplier.tagline ? supplier.tagline : "Not Found" }}</p>
+                </div>
+              </div>
+              <div *ngIf='showFormSent && notificationSupplierIndex === i' class='alert alert-success'>
+                The form was sent.
+              </div>
+              <div class="row flex-wrap p-2" style="width: 100%; justify-content: center; text-align: center; align-items: center">
+                <button class="btn btn-primary mr-2 mb-2" *ngFor="let form of supplier.contactForms; let formIndex = index" (click)="selectedSupplierIndex = i; selectedFormIndex = formIndex; openContactForm(supplier, i, formIndex)" data-toggle='modal' data-target=".modal.supplier-contact-form">{{ form.title ? form.title : "Contact Form" }}</button>
+              </div>
+              <p *ngIf="supplier.description" class="p-0">{{ supplier.description }}</p>
+              <div class="row flex-wrap p-2" style="width: 100%; justify-content: center; text-align: center; align-items: center">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class=" row">
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBIRDxEPEREREA8RDw8PDw8PEREPDw8PGBQZGRgUGBgcIS4lHB4rHxgYJjgmKy8xNTU1GiU7QDszQi40NTEBDAwMEA8QGhISGjEhGiQxNDU0NDQ0NDQxNDQ0NDQ0MTQ0NDQ0NDQ0NDQxMTQ3MTQ0NDQ0NDQ0MTQxNDQxMTQ0NP/AABEIALoBDwMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAACAwQBBQAG/8QAQxAAAgECAwQHBAcFBgcAAAAAAQIAAxEEEiExQVFhBRMiMnGBkUJSobEGI2KSwdHwU3KCosIUFTNDc+IWRLLS4fHy/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAECAwUE/8QAJxEBAQACAQQBAwQDAAAAAAAAAAECETEDEiFRQQQiQhNxkfAyYYH/2gAMAwEAAhEDEQA/APnAYYMWIazyHEYMYDFiGsyGCEDBWEIBiGIIhiBohCCIYkGiEJghCB4TZ4CaIHhCnp6B6enpsDJ6bMgZBMODaAMwwjMMADBMMwSICzMJhGYYCzAaMMW0oEmAxhGA0ACYJM1oJlCxDWKEasoYsYsUsYsgYsNYAjFkBiEIIhiAQhCYBCEg0CaJ4CaIGiaJ4CFaB6enRw3Qtdxm6vInv1SKa249rU+QlH90Uk/xcWgO9adNn/mJHyktk5rcwt+HHnp2OowI21cQ3NVpgfjM/s+COyriF5utNh8LSd8/sTsv+v5ciZOueiqbf4eKptyqK1L46iS4no6rTF2QldzpZ0I43Esyl4q3CzmIbTDDtBMrATMIhGCRAEwTDMEwFmCYZgGADRbRjRbSgGi2jGi2lANAaExi2MoWI1YkRqy0MWNWKWNWShixiwFjFEyDUQwJiiGokGqIYE1F0Plb1hASbGAQgJoWdTBYREQV6/c9invqHifsxcpOWscbbqF4Dop6ozswpURtqvsPJR7R+Eu/vChh9MLTDOP+Yq2Zr8V3DykGNx1Sse0bINFRdFUcLSYLMecufE9Nbxx459n4nG1ahu7seVyBJ8sO03LNTU4Ztt5BaetGZZ7LG2S7SjDY2pTN1Y8wdQfHjFZZ4rF1eWplZxV3W0K+lReqqH/MQaE/aXf8+EkxmAelYmzIe666o3nuMUVleExrJdGAek2jI2oI/X63TPnHjhreOXPi+3OIgETp47BBV62mS1Fj/Eje635yArNzKVnLG43VJIgkRpEAiVkoiAwjWEWRAW0U0cwimlC2imjWimlC2i2jGimmoFiNSKSNSaoascsUgj0ExQaiOQQFEagmKolEblIIH6taCBpxG/wm4Z7MobUBgL8RtB8xMZZaHhUAqIh0DbTwubXlgohQc20EqFHEcTObjqZTFDeqqTfioJN/SXYWr1lj7Ry33m9rHTyvMb8/uq3AYdTepU/w0sSPebcv657bGZicQ1R852bFA2KBuE9jgzMuHQ5Up36xge++8A7wNl/zi6YHdHs6abBykmW7tvLxNT/rwWEFhqsMLN7cyws9ljgk3LG1JyT1o7LPZZNoRlnisflmFZdqQVglY8rBKRtB4HFdWxBGamwyuh2FYHSGD6twVOam4zU25cDzEErL8F9bTbDN3u/RJ3OBs8xp6TNurv4dJ9018/DissBllDpbQixGhEWyze3NOwi2EoZYthNSidhEsJQwinEsCGiWjnES81EKaJYxzRLTcAJHpEpKEEtU1BHoItBHoJztDEEcqwEEoRZi0eVL6C991uMUyakHT8N9x56ylrhSQMxGuUbTyHOArq6hgcynY3zB5icc+FNrpnR2PfWiR42sPkZnQX1a1KzbKaBh+/u87kH+EwUVgCjbCpVG3ajun8OMfiaeTCZBtqVrnmg1U/zMPKZnDeHO/SUYslLjvO1vAfq/pK6QsoG4myje7cTynNwtLNUVfZUZb7hpdm9B8JS+K7zru+roj7W9vT4kSMutTsb21scpPMbYwJJcGbVOoGopUgah+2xFvkx850gk1sJCQskcEhCnJs0nyT3VynJu3zckbNJckEpKjTmGnGzSQpBKSopBZJe40lZJlNijq40KkEHhKGSKZI3sni7H0tSGcVFFlqqHAGwNsYet5zmWdiqufDKd9OoV8EYfmDOayxjl4a6k8+PnylZYlllbLFOs3KwkdYlxKnWIcTcqJXEQ4lTiIcTcErxLSipJ2nSIFJTTk1OV04yU9BKUEQglKCccqGosoRYtBKEE52qJB+uMkxNBVbrFOTMe17jHieB/XGdBFiMZmQhgMykWdCLhgN48v1tmLQKVXVe5nS1yB3gOI5cjpLcaLog3KjvblmqMPmvwnHptkOai4TeaVU/Vk/Zb2fhO1i6i5UzXV2p9lgpZDtVkLDZfW269pNeG8f8AGuO16aVLd9nFFbbbnVvkPWPw1MK5LdzDISeBcf7r+SiOamDVpuNUVsViuTAFcnxyxWKp5cPTpk2NZjUqNvWkovf0uZPUYDQq9XhnqsfrcVUZgPa6saX8Nv3p38FWqVBnNNUQk2zMS+htstp5z57o1TUxCVGFgvaVNoSmi3RR4WA8SeM7XRlY9ZkJvld19VU/MH1jJY6gWeK3BtwPrMY50JQ9opdL7mtoD5xWAxS1DppmVXAO1TsIPgVI8uckgmwVUu9In2sKrN+9ms3xEvU3LD3Wy/yg/jOV0O31qJ7q4lD99HH/AFRtXFEIwXv1sRkTiBkQMfLUS2Do5ZhWYX+sWmvsqWfkNgHxBjyszppOUgMkoKwSIZSskWySplgMkbA0F+qrL9lH+63+6QMs6lAdir/p29XX8pA6y410z4n7JHWJdZW6xLLNyuSN1iHErcSdxNyiRxJnErcSZxOmNRI4k7ympJnnWAacrpySnK6cZCqnKqYk1OVU5xyVQglCCJQSkJcdlirbtAdfxnLKhqcN8c1IOuVth33sQdxB3eM5y4hWvTqEI97K4JCFt2u1TyMooYlgSjmzr72gYcTw8R/6zZVR4rAMhN9ATo9tDyYbAfTzlmIzrRwzIjuVV6big7I182fQe13xoQY/E4gpTLJowBvTfUFd4A/L8Zzh0qpTqnpoEc56LIcqq4vmUg6C+ngR6JuxrGzzPainiEa6HrFZ+wq1kNN0d3XMuwAg2vpvvxEPpalmLkb2pYan52dvgLeZk616wBQZshFmR3pOCPNhbytLHZzTRXVsyvUqI5ydsik7a5WYBgbb9RrxtNfMZB0SgSnUrbiSicSAb39cg8jIcDiCtTOdhxITz0JnYNHImT2MLRDudzVspYD1sfKcWthylHCJ7bvUxLcgcoU/dF/KJNjsUcUVVmQ9uk73U7KlFjmI8Qbn1kiVmXELXRclOq9SyZg1muM1+BNle3jAVWVBUtcOoJBHZYZyLHxE9iF6ptcwpMVDg95HHdf94bDxF4xo6CpkxuYCyPTq1NPZe2Vh62+EnVstbrWF1w6uEX38VUYmw5C7G/C/CdfDEul1ANQLkIuBZiOywJ9g2X7o4TmY9AmVFs4TMq37j1D33P2RoP8A6mweHqOAEU3xOIIZn/ZUtTnPOxZgOBE7qKMq5dVyjKdt1tpOXgMKAxp3L1HF8Q571jqU5X0JG4WG287eS2g2DSYqwgrAZY9hFsJmqQwgERzCLaSjFFqdQ+81NB5ZmPzWRusuq6Ii7yDUb+Lu/wAoWSuJJWs+dekjLEOJU4iHE3K5pHEmcStxJnnTGiWoJLUldSS1J1iI6klqSupJKk7YoGnKqUjpmWUzGQspyunIqZldMzjkpxex0a3ijMvwt84xMWfdR/8ATcE/dbWbSPO3rKTWUiz9v96iXPqVPznOqWWpVrBxZxoCey9uGveHIwq3RzBAQ2ZFvkcXL0rbrbcvLd4QXTDsLvTyD3ierBPKzaegluFbKAKYdVHtOxOnDXX479JL4ghp1zlanUTMQuZl3Og9tDuZdvh8eS/tYcMGpVGDUybXSr7Lcr908jefQV6d9VABV1aiRoc+vZCn2T+JkOM6LTOy2yJUVmAcWFGoBfv93IbkbdLiMLNiTA189IFic9N1SooQk9XY9q9xrps5bZ2adGgv+Yp2G7o6+BBV7ic7oLousa9NgKhSprVIu6tkezq9tNbG3iNs7VHonHWsA5GXKhIpgoOzudlvoCPOavTyyv2xZDEqJUQ4cujNUcEujDtoDdgRpZ8q2tbmN4EnTC9vE4i2lJEwlBRvd7Z7eAdh/FOrS6CxBFneprtGegg8bWf5y1Og6h6tXZGSnVNcEkl3ezWz2UDRmvccBpLOhn6pp8/WQrUp4dWVaipQoXOqlyC7XG8XaBXx/WF6VVAmLTsuh7ldeHiRqCNultZ2qv0T6yo71aisrvVZ0UMCFIsljuK7byep9D6tRAlXFK7oLUK5pt1yLfuOc3bXx1B2HdN4/TZ/MNVF0O/Y0LvRUgLUTWthu0C1NwNqkXs1raX0MtxGFNMde6hGFkw1AdvIdis3vProNQCb6k6Pwn0UqUyXGJXO6vTqkUyEq02Fu0M3fB1zDzG0npYnomo7Z+tXPqMzIbIp9lADpptN7niBpLehn6NeHztDFf2YFEAfEvd6ju31VFdpLvvA2k7zxM7fR2J62itQXKtfI5GUuoNs1twJBIHC0hxH0TqVGCvWXqcwZ6aKyNUtsDN/403ATu08EyqF+rUKAqqmbKqgWA2TN6HU1wRO0U0sbCP9k+cS+Fqe76FT+M5Xo5z8a0laYlPM1j3Rq54INv5ecY9BxtRvumZiLIuQd42LnnuWccpZ4sXGfN+E1Z8zFuJv4RDxrGJczLF8kvJ3j3MnczcRPUkzyhzJnM6YlTVJJUlNQyWoZ2xRLUktQyioZLUM7YoKnTldOnEU5XTkyqqKdOVU6cnpmVUzOGVVSlObUwwPeqMq8F0vPUzGhFOuUMeB1B9ZytES0UBLU0Fx3q1Q52A8WNl8z5R+HLsCVvkAJNVzbMN+W+xeZAHKMOGZyOsN1B7NJNEH7zHb6S/+zIQAbnYbDRQfmTzMXL2uk2BqIHvY1qmttqog32vqBxdtT6T676P4em6tUbK1UuVzW7CqACAg3DXadTt5T4jpLFCnZVHV0Qdw+srv7qjafHYOZ0n1v0O6w4W9RcjNVdgh2qhC2B4Hx11n0fSzee7CcvphR00tblBNOeE0OeJnr+G9AKwY7OeXoJ7PyHpJo0TPRufkPjML/ZHxjSFz0M1Psj4xbV/sr8Zm2DZ6JbFH3V+P5xL41twT0P5zNzxgsmTk1ekKm4qPBR+Mir9IVP2hHgAJi9XEfRZpHjcVRQHrWQcnIzeQ2z5bE4qo213PIsbTk1zOefUlmtJt9IlSnUzPTvkzFVvvt+EF0nL6KxQWll+2x+UrOLE8nPH7roa6Sd0hNiBFPVEklCalMSapTlDvJ3adJtlJUpyWpTldQydzOuNRBUpySpTl9SS1J3xqAQyqmZGhlCGMoq1GlKNIkaUI05ZRVyNKEeQo8ejzllBejx6PIEePR5zsaVWXNnyrn2Z7DNbxn0X0eqhqbC4zBySu+1hYz5lXhobEMpKsNjKSpHmJvo9T9PLetkfeibPkKXSuIXZUDjg6hviLH4ypPpBVHepI3NWZPneelj9Z0rzdNbfSz04C/SMe1QqD9xkb52jF+klHfTrL401b5MZ1nX6d/KG3bmGcgfSTDb2ceNGr+Am/8Q4T9oR406o/pm/1cL+U/kdJolpCen8J+2HmlQf0xT9P4X9sPuP+Uxlnj7iLKkmqGSP0/hf2l/CnUP8ATJavT+H3NUPhSq/9s5ZZY+xTVMgrNEVem6Z7qVW8Et8yJFV6UJ7tGp/EUX5Ezlc8faGVmkFdoNTEVn2IieLFvykr4Oo/fqG3BBlE53PH2EjHFXKDUDhxliYkmBS6NC7o8Ye045XG0aKxhdaYPVzCkz4GmpFs88wi3MsjIWeIdobmTu06YwpdQyZzGu0nczrigEMcjSVTGo0tgsR45HkatGo8xYq9Hj0ec9HjkeYuI6CPHI856vGrUnO4joq8atSc5akatSZuLTorUjFqTmrVjFqzFxHRFSGHE5wqwxVjtTa/MOAnuzwEiFWaKsml2syJwEw004CS9bPdbGqbUGmnAQTTTgIg1Zhqxqh5ReEAosSasA1ZdUPIWA1ohqsBqkvaHMwgM4iGqRbVJqYhrPFO8U9SKd5qYsmO8Q7wHeJd50mIJ3iGaY7xTPNyIxmiWM12imM3IFgxitFCEJsPVoxXk4hLMUVq8YtSSLDEzYq1akYtWRLDWZsFy1Ya1ZEIQk0L1rQhWkSwhJcYLhWhitIBCEz2wXCtCFeQiaJO0XdfPdfzkQno7YLOvmdfIzMMvbBWa0E1pLBMvbBSa0A1pO0EyzGB7VYtqsQYJiQNarFtUijFmakDWqRTPBMWZqRBM8WzTGgGag8zRbGaYBmh/9k=" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="details p-3 text-dark">
+          <div class="row">
+            <div class="col-md-3 ">
+              <img src="data:image/jpeg;base64,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" class="img-fluid rounded "/>
+            </div>
+            <div class="col-md-7 ">
+               <h2 class="m-0 text-dark">Long Island Ice Tea</h2>
+               <div class="d-flex">
+                <h2 class="m-0 text-dark">£ 4.50</h2>
+                <p class="margin">46% margin</p>
+               </div>
+              
+                <div class="switch-wrap">
+                  <mat-slide-toggle>Live on menu</mat-slide-toggle>
+                </div>
+              
+            </div>
+            <div class="col-md-2 text-right">
+              <span class="material-symbols-outlined pointer">
+                more_horiz
+                </span>
+                <br/>
+              <span class="material-symbols-outlined pointer">
+                ios_share
+                </span>
+                <br/>
+                <span class="material-symbols-outlined pointer">
+                  print
+                  </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <p>
+                  Vodka
+                </p>
+                <span>50ml</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>Dry gin</p>
+                <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Reposado tequila</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Rum</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Triple sec</p>
+                  <span>50ml</span>
+                </div>
+              
+                <div class="d-flex justify-content-between">
+                  <p>Lime juice</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Cola</p>
+                  <span>50ml</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p>Ice</p>
+                  <span>50ml</span>
+                </div>
+                
+                <div class="mt-3">
+                  <p><span style="color: #78759a;">Glass:</span> tall glass</p>
+                  <p><span style="color: #78759a;">Garnish:</span> Lime</p>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+               <p class="filled">Fill a tall glass with ice cubes,pour alcohol into the glass,
+                add lime juice. Add the cola then stir to combine. Drop in the lime
+                wedges.</p>
+            </div>
+          </div>
+
+
+        </div>
+        
+      </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/influencer-admins']">Influencer Admins</a></li>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/influencer-admins', 'add-influencer-admin']">Add Influencer Admin Account</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+<h1>Add Influencer Admin Account</h1>
+<div class="card" [formGroup]='addInfluencerAdminForm'>
+    <div class="card-header">
+      Add Influencer Admin Account
+    </div>
+    <div class="card-body">
+      <div *ngIf='displayEmailExistsModal' class='alert alert-danger'>
+        This email address has already been registered.
+        <a type="button" href='#' (click)='displayEmailExistsModal = false;' class='close'>&times;</a>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+              [class.text-danger]='(addInfluencerAdminForm.controls.firstName.dirty && addInfluencerAdminForm.controls.firstName.errors)'
+              >First Name</label>
+              <input formControlName='firstName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(addInfluencerAdminForm.controls.lastName.dirty && addInfluencerAdminForm.controls.lastName.errors)'
+              >Last Name</label>
+              <input formControlName='lastName' (change)='onUserInputEvent()' class="form-control" type="text" />
+          </div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label
+                  [class.text-danger]='(addInfluencerAdminForm.controls.email.dirty && addInfluencerAdminForm.controls.email.errors)'
+              >Email</label>
+              <input formControlName='email' (change)='onUserInputEvent()' class="form-control" type="email" />
+          </div>
+      </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label
+                [class.text-danger]='(addInfluencerAdminForm.controls.password.dirty && addInfluencerAdminForm.controls.password.errors)'
+                >Password</label>
+                <input formControlName='password' (change)='onUserInputEvent()' class="form-control" type="password" />
+                <small>Passwords must be at least 6 characters, with 1 upper case, 1 lower case, 1 number and 1 special character</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label
+                [class.text-danger]='(addInfluencerAdminForm.controls.passwordConfirmation.dirty && addInfluencerAdminForm.controls.passwordConfirmation.errors)'
+                >Confirm Password</label>
+                <input formControlName='passwordConfirmation' (change)='onUserInputEvent()' class="form-control" type="password" />
+            </div>
+        </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Assigned Influencer</label>
+                <select class="form-control" formControlName="assignedInfluencer" (change)='onUserInputEvent()' >
+                  <option *ngFor="let influencer of influencers" [value]="influencer.id">{{ influencer.name ? influencer.name : "Not Found" }}</option>
+                </select>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-primary float-right" [disabled]='!addInfluencerAdminForm.valid || !validatePassword(addInfluencerAdminForm.value.password)' (click)='addAdminAccount()'>Add Admin Account +</button>
+    </div>
+  </div>
+</div>

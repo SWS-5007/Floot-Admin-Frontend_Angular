@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Add Gallery Image</h2>
+<div mat-dialog-content>
+    <form [formGroup]="addImageForm">
+    <div class='form-group mb-3'>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile02" accept=".png,.jpg,.jpeg" (change)="onImageChange($event.target.files)">
+                <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">{{fileData?.meta?.name || 'Choose an image' }}</label>
+            </div>
+        </div>
+        <mat-hint>Max size: 50MB</mat-hint>
+    </div>
+    <div class='form-group'>
+        <mat-form-field appearance="outline">
+            <mat-label>Caption</mat-label>
+            <input matInput placeholder="Enter the caption" formControlName="caption" type="text">
+        </mat-form-field>
+  </div>
+</form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onSave()" [disabled]="!addImageForm.valid">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

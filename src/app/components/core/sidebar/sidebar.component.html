@@ -1,0 +1,33 @@
+<div class='sidebar pt-2'>
+  <a class='ml-3 mt-3' href='/'>
+    <img src='./../../../../assets/branding/logo.png' alt='Branding Logo' class="w-50 ">
+  </a>
+  <ul class='list-group sidebar-list-group'>
+
+    <ng-container *ngFor='let item of items'>
+      <ng-container *ngIf='item.children'>
+        <li (click)="toggleMenu(item.title, item.link)" class='list-group-item parent-item'>
+          <span class='float-left'>
+            <i [ngClass]='item.icon' aria-hidden="true"></i> {{item.title}}
+          </span> 
+        </li>
+        
+        <ul class="sublist" data-mutant-attributes="height" [class.expanded]="expandedItem == item.title">
+        <ng-container *ngFor='let childItem of item.children'>
+            <li (click)='navigateToRouterLink([childItem.link])' class='list-group-item child-item'>
+              <i [ngClass]='childItem.icon' aria-hidden="true"></i> {{childItem.title}}
+            </li>
+        </ng-container>
+        </ul>
+
+      </ng-container>
+      <ng-container *ngIf='!item.children'>
+        <li (click)='toggleMenu(item.title,item.link)' class='list-group-item menu{{item.title}} '>
+          <span class='float-left'>
+            <i [ngClass]='item.icon' aria-hidden="true"></i> {{item.title}}
+          </span> 
+        </li>
+      </ng-container>
+    </ng-container>
+  </ul>
+</div>
