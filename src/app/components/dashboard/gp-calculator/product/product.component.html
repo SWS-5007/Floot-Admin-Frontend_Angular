@@ -1,0 +1,96 @@
+<!-- <div id="product-container" (click)="onSelect()"> -->
+<div>
+  <!-- <div class="body table-responsive">
+    <table class="w-100 table-bordered">
+      <tr *ngIf="productIndex==0">
+        <th class="p-2">Name</th>
+        <th class="p-2">Ingredients</th>
+        <th class="p-2">Method</th>
+        <th class="p-2">Glass</th>
+        <th class="p-2">Garnish</th>
+        <th class="p-2">Price</th>
+        <th class="p-2">Margin</th>
+        <th class="p-2">#</th>
+      </tr>
+      <tr>
+        <td class="p-2">{{product.name}}</td>
+        <td class="p-2">
+          <div class="ingredients">
+            <div *ngFor="let ingredient of product.ingredients">
+              <p><span>{{ingredient.ml}}ml {{ingredient.name}} </span></p>
+            </div>
+          </div>
+        </td>
+        <td class="p-2">{{product.preparation_method}}</td>
+        <td class="p-2">{{product.glass_to_use}}</td>
+        <td class="p-2">{{product.garnish_description}}</td>
+        <td class="p-2">£{{product.gross}}</td>
+        <td class="p-2">{{product.margin.toFixed(2)}}%</td>
+        <td class="p-2">
+          <div *ngIf="product.live === true; else notLive">
+            <h3 class="livecolor">Live on list</h3>
+          </div>
+          <ng-template #notLive>
+            <h3 class="livecolor">Not live</h3>
+          </ng-template>
+        </td>
+      </tr>
+    </table>
+  </div> -->
+  <div class="first-product-column">
+
+    <h2>Name: <span>{{product.name}}</span></h2>
+
+    <h2>Ingredients: </h2>
+    <h2>
+      <div class="ingredients" *ngIf="product.ingredients">
+        <div *ngFor="let ingredient of product.ingredients">
+          <span>{{ingredient.ml}}ml {{ingredient.name}} </span>
+        </div>
+      </div>
+    </h2>
+
+    <h2>Method:<span>{{product.preparation_method}}</span></h2>
+
+    <h2>Glass: <span>{{product.glass_to_use}}</span></h2>
+
+    <h2>Garnish: <span>{{product.garnish_description}}</span></h2>
+
+    <!-- </div> -->
+
+    <!-- glass: "Martini",
+  garnishDesc: "Flame orange twist",
+  liveOnList: false -->
+
+    <!-- <div class="second-product-column"> -->
+
+    <h2>Price: <span>£{{product.gross}}</span></h2>
+
+    <h2>Margin:<span>{{product?.margin?.toFixed(2)}}%</span></h2>
+
+    <div class="image-row">
+      <div id="product-image">
+
+      </div>
+      <p>Upload Image (optional)</p>
+    </div>
+
+    <!-- <div class="live-on-list-row justify-content-end">
+      <div *ngIf="product.live === true; else notLive">
+        <h2 class="livecolor">Live on list</h2>
+      </div>
+      <ng-template #notLive>
+        <h2 class="livecolor">Not live</h2>
+      </ng-template>
+
+    </div> -->
+  </div>
+
+  <!-- 
+  <h1>{{product.cost}}</h1> -->
+
+  <!-- <h1>{{product.grossProfit}}</h1> -->
+
+</div>
+
+<!-- <hr id="product-divider"> -->

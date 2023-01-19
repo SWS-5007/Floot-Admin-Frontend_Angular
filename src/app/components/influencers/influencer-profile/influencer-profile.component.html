@@ -1,0 +1,395 @@
+<div class='modal fade delete-post'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove Post <a type="button" href='#' class='close' (click)="pendingDeletePostId = null" data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to delete this post?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingDeletePostId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='deletePost()' class='btn btn-primary' [disabled]="!pendingDeletePostId">Delete Post</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade edit-description'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editDescriptionForm'>
+              <div class='modal-header'>
+                Edit Influencer Description <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Description (500 character limit)</label>
+                      <textarea formControlName='description' class='form-control' maxLength='500' rows="4" cols="50" type='text' placeholder='Tell us about your influencer...'></textarea>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editDescription()' class='btn btn-primary' [disabled]="!editDescriptionForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade edit-external-link'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editExternalLinkForm'>
+              <div class='modal-header'>
+                Edit External Link <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Text</label>
+                      <input formControlName='text' class='form-control' type='text' placeholder='Enter Text'>
+                  </div>
+                  <div class='form-group'>
+                    <label>Url</label>
+                    <input formControlName='url' class='form-control' type='url' placeholder='Enter URL'>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='saveExternalLink()' class='btn btn-primary' [disabled]="!editExternalLinkForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade remove-external-link'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove External Link <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to remove the external link?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='removeExternalLink()' class='btn btn-primary'>Remove External Link</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade edit-tags'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editTagsForm'>
+              <div class='modal-header'>
+                Edit Influencer Tags <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body' formArrayName="tags">
+                  <div class='form-group' *ngFor="let tag of availableTags; let tagIndex = index">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" [formControlName]="tagIndex">
+                      <label class="form-check-label">{{ tag.title ? tag.title : 'Not Found' }} - {{ tag.type ? tag.type : "Not Found" }}</label>
+                    </div>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editTags()' class='btn btn-primary' [disabled]="!editTagsForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<!-- Start delete admin account confirm modal -->
+<div class='modal fade confirm-admin-account-delete'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm deletion
+              <a type="button" class='close' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <h5 class='text-danger'>Confirm delete</h5>
+              <p>Once an account has been deleted, it cannot be restored. Please confirm to continue.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deleteAdminAccount()' class='btn btn-danger'>Delete</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End delete admin account confirm modal-->
+
+<!-- Start make influencer active confirm modal -->
+<div class='modal fade confirm-make-influencer-active'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Make Influencer Active
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to make the influencer active? They will be visible on the Floot Mobile App and will be able to create posts.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='makeInfluencerActive()' class='btn btn-success'>Make Active</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End make influencer active confirm modal-->
+<!-- Start deactivate confirm modal -->
+<div class='modal fade confirm-deactivate-influencer'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Deactivate Influencer
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to make the influencer inactive? They will neither be visible on the Floot Mobile App nor will be able to create posts.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deactivateInfluencer()' class='btn btn-warning'>Deactivate</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End deactivate influencer confirm modal-->
+
+<!-- Delete Influencer Modal -->
+<div class='modal fade confirm-delete-influencer'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Influencer <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to delete this influencer? This action is irreversible.
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='deleteInfluencer()' class='btn btn-danger'>Confirm Influencer Deletion</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/influencers">Influencers</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/influencers', influencerId]">{{ basicInfo && basicInfo.name ? basicInfo.name : "Loading..." }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Influencer Profile</h1>
+  <br>
+  <div *ngIf='influencerCreated' class='alert alert-success'>
+    The influencer was created!
+    <a href='#' (click)='influencerCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='influencerEdited' class='alert alert-success'>
+      The influencer was edited!
+      <a href='#' (click)='influencerEdited = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postEdited' class='alert alert-success'>
+    The post was edited!
+    <a href='#' (click)='postEdited = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postCreated' class='alert alert-success'>
+    The post was created!
+    <a href='#' (click)='postCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='influencerMarkedAsActive' class='alert alert-success'>
+    The influencer was activated!
+    <a href='#' (click)='influencerMarkedAsActive = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='influencerMarkedAsHidden' class='alert alert-success'>
+    The influencer was deactivated!
+    <a href='#' (click)='influencerMarkedAsHidden = false;' class='close'>&times;</a>
+  </div>
+  
+  <div *ngIf='externalLinkUpdated' class='alert alert-success'>
+    The external link was updated!
+    <a href='#' (click)='externalLinkUpdated = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Basic Information
+      <div>
+        <ng-container  *ngIf="activePermission === true">
+          <button *ngIf="status === 'hidden'" type="button" class="btn btn-success mr-2" data-toggle='modal' data-target=".modal.confirm-make-influencer-active">Make Influencer Active</button>
+          <button *ngIf="status === 'active'" type="button" class="btn btn-warning mr-2" data-toggle='modal' data-target=".modal.confirm-deactivate-influencer">Deactivate Influencer</button>
+        </ng-container>
+        
+        <button type="button" class="btn btn-primary" [routerLink]="['/influencers','edit-influencer', influencerId]">Edit</button>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="basicInfo">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Profile Image</dt>
+        <dd class="col-12 col-lg-9">
+          <div style="background-color: lightgrey; width: 50px; height: 50px">
+            <img [src]=" basicInfo.profileImageUrl ? basicInfo.profileImageUrl : '../.././../../assets/template-image.png'" width="50px" height="50px" style="border-radius: 25px; object-fit: cover;" />
+          </div>
+        </dd>
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.name ? basicInfo.name : "Not Found" }}</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Description
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-description">Edit Description</button>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!basicInfo || !basicInfo.description">There is no saved description.</p>
+      <p *ngIf="basicInfo && basicInfo.description">{{ basicInfo.description }}</p>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Posts
+      <button class="btn btn-primary btn-sm float-right" (click)="navigateToCreatePost()">Create Post +</button>
+      <button class="btn btn-secondary btn-sm float-right mr-2" [routerLink]="['/influencers', 'posts', influencerId]">View All</button>
+    </div>
+    <div class="card-body" *ngIf="posts.length === 0">
+      <p>The influencer has not created any posts.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="posts.length > 0">
+        <div style="overflow-x: auto;">
+            <table class="table text-nowrap  table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th>Caption</th>
+                        <th>Image</th>
+                        <th>Published</th>
+                        <th>Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let post of posts">
+                        <td>{{ post.caption ? post.caption : "Not Found"}}</td>
+                        <td>
+                          <img *ngIf="post.imageUrl" class="mr-2" [src]="post.imageUrl" width="50px" height="50px" style="border-radius: 8px; object-fit: cover;" />
+                          <p *ngIf="!post.imageUrl">No Image</p>
+                        </td>
+                        <td>{{ post.created ? ( post.created | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</td>
+                        <td>
+                            <button class='btn btn-sm btn-primary mr-1' type='submit' (click)="navigateToEditPost(post.id)">
+                              Edit
+                            </button>
+                          <button class='btn btn-sm btn-danger mr-1' type='submit' data-toggle='modal' data-target=".modal.delete-post" (click)="pendingDeletePostId = post.id">
+                            Remove
+                          </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Influencer Admins
+      <button class="btn btn-primary btn-sm float-right" (click)="assignAdminUserToInfluencer()">Create Admin User +</button>
+    </div>
+    <div class="card-body" *ngIf="influencerAdmins.length === 0">
+      <p>There are no Admin Users assigned to this influencer.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="influencerAdmins.length > 0">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Controls</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let admin of influencerAdmins">
+                    <td>{{ admin.name ? admin.name : "Not Found"}}</td>
+                    <td>{{ admin.email ? admin.email : "Not Found"}}</td>
+                    <td>
+                      <button
+                        (click)="navigateToEditAdminUser(admin.id)"
+                        class="btn btn-sm btn-primary mr-2 mb-2"
+                      >
+                          Edit
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger mr-2 mb-2"
+                        data-toggle='modal'
+                        data-target='.modal.confirm-admin-account-delete'
+                        (click)='pendingDeleteAdminAccountId = admin.id'
+                      >Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Tags
+      <button *ngIf="availableTags && availableTags.length > 0" class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-tags" (click)="initEditTags()" >Edit Tags</button>
+    </div>
+    <div class="card-body" style="display: flex; flex-wrap: wrap;">
+      <p *ngIf="tags.length === 0">The influencer is not linked to any tags.</p>
+      <div class="mr-2 mb-2" *ngFor="let tag of tags">
+        <span class="badge badge-secondary">{{ tag.title ? tag.title : "Not Found" }}</span>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      External Link
+      <button *ngIf="externalLink !== null" class="btn btn-danger btn-sm float-right" data-toggle='modal' data-target=".modal.remove-external-link">Remove</button>
+      <button class="btn btn-primary btn-sm float-right mr-2" data-toggle='modal' data-target=".modal.edit-external-link">{{ externalLink ? "Edit" : "Create +" }}</button>
+    </div>
+    <div class="card-body" *ngIf="!externalLink">
+      <p>An external link has not been created.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="externalLink">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <tbody>
+                <tr>
+                  <td>Text</td>
+                  <td>{{ externalLink.text ? externalLink.text : "Not Found" }}</td>
+                </tr>
+                <tr>
+                  <td>URL</td>
+                  <td>{{ externalLink.url ? externalLink.url : "Not Found" }}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div>
+  <br *ngIf="activePermission === true">
+  <div class="card" *ngIf="activePermission === true">
+    <div class="card-header">
+      Delete Influencer
+    </div>
+    <div class="card-body">
+      <button class="btn btn-danger" data-toggle='modal' data-target='.modal.confirm-delete-influencer'>Permanently Delete Influencer</button>
+    </div>
+  </div>
+</div>

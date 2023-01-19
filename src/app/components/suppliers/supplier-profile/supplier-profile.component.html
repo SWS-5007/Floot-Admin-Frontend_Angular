@@ -1,0 +1,506 @@
+<div class='modal fade edit-description'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editDescriptionForm'>
+              <div class='modal-header'>
+                Edit Supplier About Information <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>About Your Business (500 character limit)</label>
+                      <textarea formControlName='description' class='form-control' maxLength='500' rows="4" cols="50" type='text' placeholder='Tell us about your business...'></textarea>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editDescription()' class='btn btn-primary' [disabled]="!editDescriptionForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+
+<div class='modal fade remove-contact-form'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove CTA Button <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to remove the CTA button
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='removeContactForm()' class='btn btn-primary'>Remove Contact Form</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Start delete admin account confirm modal -->
+<div class='modal fade confirm-admin-account-delete'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm deletion
+              <a type="button" class='close' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <h5 class='text-danger'>Confirm delete</h5>
+              <p>Once an account has been deleted, it cannot be restored. Please confirm to continue.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deleteAdminAccount()' class='btn btn-danger'>Delete</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End delete admin account confirm modal-->
+
+<!-- Start make Supplier active confirm modal -->
+<div class='modal fade confirm-make-supplier-active'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Make Supplier Active
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to make the supplier active? They will be visible on the Floot Admin Console.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='makeSupplierActive()' class='btn btn-success'>Make Active</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End make Supplier active confirm modal-->
+
+<!-- Start deactivate supplier confirm modal -->
+<div class='modal fade confirm-deactivate-supplier'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Deactivate Supplier
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to  the deactivate the supplier? They will be not visible on the Floot Admin Console.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deactivateSupplier()' class='btn btn-warning'>Deactivate</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End deactivate supplier confirm modal-->
+
+<!-- Start edit form modal -->
+<div class='modal fade edit-form'>
+  <div class='modal-dialog modal-lg'>
+      <div class='modal-content'>
+          <form *ngIf="contactForms.length > 0 && contactForms[selectedFormIndex]" [formGroup]='editFormForm[selectedFormIndex]'>
+              <div class='modal-header'>
+                Edit CTA Button <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                <div class='form-group'>
+                  <label>Button Name</label>
+                  <input formControlName='title' class='form-control' type='text'>
+                </div>
+                <div class='form-group'>
+                    <label>Call To Action</label>
+                    <textarea formControlName='description' class='form-control' rows='4' cols='50'></textarea>
+                </div>
+                <div class='form-group'>
+                  <label>Form Type</label>
+                  <select formControlName='formType' class='form-control' placeholder='Please select a form type'>
+                    <option disabled [value]='null'>Please select a form type</option>
+                    <option value='API'>API (POST only)</option>
+                    <option value='email'>Email</option>
+                  </select>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'email'" class='form-group'>
+                  <label>Where we send it to (email address)</label>
+                  <input formControlName='emailAddress' class='form-control' type='email'>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'API'" class='form-group'>
+                  <label>API Endpoint</label>
+                  <input formControlName='endpoint' class='form-control' type='text'>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'API'" class='form-group'>
+                  <label>API Key Field Name</label>
+                  <input formControlName='apiKeyFieldId' class='form-control' type='text'>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'API'" class='form-group'>
+                  <label>API Key</label>
+                  <input formControlName='apiKey' class='form-control' type='text'>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'API'" class="row p-3">
+                  <h2>Hidden Fields</h2>
+                </div>
+                <div *ngIf="editFormForm[selectedFormIndex].value.formType === 'API'">
+                  <div class="row" *ngFor="let formElement of hiddenId.controls; let i = index">
+                    <div formArrayName="hiddenId" class="col-4">
+                      <div class='form-group'>
+                          <label>id</label>
+                          <input [formControlName]='i' class='form-control' type='text'>
+                      </div>
+                    </div>
+                    <div formArrayName="hiddenValue" class="col-4">
+                      <div class='form-group'>
+                          <label>Value</label>
+                          <input [formControlName]='i' class='form-control' type='text'>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class='form-group'>
+                        <label>Controls</label>
+                        <button class="btn btn-danger btn-sm form-control" type="submit" (click)="removeEditHiddenFormElement(i)">Remove</button>
+                      </div>  
+                    </div>
+                  </div>
+                  <button class='btn btn-success' (click)="addEditFormHiddenElement()">Add Hidden Element</button>
+                </div>
+                <div class="row p-3">
+                  <h2>Form Fields</h2>
+                </div>
+                <div class="row" *ngFor="let formElement of label.controls; let i = index">
+                  <div formArrayName="id" class="col-3">
+                    <div class='form-group'>
+                        <label>id</label>
+                        <input [formControlName]='i' class='form-control' type='text'>
+                    </div>
+                  </div>
+                  <div formArrayName="label" class="col-3">
+                    <div class='form-group'>
+                        <label>Label</label>
+                        <input [formControlName]='i' class='form-control' type='text'>
+                    </div>
+                  </div>
+                  <div formArrayName="type" class="col-3">
+                    <div class='form-group'>
+                        <label>Type</label>
+                        <select [formControlName]='i' class='form-control'>
+                          <option value="text">Text</option>
+                          <option value="number">Number</option>
+                          <option value="file">File</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-3">
+                    <div class='form-group'>
+                      <label>Controls</label>
+                      <button class="btn btn-danger btn-sm form-control" type="submit" (click)="removeEditFormElement(i)">Remove</button>
+                    </div>  
+                  </div>
+                </div>
+                <button class='btn btn-success' (click)="addEditFormElement()">Add Element</button>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editContactForm(selectedFormIndex)' class='btn btn-primary' [disabled]="!this.editFormForm[selectedFormIndex].valid || checkDuplicateEditFormIds(selectedFormIndex) ||
+                  (this.editFormForm[selectedFormIndex].value.formType === 'API' && !(this.editFormForm[selectedFormIndex].value.endpoint && this.editFormForm[selectedFormIndex].value.apiKey && this.editFormForm[selectedFormIndex].value.apiKeyFieldId)) ||
+                  (this.editFormForm[selectedFormIndex].value.formType === 'email' && !this.editFormForm[selectedFormIndex].value.emailAddress)">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+<!-- End edit form modal -->
+
+<!-- Start add form modal -->
+<div class='modal fade add-form'>
+  <div class='modal-dialog modal-lg'>
+      <div class='modal-content'>
+          <form [formGroup]='addFormForm'>
+              <div class='modal-header'>
+                Add CTA Button <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                <div class='form-group'>
+                  <label>Button Name</label>
+                  <input formControlName='title' class='form-control' type='text'>
+                </div>
+                <div class='form-group'>
+                    <label>Call to Action</label>
+                    <textarea formControlName='description' class='form-control' rows='4' cols='50'></textarea>
+                </div>
+                <div class='form-group'>
+                  <label>Form Type</label>
+                  <select formControlName='formType' class='form-control' placeholder='Please select a form type'>
+                    <option disabled [value]='null'>Please select a form type</option>
+                    <option value='API'>API (POST only)</option>
+                    <option value='email'>Email</option>
+                  </select>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'email'" class='form-group'>
+                  <label>Where we send it to (email address)</label>
+                  <input formControlName='emailAddress' class='form-control' type='email'>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'API'" class='form-group'>
+                  <label>API Endpoint</label>
+                  <input formControlName='endpoint' class='form-control' type='text'>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'API'" class='form-group'>
+                  <label>API Key Field Name</label>
+                  <input formControlName='apiKeyFieldId' class='form-control' type='text'>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'API'" class='form-group'>
+                  <label>API Key</label>
+                  <input formControlName='apiKey' class='form-control' type='text'>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'API'" class="row p-3">
+                  <h2>Hidden Fields</h2>
+                </div>
+                <div *ngIf="addFormForm.value.formType === 'API'">
+                  <div class="row" *ngFor="let formElement of newFormHiddenId.controls; let i = index">
+                    <div formArrayName="hiddenId" class="col-4">
+                      <div class='form-group'>
+                          <label>id</label>
+                          <input [formControlName]='i' class='form-control' type='text'>
+                      </div>
+                    </div>
+                    <div formArrayName="hiddenValue" class="col-4">
+                      <div class='form-group'>
+                          <label>Value</label>
+                          <input [formControlName]='i' class='form-control' type='text'>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class='form-group'>
+                        <label>Controls</label>
+                        <button class="btn btn-danger btn-sm form-control" type="submit" (click)="removeAddFormHiddenElement(i)">Remove</button>
+                      </div>  
+                    </div>
+                  </div>
+                  <button class='btn btn-success' (click)="addAddFormHiddenElement()">Add Hidden Element</button>
+                </div>
+                <div class="row p-3">
+                  <h2>Form Fields</h2>
+                </div>
+                <div class="row" *ngFor="let formElement of newFormLabel.controls; let i = index">
+                  <div formArrayName="id" class="col-3">
+                    <div class='form-group'>
+                        <label>id</label>
+                        <input [formControlName]='i' class='form-control' type='text'>
+                    </div>
+                  </div>
+                  <div formArrayName="label" class="col-3">
+                    <div class='form-group'>
+                        <label>Label</label>
+                        <input [formControlName]='i' class='form-control' type='text'>
+                    </div>
+                  </div>
+                  <div formArrayName="type" class="col-3">
+                    <div class='form-group'>
+                        <label>Type</label>
+                        <select [formControlName]='i' class='form-control'>
+                          <option value="text">Text</option>
+                          <option value="number">Number</option>
+                          <option value="file">File</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-3">
+                    <div class='form-group'>
+                      <label>Controls</label>
+                      <button class="btn btn-danger btn-sm form-control" type="submit" (click)="removeAddFormElement(i)">Remove</button>
+                    </div>  
+                  </div>
+                </div>
+                <button class='btn btn-success' (click)="addAddFormElement()">Add Element</button>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='addContactForm()' class='btn btn-primary' [disabled]="!this.addFormForm.valid || checkDuplicateAddFormIds() ||
+                  (this.addFormForm.value.formType === 'API' && !(this.addFormForm.value.endpoint && this.addFormForm.value.apiKey && this.addFormForm.value.apiKeyFieldId)) ||
+                  (this.addFormForm.value.formType === 'email' && !this.addFormForm.value.emailAddress) ||
+                  newFormId.length === 0">Create Form</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+<!-- End add form modal -->
+
+<!-- Delete Supplier Modal -->
+<div class='modal fade confirm-delete-supplier'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Supplier <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to delete this supplier? This action is irreversible.
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='deleteSupplier()' class='btn btn-danger'>Confirm Supplier Deletion</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/supplier-list">Suppliers</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/supplier-list', 'profile', supplierId]">{{ basicInfo && basicInfo.name ? basicInfo.name : "Loading..." }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Supplier Profile</h1>
+  <br>
+  <div *ngIf='supplierCreated' class='alert alert-success'>
+    The supplier was created!
+    <a href='#' (click)='supplierCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='supplierEdited' class='alert alert-success'>
+      The supplier was edited!
+      <a href='#' (click)='supplierEdited = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='supplierMarkedAsActive' class='alert alert-success'>
+    The supplier was activated!
+    <a href='#' (click)='supplierMarkedAsActive = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='supplierMarkedAsInactive' class='alert alert-success'>
+    The supplier was deactivated!
+    <a href='#' (click)='supplierMarkedAsInactive = false;' class='close'>&times;</a>
+  </div>
+  
+  <div *ngIf='contactFormsUpdated' class='alert alert-success'>
+    The CTA Buttons were updated!
+    <a href='#' (click)='contactFormsUpdated = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Basic Information
+      <div>
+        <ng-container *ngIf="activePermission === true">
+          
+          <button *ngIf="status === 'hidden'" type="button" class="btn btn-success mr-2" data-toggle='modal' data-target=".modal.confirm-make-supplier-active">Make Supplier Active</button>
+          <button *ngIf="status === 'active'" type="button" class="btn btn-warning mr-2" data-toggle='modal' data-target=".modal.confirm-deactivate-supplier">Deactivate Supplier</button>
+        </ng-container>
+        <button type="button" class="btn btn-primary" [routerLink]="['/supplier-list','edit-supplier', supplierId]">Edit</button>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="basicInfo">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Company Logo</dt>
+        <dd class="col-12 col-lg-9">
+          <img [src]=" basicInfo.profileImageUrl ? basicInfo.profileImageUrl : '../.././../../assets/template-image.png'" style="object-fit: cover;max-height: 100px; max-width: 200px" />
+        </dd>
+
+        <dt class="col-12 col-lg-3">Business Name</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.name ? basicInfo.name : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Call to Action</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.tagline ? basicInfo.tagline : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Website</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.websiteUrl ? basicInfo.websiteUrl : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Marketing Image</dt>
+        <dd class="col-12 col-lg-9">
+            <img [src]=" basicInfo.coverImageUrl ? basicInfo.coverImageUrl : '../.././../../assets/template-image.png'" style="object-fit: cover; max-height: 150px; max-width: 200px" />
+        </dd>
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      About Your Business
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-description">Edit About</button>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!basicInfo || !basicInfo.description">There is no saved about information.</p>
+      <p *ngIf="basicInfo && basicInfo.description">{{ basicInfo.description }}</p>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Supplier Admins
+      <button class="btn btn-primary btn-sm float-right" (click)="assignAdminUserToSupplier()">Create Admin User +</button>
+    </div>
+    <div class="card-body" *ngIf="supplierAdmins.length === 0">
+      <p>There are no Admin Users assigned to this supplier.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="supplierAdmins.length > 0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Controls</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let admin of supplierAdmins">
+                    <td>{{ admin.name ? admin.name : "Not Found"}}</td>
+                    <td>{{ admin.email ? admin.email : "Not Found"}}</td>
+                    <td>
+                      <button
+                        (click)="navigateToEditAdminUser(admin.id)"
+                        class="btn btn-sm btn-primary mr-2 mb-2"
+                      >
+                          Edit
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger mr-2 mb-2"
+                        data-toggle='modal'
+                        data-target='.modal.confirm-admin-account-delete'
+                        (click)='pendingDeleteAdminAccountId = admin.id'
+                      >Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header">
+      CTA Buttons (limit 3)
+      <button *ngIf="contactForms.length < 3" class="btn btn-primary btn-sm float-right mr-2" data-toggle='modal' data-target=".modal.add-form">Add +</button>
+    </div>
+    <div class="card-body" *ngIf="contactForms.length === 0">
+      <p>A CTA Button has not been created.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="contactForms.length > 0">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Button Name</th>
+              <th>Type</th>
+              <th>Controls</th>
+              <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let form of contactForms; let i = index">
+              <td>{{ form.title ? form.title : "Not Found" }}</td>
+              <td>{{ form.type ? form.type : "Not Found" }}</td>
+              <td><button class="btn btn-primary btn-sm" (click)="selectedFormIndex = i"  data-toggle='modal' data-target=".modal.edit-form">Edit</button></td>
+              <td><button class="btn btn-danger btn-sm" (click)="selectedFormIndex = i"  data-toggle='modal' data-target=".modal.remove-contact-form">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    </div>
+  </div>
+  <br *ngIf="activePermission === true">
+  <div class="card" *ngIf="activePermission === true">
+    <div class="card-header">
+      Delete Supplier
+    </div>
+    <div class="card-body">
+      <button class="btn btn-danger" data-toggle='modal' data-target='.modal.confirm-delete-supplier'>Permanently Delete Supplier</button>
+    </div>
+  </div>
+</div>

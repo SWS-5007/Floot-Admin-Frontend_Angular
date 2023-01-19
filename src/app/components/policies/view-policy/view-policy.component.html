@@ -1,0 +1,24 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a [routerLink]="['/policies', policyId ]">{{ title ? title : "Loading..." }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>{{ title ? title : "Loading..." }}</h1>
+  <br>
+  <!-- Edited User Popup -->
+  <div *ngIf='policyEdited' class='alert alert-success'>
+      The policy was edited!
+      <a href='#' (click)='userEpolicyEditeddited = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Last updated: {{ lastUpdated ? ( lastUpdated | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}
+      <div>
+        <button type="button" class="btn btn-primary" [routerLink]="['/policies', policyId,'edit-policy']">Edit</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>{{ content ? content : "No content found for this policy." }}</p>
+    </div>
+  </div>
+</div>

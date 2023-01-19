@@ -1,0 +1,246 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/css2?family=Cabin&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --primary-brand: #501f72;
+  --primary-secondary: #340c5d;
+  --primary-brand-secondary: #9ea8b6;
+ 
+  --colour-grey: #f6f6f6;
+  --colour-pink: #501f72;
+  --colour-red: #cc0000;
+  --colour-orange: #f9a54f;
+  --colour-violet: #a48abc;
+  --colour-turquoise: #59ccde;
+  --colour-green: #dae268;
+  --colour-yellow: #f5db42;
+  --colour-medium-grey: #c6c6c6;
+  --colour-white: #ffffff;
+  --colour-black: #000000;
+
+  --trans-duration-prmary: 3.5s;
+  --secondary-background: #f0f3f5;
+  --dark-border: #c8ced2;
+  --blue-border: #007bff;
+
+  --padding-xlg: 50px;
+  --padding-lg: 25px;
+  --padding-md: 15px;
+  --padding-sm: 5px;
+}
+
+html,
+body {
+  background-color: #e4e5e6;
+  width: 100%;
+  height: 100%;
+
+  // default body colour
+  color: var(--primary-secondary) !important;
+  font-family: 'Poppins', sans-serif !important;
+
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--primary-brand);
+  font-weight: bold;
+}
+
+.btn {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  -webkit-box-shadow: 0px 6px 32px 5px rgba(255, 249, 248, 0.01);
+  box-shadow: 0px 6px 32px 5px rgba(255, 249, 248, 0.01);
+}
+
+.card-header {
+  background-color: #f0f3f5;
+  border-bottom: 1px solid #c8ced3;
+
+  font-size: 18px;
+  font-weight: bold;
+}
+
+// Section Styles
+
+.section-container {
+  width: 100%;
+  background-color: var(--secondary-background);
+
+  .header-container {
+    padding: var(--padding-md);
+    border-color: var(--dark-border);
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-style: solid;
+  }
+
+  .main-container {
+    background-color: white;
+    width: 100%;
+    padding: var(--padding-md);
+  }
+
+  .footer-container {
+    padding: var(--padding-md);
+    border-color: var(--dark-border);
+    border-top-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-style: solid;
+  }
+}
+
+// Breadcrumb styles
+
+.breadcrumb {
+  .breadcrumb-item {
+    color: #007bff;
+  }
+
+  .breadcrumb-item:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+// Input Styles
+
+.input-container {
+  padding-bottom: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  .label {
+    font-size: 16;
+    color: var(--primary-secondary);
+    margin-bottom: 8px;
+  }
+
+  .input {
+    padding: 6px 12px;
+    border-color: lightgrey;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .multiline-input {
+    padding: 6px 12px;
+    border-color: lightgrey;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.input-group-prepend span {
+  font-weight: bold;
+}
+
+.horizontal-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.page-content-wrap {
+  width: 100%;
+  height: 100%;
+
+  padding-top: var(--padding-lg);
+  padding-left: var(--padding-lg);
+  padding-right: var(--padding-lg);
+  padding-bottom: var(--padding-xlg);
+}
+
+.callout {
+  position: relative;
+  padding: 0 1rem;
+  margin: 1rem 0;
+  border-left: 4px solid #63c2de;
+  border-radius: 0.25rem;
+}
+
+@import "partials/_variables";
+@import "partials/_tabs.less";
+@import "partials/_bootstrapoverrides";
+
+@import "partials/_tables.less";
+@import "partials/_buttons.less";
+// @import "partials/_cards.less";
+@import "partials/_typography";
+@import "partials/_base";
+@import "partials/_footer";
+@import "partials/_sidebar";
+@import "partials/_cookieconsent";
+@import "partials/_pagination.less";
+@import "partials/_header.less";
+@import "partials/_slots";
+
+html,
+body {
+  height: 100%;
+}
+* {
+  margin: 0;
+ 
+}
+.mat-form-field-infix {
+  width: 100% !important;
+  display: flex !important;
+  padding: 0% !important;
+}
+.Overheads .mat-form-field {
+  height: 64px;
+  margin-top: -26px;
+}
+.mat-checkbox .mat-checkbox-layout {
+  white-space: normal;
+}
+
+.actions-container {
+  flex-direction: row-reverse;
+  column-gap: 0.5rem;
+}
+
+.action-buttons .controls {
+  display: flex;
+  column-gap: 0.25rem;
+}
+
+:root{
+  --form-field-margin: 0.25em;
+  --form-field-padding-bottom: 1.34375em;
+}
+.mat-form-field-wrapper{
+  padding-bottom: var(--form-field-padding-bottom);
+  margin:  var(--form-field-margin);
+}
+
+.mat-calendar-content{ 
+  table tr, .table-bordered tr{
+    border: none;
+  }
+}

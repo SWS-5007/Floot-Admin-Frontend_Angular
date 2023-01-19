@@ -1,0 +1,57 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/venues">Venues</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/venues', 'create-venue']">Create Venue</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Create Venue</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Create Venue
+    </div>
+    <div class="card-body" [formGroup]="createVenueForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" formControlName="name" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Profile Image (max 50mb)</label>
+              <input class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+              <p class="text-danger" *ngIf="createVenueForm.errors" >File too large!</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Address</label>
+            <input  ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Your address" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class='form-group'>
+            <label>City</label>
+            <select formControlName='city' class='form-group'  type='text'>
+              <option>Nottingham</option>
+              <option>Birmingham</option>
+              <option>Greenville</option>
+              <option>Manchester</option>
+              <option>Bristol</option>
+              <option>Derby</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!createVenueForm.valid'
+          class="btn btn-primary float-right"
+          (click)="createVenue()"
+      >Create Venue</button>
+    </div>
+  </div>
+</div>

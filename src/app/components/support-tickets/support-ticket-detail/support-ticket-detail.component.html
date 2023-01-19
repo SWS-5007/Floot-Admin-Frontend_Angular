@@ -1,0 +1,81 @@
+<div class='modal fade confirm-resolve-ticket'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Resolve Ticket <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to resolve this ticket?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='resolveTicket()' class='btn btn-success' [disabled]="!ticketId">Resolve Ticket</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/support-tickets">Support Tickets</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/support-tickets', 'ticket', ticketId]">Ticket</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Submitted Ticket</h1>
+  <br>
+  <div *ngIf='ticketResolved' class='alert alert-success'>
+    The ticket was resolved!
+    <a href='#' (click)='ticketResolved = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Ticket Information
+      <div *ngIf="status === 'open'">
+        <button type="button" class="btn btn-success" [disabled]="!ticketId"  data-toggle='modal' data-target=".modal.confirm-resolve-ticket">Resolve Ticket</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Title</dt>
+        <dd class="col-12 col-lg-9" style="text-transform: capitalize">{{ title ? title : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Description</dt>
+        <dd class="col-12 col-lg-9" style="text-transform: capitalize">{{ description ? description : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Date Reported</dt>
+        <dd class="col-12 col-lg-9">{{ dateReported ? ( dateReported | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Status</dt>
+        <dd class="col-12 col-lg-9" style="text-transform: capitalize">{{ status ? status : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Image</dt>
+        <dd class="col-12 col-lg-9" *ngIf="imageUrl">
+          <img [src]="imageUrl ? imageUrl : '../.././../../assets/template-image.png'" width="300px" style="border-radius: 25px; object-fit: cover;" />
+        </dd>
+        <dd class="col-12 col-lg-9" *ngIf="!imageUrl">No Image Attached</dd>
+
+      </dl>
+    </div>
+  </div>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Reported By
+      <div>
+        <button *ngIf="user && user.venue" type="button" class="btn btn-primary mr-2" [disabled]="!user || !user.venue" [routerLink]="['/venues', 'profile', user && user.venue ? user.venue.id : null]">View Venue</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!user">The user's information cannot be found.</p>
+      <dl class="row" *ngIf="user">
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ user.name ? user.name : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Venue Name</dt>
+        <dd class="col-12 col-lg-9">{{ user.venue && user.venue.name ? user.venue.name : "Not Found" }}</dd>
+      </dl>
+    </div>
+  </div>
+  <br>
+</div>

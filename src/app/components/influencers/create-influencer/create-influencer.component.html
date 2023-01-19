@@ -1,0 +1,44 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/influencers">Influencers</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/influencers', 'create-influencer']">Create Influencer</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Create Influencer</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Create Influencer
+    </div>
+    <div class="card-body" [formGroup]="createInfluencerForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" formControlName="name" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Profile Image (max 50mb)</label>
+              <input class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+              <p class="text-danger" *ngIf="createInfluencerForm.errors" >File too large!</p>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Address</label>
+            <input  ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Your address" />
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!createInfluencerForm.valid'
+          class="btn btn-primary float-right"
+          (click)="createInfluencer()"
+      >Create Influencer</button>
+    </div>
+  </div>
+</div>

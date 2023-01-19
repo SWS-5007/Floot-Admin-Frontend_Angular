@@ -1,0 +1,235 @@
+// .suppliers {
+//     border: 1px solid black;
+// }
+
+// .pie-chart {
+//     border: 1px solid blue;
+// }
+
+// .total-overheads {
+//     border: 1px solid red;
+// }
+
+// .supplier-logo {
+//     border: 1px solid purple;
+// }
+
+// .supplier-overhead {
+//     border: 1px solid green;
+// }
+
+// * {
+//   // margin: 0;
+//   // padding: 0;
+//   // color: indigo;
+// }
+
+button.supplier-icon {
+  margin: 0;
+  width: 100px;
+  height: 100px;
+}
+
+p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.total-overhead-text {
+  font-size: 2rem;
+}
+
+.stats > .row {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.suppliers {
+  margin: 0 0 10px 0;
+}
+
+.supplier-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid indigo;
+  border-radius: 15px;
+  min-width: 100px;
+  min-height: 100px;
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.summary-section{
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 2fr 1fr;
+  margin: 1rem 0;
+  .tile-container{
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .invoice-container{
+    display: grid;
+    --dropper-height: 75px;
+  }
+}
+
+.supplier-container{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+  margin: 2rem 0;
+}
+
+.details {
+  // border: 1px solid purple;
+  // border-radius: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px px;
+}
+
+.supplier-overhead {
+  font-size: 1.5rem;
+}
+
+.button-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::ng-deep {
+  .outgoing .mat-radio-label-content {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  .outgoing .apexcharts-legend-text {
+    text-transform: capitalize;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+  .outgoing .mat-form-field-wrapper {
+    font-size: 18px;
+  }
+  .outgoing .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent !important;
+  }
+  .outgoing .apexcharts-canvas {
+    justify-content: center;
+    display: flex;
+    width: 100% !important;
+  }
+  .outgoing .mat-form-field-wrapper {
+    width: 100%;
+  }
+}
+.outgoing {
+  .info-box7 .info-box7-block {
+    padding: 25px;
+  }
+
+  .info-box7 .info-box7-block {
+    padding: 25px;
+  }
+
+  .info-box7 {
+    border-radius: 5px;
+    color: #fff;
+    box-shadow: 0 1px 2.94px 0.06px rgb(4 26 55 / 16%);
+    border: none;
+    transition: all 0.3s ease-in-out;
+  }
+  .l-bg-card2 {
+    background: linear-gradient(to right, #c33764, #1d2671) !important;
+    color: #fff;
+  }
+  .m-b-20 {
+    margin-bottom: 20px;
+  }
+  .text-end {
+    text-align: right !important;
+  }
+  .l-bg-purple {
+    background: linear-gradient(230deg, #759bff, #843cf6) !important;
+    color: #fff;
+  }
+  .l-bg-orange {
+    background: linear-gradient(135deg, #ff8900, #c7460f) !important;
+    color: #fff;
+  }
+  .l-bg-card1 {
+    background: linear-gradient(to left, #3a7bd5, #3a6073) !important;
+    color: #fff;
+  }
+  .white {
+    color: #fff;
+  }
+  .supplierbutton {
+    background-color: cadetblue;
+    border: 1px solid cadetblue;
+    color: #fff;
+    padding: 9px;
+    text-transform: capitalize;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+      0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    font-size: 16px;
+    border-radius: 9px;
+    width: 100%;
+  }
+
+  .supplierbutton:hover,
+  .supplierbutton.active {
+    background-color: #3f51b5;
+    border: 1px solid #3f51b5;
+  }
+
+  .btn-tbl-delete {
+    background-color: #ff944f;
+    height: 30px !important;
+    width: 30px !important;
+    margin: 2px !important;
+    line-height: 30px !important;
+    color: #fff !important;
+  }
+
+  .btn-tbl-edit {
+    background-color: #96a2b4;
+    height: 30px !important;
+    width: 30px !important;
+    margin: 2px !important;
+    line-height: 30px !important;
+    color: #fff !important;
+  }
+}
+.outgoing .tableBody {
+  font-size: 14px;
+  color: #555 !important;
+  padding: 0px 15px 0px 15px;
+}
+
+.outgoing .table thead tr th {
+  padding: 0 10px;
+  height: 50px;
+  vertical-align: middle;
+  background-color: #f5f5f5 !important;
+  color: #666 !important;
+  font-weight: 500;
+  border: none;
+}
+
+.outgoing table tbody td,
+.table-bordered tbody td {
+  color: #666 !important;
+}
+
+.outgoing table tr,
+.table-bordered tr {
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+}

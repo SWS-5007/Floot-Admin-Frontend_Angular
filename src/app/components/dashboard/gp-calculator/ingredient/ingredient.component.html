@@ -1,0 +1,51 @@
+<!-- <form [formGroup]="ingredientForm" >
+    <h2 class="ingredient-input"><input id="ingredient-name-input" formControlName="ingredientNameControl"  placeholder="Enter ingredient" list="ingredient-list" name="name" value= {{ingredient.name}} (keyup) = "updateName($event)"/></h2>
+    <h2 class="ingredient-input"><input id="ingredient-rate-input" formControlName="ingredientRateControl"  name="rate" value= {{ingredient.rate}} type="number" (keyup) = "updateRate($event)"/></h2>
+    <h2 class="ingredient-input"><input id="ingredient-amount-input" formControlName="ingredientMlControl"  name="milliliters" value= {{ingredient.ml}} type="number" (keyup) = "updateAmount($event)"/></h2>
+
+    <button id="remove-ingredient-button" mat-stroked-button color="accent" (click)='removeIngredient(ingredient)'>X</button>
+
+    <datalist id="ingredient-list">
+        <option *ngFor="let item of list" [value]="item.name"></option>
+    </datalist>
+</form> -->
+
+
+<form [formGroup]="ingredientForm" id="ingredient-form" class="mt-5">
+    <!-- <h2 class="ingredient-input"><input id="ingredient-name-input" formControlName="ingredientNameControl"  placeholder="Enter ingredient" list="ingredient-list" name="name" value= {{ingredient.name}} (keyup) = "updateName($event)"/></h2> -->
+
+    <!-- <h3 class=" mb-4">Name</h3> -->
+    <mat-form-field class="example-full-width mr-4 mt-4" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput id="ingredient-name-input" (input)="updateName($event)" formControlName="ingredientNameControl"
+            placeholder="Enter ingredient" list="ingredient-list-name" name="name" value={{ingredient.name}} />
+    </mat-form-field>
+
+    <!-- <h3>Price per Ml</h3> -->
+    <mat-form-field class="example-full-width mr-4 mt-4" appearance="outline">
+        <mat-label>Price per Ml</mat-label>
+        <input matInput id="ingredient-rate-input" formControlName="ingredientRateControl" list="ingredient-list-rate"
+            name="rate" value={{ingredient.rate}} type="number" (input)="updateRate($event)" />
+    </mat-form-field>
+
+    <!-- <h3>Milliletres</h3> -->
+    <mat-form-field class="example-full-width mr-4 mt-4" appearance="outline">
+        <mat-label>Milliletres</mat-label>
+        <input matInput id="ingredient-amount-input" formControlName="ingredientMlControl" name="milliliters"
+            value={{ingredient.ml}} type="number" (input)="updateAmount($event)" />
+    </mat-form-field>
+
+    <!-- <h2 class="ingredient-input"><input id="ingredient-rate-input" formControlName="ingredientRateControl"  list="ingredient-list-rate" name="rate" value= {{ingredient.rate}} type="number" (input) = "updateRate($event)"/></h2>
+    <h2 class="ingredient-input"><input id="ingredient-amount-input" formControlName="ingredientMlControl"  name="milliliters" value= {{ingredient.ml}} type="number" (input) = "updateAmount($event)"/></h2> -->
+    <button mat-flat-button (click)='removeIngredient(ingredient)' class="msl-3 buttonDesign">X</button>
+    <!-- <input type="button" (click)='removeIngredient(ingredient)' value="X"> -->
+    <!-- <button id="remove-ingredient-button" mat-stroked-button color="accent" (click)='logButtonData(ingredient, list)'>logButtonData</button> -->
+
+    <datalist id="ingredient-list-name">
+        <option *ngFor="let item of list" [value]="item.name"> {{item.name}}</option>
+    </datalist>
+    <!-- <datalist id="ingredient-list-rate">
+        <option *ngFor="let item of list" [value]="item.rate">{{item}}</option>
+    </datalist> -->
+
+</form>

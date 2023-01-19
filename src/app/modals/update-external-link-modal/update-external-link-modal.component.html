@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>External Link</h2>
+<div mat-dialog-content>
+    <form [formGroup]="externalLinkForm">
+    <div class='form-group'>
+        <mat-form-field appearance="outline">
+            <mat-label>Text</mat-label>
+            <input matInput placeholder="Enter the text" formControlName="text" type="text">
+          </mat-form-field>
+    </div>
+    <div class='form-group'>
+        <mat-form-field appearance="outline">
+            <mat-label>URL</mat-label>
+            <input matInput placeholder="Enter the URL" formControlName="url" type="url">
+          </mat-form-field>
+  </div>
+</form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onUpdate()" [disabled]="!externalLinkForm.valid">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

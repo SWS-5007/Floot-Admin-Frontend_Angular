@@ -1,0 +1,118 @@
+<div class='modal fade confirm-resolve-ticket'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Resolve Ticket <a type="button" href='#' class='close' data-dismiss="modal" (click)="pendingResolveTicketId = null">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to resolve this ticket?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingResolveTicketId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='resolveTicket()' class='btn btn-success' [disabled]="!pendingResolveTicketId">Resolve Ticket</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/support-tickets']">Support Tickets</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Support Tickets</h1>
+  <br>
+  <div *ngIf='ticketResolved' class='alert alert-success'>
+      The ticket was resolved!
+      <a href='#' (click)='postCreated = false;' class='close'>&times;</a>
+  </div>
+  <div class="card">
+      <div class="card-body" *ngIf="showTickets.length === 0">
+        <p>No {{ selectedStatus }} tickets in the database.</p>
+      </div>
+      <div class="card-body p-0" *ngIf="showTickets.length > 0">
+          <div style="overflow-x: auto;">
+              <table class="table text-nowrap  table-responsive-sm">
+                  <thead>
+                      <tr>
+                          <th>Title</th>
+                          <th>Reported By</th>
+                          <th>Reported At</th>
+                          <th>Controls</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let ticket of showTickets">
+                          <td>{{ ticket.title ? ticket.title : "Not Found" }}</td>
+                          <td>{{ ticket.reportedBy && ticket.reportedBy.name ? ticket.reportedBy.name : "Not Found"}}</td>
+                          <td>{{ ticket.dateReported ? ( ticket.dateReported | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</td>
+                          <td>
+                            <button class='btn btn-sm btn-primary mr-1' [disabled]="!ticket || !ticket.id" type='submit' [routerLink]="['/support-tickets', 'ticket', ticket.id ? ticket.id : null]">
+                              View
+                            </button>
+                            <button class='btn btn-sm btn-success mr-1' type='submit' data-toggle='modal' data-target=".modal.confirm-resolve-ticket" (click)="pendingResolveTicketId = ticket.id">
+                              Resolve
+                            </button>
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <div class="card-footer" *ngIf="tickets.length > 0">
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination mt-3 justify-content-center">
+                        <li class="page-item disabled" *ngIf="currentPageNo === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPageNo > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left disabled" *ngIf="currentPageNo === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left" *ngIf="currentPageNo > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                            <div *ngFor="let page of availablePages">
+                                <li class="page-item active" *ngIf="currentPageNo === page">
+                                    <button class="page-link">{{ page }}</button>
+                                </li>
+                                <li class="page-item" *ngIf="currentPageNo !== page">
+                                    <button class="page-link" type="submit" (click)="changePageNo(page)">{{ page }}</button>
+                                </li>
+                            </div>
+                        <li class="page-item page-item-right disabled" *ngIf="currentPageNo === totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item page-item-right" *ngIf="currentPageNo < totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item disabled" *ngIf="currentPageNo === totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPageNo < totalPageCount">
+                            <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-12">
+                <p class="text-center">
+                    You're on page <span class="font-weight-bold">{{ currentPageNo }} of {{ totalPageCount }}</span>,
+                    with
+                    <select (change)="changeResultsNo($event.target.value)" value="{{ resultsPerPage }}">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                    results per page.
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

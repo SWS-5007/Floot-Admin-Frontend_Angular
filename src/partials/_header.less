@@ -1,0 +1,42 @@
+﻿@import '_variables';
+
+.header-fixed .app-header {
+    height: 75px;
+}
+
+.username-dropdown {
+    font-weight: @font-weight-semibold;
+    color: var(--primary-secondary);
+}
+
+.dropdown-item {
+    color: var(--primary-secondary);
+}
+
+.btn-header {
+    background-color: var(--colour-grey);
+    border-color: var(--colour-medium-grey);
+    width: 75px;
+    height: 39px;
+
+    &:hover {
+        box-shadow: 0 0 10px 2px var(--colour-violet);
+        background-color: var(--colour-white);
+    }
+}
+
+.breadcrumb {
+    padding-left: 30px;
+}
+
+.app-header .navbar-brand {
+    width: 200px;
+    margin-right: 14px;
+    color: var(--colour-pink);
+}
+
+@media (min-width: 992px) {
+    .sidebar-fixed .app-header + .app-body .sidebar {
+        height: calc(100vh - 75px);
+    }
+}

@@ -1,0 +1,59 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/recommended-searches">Recommended Searches</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/recommended-searches', 'edit-recommended-search', searchId]">Edit Recommended Search</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit Recommended Search</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit Recommended Search
+    </div>
+    <div class="card-body" [formGroup]="editRecommendedSearchForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Text</label>
+                <input class="form-control" formControlName="text" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Icon (max 50mb)</label>
+              <input *ngIf="!existingIconUrl" class="form-control-file" formControlName="icon" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+            <div *ngIf="existingIconUrl">
+              <div style="background-color: lightgrey; width: 100px; height: 100px">
+                <img [src]="existingIconUrl ? existingIconUrl : '../.././../../assets/template-image.png'" alt="" width="100px" height="100px" style="object-fit: contain;">
+              </div>
+              <button class="btn btn-danger btn-sm ml-2" (click)="removeIcon()">Remove</button>
+            </div>
+              <p class="text-danger" *ngIf="editRecommendedSearchForm.errors" >File too large!</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Colour</label>
+            <input class="form-control" formControlName="colour" (change)='onUserInputEvent()' type="color" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Connected Tag</label>
+              <select class="form-control" (change)='onUserInputEvent()' formControlName="connectedTag">
+                <option disabled>Select a connected tag</option>
+                <option *ngFor="let tag of tags" [value]="tag.id">{{ tag.title ? tag.title : 'Not Found' }} - {{ tag.type ? tag.type : "Not Found" }}</option>
+              </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!editRecommendedSearchForm.valid || (!existingIconUrl && !selectedImage)'
+          class="btn btn-primary float-right"
+          (click)="editRecommendedSearch()"
+      >Save Changes</button>
+    </div>
+  </div>
+</div>

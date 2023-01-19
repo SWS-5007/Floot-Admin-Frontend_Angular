@@ -1,0 +1,13 @@
+<mat-card>
+   <mat-card-title>
+    <div class="heading">
+        <ng-content select=".heading"></ng-content>
+    </div>
+    <div class="action-buttons">
+        <ng-content select=".controls"></ng-content>
+    </div>
+    </mat-card-title>
+    <mat-card-content>
+        <ng-content select=".section-content"></ng-content>
+    </mat-card-content>
+</mat-card>

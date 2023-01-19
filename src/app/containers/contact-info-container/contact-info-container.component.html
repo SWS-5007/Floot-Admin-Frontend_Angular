@@ -1,0 +1,18 @@
+<app-section-container>
+    <div class="heading">
+        <span>Contact Information (Public)</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onContactUpdate()">Edit</button>
+    </div>
+    <div class="section-content">
+        <div class="attr-val-wrap row">
+            <div class="attr col-md-4 col-6">Phone number</div>
+            <div class="value col-md-8 col-6">{{ phoneNumber ?? "No Info" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-md-4 col-6">Email</div>
+            <div class="value col-md-8 col-6">{{ email ?? "No Info" }}</div>
+        </div>
+    </div>
+</app-section-container>

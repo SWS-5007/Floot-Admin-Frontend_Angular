@@ -1,0 +1,61 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/venues">Venues</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/venues', 'profile', venueId]">{{ venueName }}</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/venues', 'edit-venue']">Edit Venue</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit Venue</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit Venue
+    </div>
+    <div class="card-body" [formGroup]="editVenueForm">
+      <div class="row form-content">
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" formControlName="name" (change)='onUserInputEvent()' type="text" />
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <input  ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Your address" [value]="address ? address.formatted_address : null" />
+            </div>
+            <div class="form-group">
+              <label>Description (Character limit: 500)</label>
+              <textarea 
+                class="form-control" 
+                formControlName="description" 
+                (change)='onUserInputEvent()'
+                placeholder="Tell us about your venue"
+                maxlength="500"
+                rows="5"
+              >
+              </textarea>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label>Profile Image (max 50mb)</label>
+            <input *ngIf="!existingProfileImageUrl" class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+            <div *ngIf="existingProfileImageUrl">
+              <div style="background-color: lightgrey; width: 100px; height: 100px">
+                <img [src]="existingProfileImageUrl ? existingProfileImageUrl : '../.././../../assets/template-image.png'" alt="" width="100px" height="100px" style="border-radius: 50px; object-fit: cover;">
+              </div>
+              <button class="btn btn-danger btn-sm ml-2" (click)="removeProfileImage()">Remove</button>
+            </div>
+            <p class="text-danger" *ngIf="editVenueForm.errors" >File too large!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!editVenueForm.valid'
+          class="btn btn-primary float-right"
+          (click)="editVenue()"
+      >Save Changes</button>
+    </div>
+  </div>
+</div>

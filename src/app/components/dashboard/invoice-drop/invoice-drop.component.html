@@ -1,0 +1,5 @@
+<ngx-dropzone (change)="onSelect($event)">
+  <ngx-dropzone-label *ngIf="posting === false">Drop Invoice</ngx-dropzone-label>
+  <mat-spinner id="invoice-spinner" *ngIf="posting === true" diameter="40" class="float-center">
+  </mat-spinner>
+</ngx-dropzone>

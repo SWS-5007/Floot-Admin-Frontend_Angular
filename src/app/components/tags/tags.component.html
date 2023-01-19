@@ -1,0 +1,207 @@
+<div class='modal fade create-tag'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='createTagForm'>
+              <div class='modal-header'>
+                Create Tag <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Title</label>
+                      <input formControlName='title' class='form-control' type='text'>
+                  </div>
+                  <div class='form-group'>
+                      <label>Type</label>
+                      <select class="form-control" formControlName="type">
+                        <option>Area</option>
+                        <option>Food Type</option>
+                        <option>Occasion</option>
+                        <option>Special Requirements</option>
+                        <option>Venue Type</option>
+                      </select>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='createTag()' class='btn btn-primary' [disabled]="!createTagForm.valid">Create Tag +</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade edit-tag'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editTagForm'>
+              <div class='modal-header'>
+                Edit Tag <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Title</label>
+                      <input formControlName='title' class='form-control' type='text'>
+                  </div>
+                  <div class='form-group'>
+                      <label>Type</label>
+                      <select class="form-control" formControlName="type">
+                        <option>Area</option>
+                        <option>Food Type</option>
+                        <option>Occasion</option>
+                        <option>Special Requirements</option>
+                        <option>Venue Type</option>
+                      </select>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editTag()' class='btn btn-primary' [disabled]="!editTagForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<div class='modal fade remove-tag'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove Tag <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            <p>Are you sure you want to remove this tag?</p>
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='removeTag()' class='btn btn-primary'>Remove Tag</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a type="button" [routerLink]="['/tags']">Tags</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+    <h1>Manage Tags</h1>
+    <br>
+    <!-- <form [formGroup]="searchForm">
+        <div class="card">
+            <div class="card-header">
+                Search
+            </div>
+            <div class='card-body'>
+                <div class='row'>
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input class="form-control" placeholder="Search" formControlName="searchText" type="text"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+              <button class='btn btn-primary btn-lg float-right ml-2 mb-2' (click)="searchVenues()">
+                Search
+              </button>
+              <button class='btn btn-secondary btn-lg float-right ml-2 mb-2' (click)="clearSearch()">
+                Clear Search
+              </button>
+            </div>
+        </div>
+    </form>
+    <br> -->
+    <div class="card">
+        <div class="card-header">
+          Tags
+          <button type="button" class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.create-tag">Create Tag +</button>
+        </div>
+        <div class="card-body" *ngIf="showTags.length === 0">
+          <p>No tags in the database.</p>
+        </div>
+        <div class="card-body p-0" *ngIf="showTags.length > 0">
+            <div style="overflow-x: auto;">
+                <table class="table text-nowrap  table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let tag of showTags">
+                            <td>{{ tag.title ? tag.title : "Not Found"}}</td>
+                            <td>{{ tag.type ? tag.type : "Not Found"}}</td>
+                            <td>
+                              <button class='btn btn-sm btn-primary mr-1' type='submit' data-toggle='modal' data-target=".modal.edit-tag" (click)="setPendingEditTag(tag)">
+                                Edit
+                              </button>
+                              <button class='btn btn-sm btn-danger mr-1' type='submit' data-toggle='modal' data-target=".modal.remove-tag" (click)="pendingRemoveTagId = tag.id">
+                                Remove
+                              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer" *ngIf="tags.length > 0">
+          <div class="row">
+              <div class="col-12">
+                  <nav>
+                      <ul class="pagination mt-3 justify-content-center">
+                          <li class="page-item disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                              <div *ngFor="let page of availablePages">
+                                  <li class="page-item active" *ngIf="currentPageNo === page">
+                                      <button class="page-link">{{ page }}</button>
+                                  </li>
+                                  <li class="page-item" *ngIf="currentPageNo !== page">
+                                      <button class="page-link" type="submit" (click)="changePageNo(page)">{{ page }}</button>
+                                  </li>
+                              </div>
+                          <li class="page-item page-item-right disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item page-item-right" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+              <div class="col-12">
+                  <p class="text-center">
+                      You're on page <span class="font-weight-bold">{{ currentPageNo }} of {{ totalPageCount }}</span>,
+                      with
+                      <select (change)="changeResultsNo($event.target.value)" value="{{ resultsPerPage }}">
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                      </select>
+                      results per page.
+                  </p>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>

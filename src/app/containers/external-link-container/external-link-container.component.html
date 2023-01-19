@@ -1,0 +1,24 @@
+<app-section-container>
+    <div class="heading">
+        <span>External Link</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onUpdateLink()">{{externalLink ? 'Edit' : 'Create'}}</button>
+        <button mat-stroked-button color="warn" *ngIf="externalLink" (click)="onRemoveLink()">Remove</button>
+    </div>
+    <div class="section-content">
+        <ng-container *ngIf="externalLink">
+        <div class="attr-val-wrap row">
+            <div class="attr col-md-4 col-6">Text</div>
+            <div class="value col-md-8 col-6">{{ externalLink.text ?? "Not found" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-md-4 col-6">URL</div>
+            <div class="value col-md-8 col-6">{{ externalLink.url ?? "Not found" }}</div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!externalLink">
+        <p>An external link has not been created.</p>
+    </ng-container>
+    </div>
+</app-section-container>

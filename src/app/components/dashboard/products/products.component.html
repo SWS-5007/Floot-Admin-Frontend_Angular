@@ -1,0 +1,14 @@
+<div class="products m-4">
+    <div class="page-content p-4">
+        <div class="date-picker-wrap">
+            <mat-form-field #dayPicker appearance="outline">
+                <mat-label>Choose a Day</mat-label>
+                <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker2"
+                    (dateChange)="changeDay($event)" placeholder="Chosen Date">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,964 @@
+<!-- <div class='modal fade add-image'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='addImageForm'>
+              <div class='modal-header'>
+                Add Gallery Image <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Image (max 50mb)</label>
+                      <input type="file" formControlName='image' accept=".png,.jpg,.jpeg" class='form-control-file' (change)="onNewGalleryImageSelected($event)">
+                  </div>
+                  <div class='form-group'>
+                      <label>Caption</label>
+                      <input formControlName='caption' class='form-control' type='text'>
+                  </div>
+                  <p class="text-danger" *ngIf="addImageForm.errors" >File too large!</p>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='uploadImage()' class='btn btn-primary' [disabled]="!addImageForm.valid">Upload Image</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+<div class='modal fade view-image'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          View Image <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body p-0'>
+          <img [src]="viewImage" style="flex: 1" width="100%" />
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- <div class='modal fade delete-image'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Gallery Image <a type="button" href='#' class='close' (click)="pendingDeleteImageId = null" data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to delete this image?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingDeleteImageId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='deleteImage()' class='btn btn-primary' [disabled]="!pendingDeleteImageId">Delete Image</button>
+        </div>
+      </div>
+  </div>
+</div> -->
+<!-- 
+<div class='modal fade delete-post'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove Post <a type="button" href='#' class='close' (click)="pendingDeletePostId = null" data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to delete this post?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingDeletePostId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='deletePost()' class='btn btn-primary' [disabled]="!pendingDeletePostId">Delete Post</button>
+        </div>
+      </div>
+  </div>
+</div> -->
+
+<!-- <div class='modal fade add-menu'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='addMenuForm'>
+              <div class='modal-header'>
+                Add Menu PDF <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>PDF File (max 10mb)</label>
+                      <input type="file" formControlName='pdf' accept=".pdf" class='form-control-file' (change)="onNewMenuPdfSelected($event)">
+                      <p class="text-danger" *ngIf="addMenuForm.errors" >File too large!</p>
+                  </div>
+                  <div class='form-group'>
+                      <label>Title</label>
+                      <input formControlName='title' class='form-control' type='text'>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='uploadPdf()' class='btn btn-primary' [disabled]="!addMenuForm.valid">Upload PDF</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+
+<!-- <div class='modal fade delete-menu'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Menu PDF <a type="button" href='#' class='close' data-dismiss="modal" (click)="pendingDeleteMenuId = null">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to delete this menu?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary' (click)="pendingDeleteMenuId = null">Cancel</button>
+            <button data-dismiss='modal' (click)='deleteMenu()' class='btn btn-primary' [disabled]="!pendingDeleteMenuId">Delete PDF</button>
+        </div>
+      </div>
+  </div>
+</div> -->
+
+<div class='modal fade edit-description'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editDescriptionForm'>
+              <div class='modal-header'>
+                Edit Venue Description <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Description (500 character limit)</label>
+                      <textarea formControlName='description' class='form-control' maxLength='500' rows="4" cols="50" type='text' placeholder='Tell us about your venue...'></textarea>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editDescription()' class='btn btn-primary' [disabled]="!editDescriptionForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<!-- <div class='modal fade edit-external-link'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editExternalLinkForm'>
+              <div class='modal-header'>
+                Edit External Link <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Text</label>
+                      <input formControlName='text' class='form-control' type='text' placeholder='Enter Text'>
+                  </div>
+                  <div class='form-group'>
+                    <label>Url</label>
+                    <input formControlName='url' class='form-control' type='url' placeholder='Enter URL'>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='saveExternalLink()' class='btn btn-primary' [disabled]="!editExternalLinkForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+<!-- <div class='modal fade remove-external-link'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Remove External Link <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+            Are you sure you would like to remove the external link?
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='removeExternalLink()' class='btn btn-primary'>Remove External Link</button>
+        </div>
+      </div>
+  </div>
+</div> -->
+
+<!-- <div class='modal fade edit-tags'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editTagsForm'>
+              <div class='modal-header'>
+                Edit Venue Tags <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body' formArrayName="tags">
+                  <div class='form-group' *ngFor="let tag of availableTags; let tagIndex = index">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" [formControlName]="tagIndex">
+                      <label class="form-check-label">{{ tag.title ? tag.title : 'Not Found' }} - {{ tag.type ? tag.type : "Not Found" }}</label>
+                    </div>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editTags()' class='btn btn-primary' [disabled]="!editTagsForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+<!-- Start delete admin account confirm modal -->
+<!-- <div class='modal fade confirm-admin-account-delete'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm deletion
+              <a type="button" class='close' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <h5 class='text-danger'>Confirm delete</h5>
+              <p>Once an account has been deleted, it cannot be restored. Please confirm to continue.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' (click)="pendingDeleteAdminAccountId = null" data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deleteAdminAccount()' class='btn btn-danger'>Delete</button>
+          </div>
+      </div>
+  </div>
+</div> -->
+<!-- End delete admin account confirm modal-->
+
+<!-- Start make venue active confirm modal -->
+<!-- <div class='modal fade confirm-make-venue-active'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Make Venue Active
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to make the venue active? They will be visible on the Floot Mobile App and will be able to create posts.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='makeVenueActive()' class='btn btn-success'>Make Active</button>
+          </div>
+      </div>
+  </div>
+</div> -->
+<!-- End make venue active confirm modal-->
+<!-- Start deactivate confirm modal -->
+<!-- <div class='modal fade confirm-deactivate-venue'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Deactivate Venue
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <p>Are you sure you would like to make the venue inactive? They will neither be visible on the Floot Mobile App nor will be able to create posts.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deactivateVenue()' class='btn btn-warning'>Deactivate</button>
+          </div>
+      </div>
+  </div>
+</div> -->
+<!-- End deactivate venue confirm modal-->
+
+<!-- Start edit contact information modal -->
+<!-- <div class='modal fade edit-contact-information'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editContactInformationForm'>
+              <div class='modal-header'>
+                Edit Contact Information <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Email</label>
+                      <input formControlName='email' class='form-control' type='email'>
+                  </div>
+
+                  <div class='form-group'>
+                    <label>Phone Number</label>
+                    <input formControlName='phoneNumber' class='form-control' type='tel'>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='editContactInformation()' class='btn btn-primary' [disabled]="!editContactInformationForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+<!-- End edit contact information modal -->
+
+<!-- Delete Venue Modal -->
+<div class='modal fade confirm-delete-venue'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          Delete Venue <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+        </div>
+        <div class='modal-body'>
+          Are you sure you would like to delete this venue? This action is irreversible.
+        </div>
+        <div class='modal-footer'>
+            <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+            <button data-dismiss='modal' (click)='deleteVenue()' class='btn btn-danger'>Confirm Venue Deletion</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- <div class='modal fade edit-opening-times'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editOpeningTimesForm'>
+              <div class='modal-header'>
+                Edit Opening Times <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Monday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='mondayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='mondayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Tuesday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='tuesdayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='tuesdayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Wednesday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='wednesdayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='wednesdayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Thursday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='thursdayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='thursdayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Friday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='fridayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='fridayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Saturday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='saturdayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='saturdayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <h3>Sunday</h3>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Open</label>
+                      <input formControlName='sundayOpen' class='form-control' type='time'>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class='form-group'>
+                      <label>Close</label>
+                      <input formControlName='sundayClose' class='form-control' type='time'>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='saveOpeningTimes()' class='btn btn-primary' [disabled]="!editOpeningTimesForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+
+<!-- <div class='modal fade edit-vrm-info'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <form [formGroup]='editVrmInfoForm'>
+              <div class='modal-header'>
+                Edit Contact Information <a type="button" href='#' class='close' data-dismiss="modal">&times;</a>
+              </div>
+              <div class='modal-body'>
+                  <div class='form-group'>
+                      <label>Status</label>
+                      <select formControlName='status' class='form-control' type='text'>
+                        <option>On board</option>
+                        <option>To contact</option>
+                        <option>In talks</option>
+                        <option>Not interested</option>
+                      </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Last Visited By</label>
+                    <select formControlName='lastVisitBy' class='form-control' type='text'>
+                      <option>Polly</option>
+                      <option>Fred</option>
+                    </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Last Visit</label>
+                    <input formControlName='lastVisit' class='form-control' type='date'>
+                  </div>
+                  <div class='form-group'>
+                    <label>Logins Given</label>
+                    <select formControlName='loginsGiven' class='form-control' type='text'>
+                      <option>Done</option>
+                      <option>Emailed</option>
+                      <option>No</option>
+                    </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Marketing Consent</label>
+                    <select formControlName='marketingConsent' class='form-control' type='text'>
+                      <option>Yes</option>
+                      <option>No</option>
+                      <option>Messaged</option>
+                    </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Last Photoshoot</label>
+                    <input formControlName='lastPhotoshoot' class='form-control' type='date'>
+                  </div>
+                  <div class='form-group'>
+                    <label>Google Drive</label>
+                    <input formControlName='cloudDir' class='form-control' type='link'>
+                  </div>
+                  <div class='form-group'>
+                    <label>City</label>
+                    <select formControlName='city' class='form-control' type='text'>
+                      <option>Nottingham</option>
+                      <option>Birmingham</option>
+                      <option>Greenville</option>
+                      <option>Manchester</option>
+                      <option>Bristol</option>
+                      <option>Derby</option>
+                    </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Assignee</label>
+                    <select formControlName='assignee' class='form-control' type='text'>
+                      <option>Polly</option>
+                    </select>
+                  </div>
+                  <div class='form-group'>
+                    <label>Note</label>
+                    <textarea formControlName='note' class='form-control' type='text' rows='6'></textarea>
+                  </div>
+              </div>
+              <div class='modal-footer'>
+                  <button data-dismiss='modal' class='btn btn-secondary'>Cancel</button>
+                  <button data-dismiss='modal' (click)='saveVrmInfo()' class='btn btn-primary' [disabled]="!editVrmInfoForm.valid">Save Changes</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/venues">Venues</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/venues', venueId]">{{ basicInfo && basicInfo.name ? basicInfo.name : "Loading..." }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Venue Profile</h1>
+  <br>
+  <div *ngIf='venueCreated' class='alert alert-success'>
+    The venue was created!
+    <a href='#' (click)='venueCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='venueEdited' class='alert alert-success'>
+      The venue was edited!
+      <a href='#' (click)='venueEdited = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postEdited' class='alert alert-success'>
+    The post was edited!
+    <a href='#' (click)='postEdited = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='postCreated' class='alert alert-success'>
+    The post was created!
+    <a href='#' (click)='postCreated = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='venueMarkedAsActive' class='alert alert-success'>
+    The venue was activated!
+    <a href='#' (click)='venueMarkedAsActive = false;' class='close'>&times;</a>
+  </div>
+  <div *ngIf='venueMarkedAsHidden' class='alert alert-success'>
+    The venue was deactivated!
+    <a href='#' (click)='venueMarkedAsHidden = false;' class='close'>&times;</a>
+  </div>
+  
+  <div *ngIf='externalLinkUpdated' class='alert alert-success'>
+    The external link was updated!
+    <a href='#' (click)='externalLinkUpdated = false;' class='close'>&times;</a>
+  </div>
+  <!-- <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Basic Information
+      <div>
+        <ng-container  *ngIf="activePermission === true">
+          <button *ngIf="status === 'hidden'" type="button" class="btn btn-success mr-2" data-toggle='modal' data-target=".modal.confirm-make-venue-active">Make Venue Active</button>
+          <button *ngIf="status === 'active'" type="button" class="btn btn-warning mr-2" data-toggle='modal' data-target=".modal.confirm-deactivate-venue">Deactivate Venue</button>
+        </ng-container>
+        
+        <button type="button" class="btn btn-primary" [routerLink]="['/venues','edit-venue', venueId]">Edit</button>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="basicInfo">
+      <dl class="row">
+        <dt class="col-12 col-lg-3">Profile Image</dt>
+        <dd class="col-12 col-lg-9">
+          <div style="background-color: lightgrey; width: 50px; height: 50px">
+            <img [src]=" basicInfo.profileImageUrl ? basicInfo.profileImageUrl : '../.././../../assets/template-image.png'" width="50px" height="50px" style="border-radius: 25px; object-fit: cover;" />
+          </div>
+        </dd>
+
+        <dt class="col-12 col-lg-3">Name</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.name ? basicInfo.name : "Not Found" }}</dd>
+
+        <dt class="col-12 col-lg-3">Address</dt>
+        <dd class="col-12 col-lg-9">{{ basicInfo.address ? basicInfo.address : "Not Found" }}</dd>
+      </dl>
+    </div>
+  </div> -->
+  <app-basic-info-container 
+    [basicInfo]="basicInfo" 
+    [status]="status" 
+    [venueId]="venueId"
+    [activePermission]="activePermission"
+    (toggleStatus)="$event ? makeVenueActive() : deactivateVenue()">
+  </app-basic-info-container>
+  <!-- <div class="card">
+    <div class="card-header">
+      Description
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-description">Edit Description</button>
+    </div>
+    <div class="card-body">
+      <p *ngIf="!basicInfo || !basicInfo.description">There is no saved description.</p>
+      <p *ngIf="basicInfo && basicInfo.description">{{ basicInfo.description }}</p>
+    </div>
+  </div> -->
+  <br>
+  
+  <app-gallery-images-container 
+    [galleryImages]="galleryImages"
+    (addImage)="uploadImage($event)" 
+    (deleteImage)="deleteImage($event)">
+  </app-gallery-images-container>
+  <!-- <div class="card">
+    <div class="card-header">
+      Gallery Images (12 max)
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.add-image" *ngIf="galleryImages.length < 12">Add Image +</button>
+    </div>
+    <div class="card-body" style="display: flex; flex-wrap: wrap;">
+      <p *ngIf="galleryImages.length === 0">There are no images in the gallery.</p>
+      <div class="mr-2 mb-2" *ngFor="let image of galleryImages; let imageIndex = index" style="display: flex; flex-direction: column" (mouseenter)="galleryImages[imageIndex].showDelete = true" (mouseleave)="galleryImages[imageIndex].showDelete = false">
+        <img [src]=" image && image.url ? image.url : '../../../../assets/template-image.png'" alt="" style="object-fit: cover; margin-bottom: 10px" width="200px" height="200px" data-toggle='modal' data-target=".modal.view-image" (click)="viewImage = image.url" >
+        <button class="btn btn-danger btn-sm" data-toggle='modal' data-target=".modal.delete-image" (click)="pendingDeleteImageId = image.id">Delete</button>
+      </div>
+    </div>
+  </div> -->
+  <br> 
+  <app-menu-container 
+    [menuList]="menus"
+    (addMenu)="uploadPdf($event)" 
+    (viewMenu)="openMenuPdf($event)" 
+    (deleteMenu)="deleteMenu($event)">
+  </app-menu-container>
+  <br/>
+  <!-- <div class="card">
+    <div class="card-header">
+      Menus
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.add-menu">Add Menu +</button>
+    </div>
+    <div class="card-body" *ngIf="menus.length === 0">
+      <p>There are no menus for the venue.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="menus.length > 0">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let menu of menus">
+                    <td>{{ menu.title ? menu.title : "Not Found"}}</td>
+                    <td>
+                      <button class='btn btn-sm btn-primary btn-sm mr-1' type='submit' (click)="openMenuPdf(menu.id)">
+                        View
+                      </button>
+                      <button class='btn btn-sm btn-danger btn-sm mr-1' data-toggle='modal' data-target=".modal.delete-menu" type='submit' (click)="pendingDeleteMenuId = menu.id">
+                        Remove
+                      </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div>
+  <br> -->
+  <!-- <div class="card">
+    <div class="card-header">
+      Opening Times
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-opening-times">Edit</button>
+    </div>
+    <div class="card-body" *ngIf="!openingTimes">
+      <p>No opening times found.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="openingTimes">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <thead>
+                <tr>
+                  <th>Day of the Week</th>
+                  <th>Open</th>
+                  <th>Close</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Monday</td>
+                    <td>{{ openingTimes.monday.open !== null || openingTimes.monday.close !== null ? ( openingTimes.monday.open !==null ? convertTimeToString(openingTimes.monday.open) : "Not Found" ) : "CLOSED" }}</td>
+                    <td>{{ openingTimes.monday.open !== null || openingTimes.monday.close !== null ? ( openingTimes.monday.close !== null ? convertTimeToString(openingTimes.monday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td>{{ openingTimes.tuesday.open !== null || openingTimes.tuesday.close !== null ? ( openingTimes.tuesday.open !==null ? convertTimeToString(openingTimes.tuesday.open) : "Not Found" ) : "CLOSED" }}</td>
+                    <td>{{ openingTimes.tuesday.open !== null || openingTimes.tuesday.close !== null ? ( openingTimes.tuesday.close !==null ? convertTimeToString(openingTimes.tuesday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <td>{{ openingTimes.wednesday.open !== null || openingTimes.wednesday.close !== null ? ( openingTimes.wednesday.open !==null ? convertTimeToString(openingTimes.wednesday.open) : "Not Found" ) : "CLOSED" }}</td>
+                  <td>{{ openingTimes.wednesday.open !== null || openingTimes.wednesday.close !== null ? ( openingTimes.wednesday.close !==null ? convertTimeToString(openingTimes.wednesday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                  <td>Thursday</td>
+                  <td>{{ openingTimes.thursday.open !== null || openingTimes.thursday.close !== null ? ( openingTimes.thursday.open !==null ? convertTimeToString(openingTimes.thursday.open) : "Not Found" ) : "CLOSED" }}</td>
+                  <td>{{ openingTimes.thursday.open !== null || openingTimes.thursday.close !== null ? ( openingTimes.thursday.close !==null ? convertTimeToString(openingTimes.thursday.close) : "Not Found" ) : "CLOSED" }}</td>
+               </tr>
+               <tr>
+                <td>Friday</td>
+                <td>{{ openingTimes.friday.open !== null || openingTimes.friday.close !== null ? ( openingTimes.friday.open !==null ? convertTimeToString(openingTimes.friday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.friday.open !== null || openingTimes.friday.close !== null ? ( openingTimes.friday.close !==null ? convertTimeToString(openingTimes.friday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+              <tr>
+                <td>Saturday</td>
+                <td>{{ openingTimes.saturday.open !== null || openingTimes.saturday.close !== null ? ( openingTimes.saturday.open ? convertTimeToString(openingTimes.saturday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.saturday.open !== null || openingTimes.saturday.close !== null ? ( openingTimes.saturday.close ? convertTimeToString(openingTimes.saturday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+              <tr>
+                <td>Sunday</td>
+                <td>{{ openingTimes.sunday.open !== null || openingTimes.sunday.close !== null ? ( openingTimes.sunday.open ? convertTimeToString(openingTimes.sunday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.sunday.open !== null || openingTimes.sunday.close !== null ? ( openingTimes.sunday.close ? convertTimeToString(openingTimes.sunday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div> -->
+  <app-opening-times-container [openingTimes]="openingTimes" (updateOpeningTime)="saveOpeningTimes($event)"></app-opening-times-container>
+  <br>
+  <!-- <div class="card">
+    <div class="card-header">
+      Posts
+      <button class="btn btn-primary btn-sm float-right" (click)="navigateToCreatePost()">Create Post +</button>
+      <button class="btn btn-secondary btn-sm float-right mr-2" [routerLink]="['/venues', 'posts', venueId]">View All</button>
+    </div>
+    <div class="card-body" *ngIf="posts.length === 0">
+      <p>The venue has not created any posts.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="posts.length > 0">
+        <div style="overflow-x: auto;">
+            <table class="table text-nowrap  table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th>Caption</th>
+                        <th>Image</th>
+                        <th>Published</th>
+                        <th>Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let post of posts">
+                        <td>{{ post.caption ? post.caption : "Not Found"}}</td>
+                        <td>
+                          <img *ngIf="post.imageUrl" class="mr-2" [src]="post.imageUrl" width="50px" height="50px" style="border-radius: 8px; object-fit: cover;" />
+                          <p *ngIf="!post.imageUrl">No Image</p>
+                        </td>
+                        <td>{{ post.created ? ( post.created | date: "dd/MM/yyyy - hh:mm" ) : "Not Found" }}</td>
+                        <td>
+                            <button class='btn btn-sm btn-primary mr-1' type='submit' (click)="navigateToEditPost(post.id)">
+                              Edit
+                            </button>
+                          <button class='btn btn-sm btn-danger mr-1' type='submit' data-toggle='modal' data-target=".modal.delete-post" (click)="pendingDeletePostId = post.id">
+                            Remove
+                          </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div> -->
+  <app-posts-container 
+    [posts]="posts" 
+    [venueId]="venueId"
+    (deletePost)="deletePost($event)"
+    (createPost)="navigateToCreatePost()"
+  ></app-posts-container>
+  <br>
+  <!-- <div class="card">
+    <div class="card-header">
+      Venue Admins
+      <button class="btn btn-primary btn-sm float-right" (click)="assignAdminUserToVenue()">Create Admin User +</button>
+    </div>
+    <div class="card-body" *ngIf="venueAdmins.length === 0">
+      <p>There are no Admin Users assigned to this venue.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="venueAdmins.length > 0">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Controls</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let admin of venueAdmins">
+                    <td>{{ admin.name ? admin.name : "Not Found"}}</td>
+                    <td>{{ admin.email ? admin.email : "Not Found"}}</td>
+                    <td>
+                      <button
+                        (click)="navigateToEditAdminUser(admin.id)"
+                        class="btn btn-sm btn-primary mr-2 mb-2"
+                      >
+                          Edit
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger mr-2 mb-2"
+                        data-toggle='modal'
+                        data-target='.modal.confirm-admin-account-delete'
+                        (click)='pendingDeleteAdminAccountId = admin.id'
+                      >Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div> -->
+  <app-venue-admin-container 
+    [venueAdmins]="venueAdmins" 
+    (createAdmin)="assignAdminUserToVenue()" 
+    (editAdmin)="navigateToEditAdminUser($event)" 
+    (deleteAdmin)="deleteAdminAccount($event)">
+  </app-venue-admin-container>
+  <br>
+  <!-- <div class="card">
+    <div class="card-header">
+      Tags
+      <button *ngIf="availableTags && availableTags.length > 0" class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-tags" (click)="initEditTags()" >Edit Tags</button>
+    </div>
+    <div class="card-body" style="display: flex; flex-wrap: wrap;">
+      <p *ngIf="tags.length === 0">The venue is not linked to any tags.</p>
+      <div class="mr-2 mb-2" *ngFor="let tag of tags">
+        <span class="badge badge-secondary">{{ tag.title ? tag.title : "Not Found" }}</span>
+      </div>
+    </div>
+  </div>
+  <br> -->
+  <app-tags-container [tags]="tags" [availableTags]="availableTags" (updateTags)="editTags($event)"></app-tags-container>
+  <br/>
+  <app-contact-info-container [phoneNumber]="phoneNumber" [email]="email" (updateContact)="editContactInformation($event)"></app-contact-info-container>
+  <!-- <div class="card">
+    <div class="card-header">
+      Contact Information (public)
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-contact-information">Edit</button>
+    </div>
+    <div class="card-body p-0">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <tbody>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ email ? email : "Not Found" }}</td>
+                </tr>
+                <tr>
+                  <td>Phone Number</td>
+                  <td>{{ phoneNumber ? phoneNumber : "Not Found" }}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div> -->
+  <br>
+  <!-- <div class="card">
+    <div class="card-header">
+      External Link
+      <button *ngIf="externalLink !== null" class="btn btn-danger btn-sm float-right" data-toggle='modal' data-target=".modal.remove-external-link">Remove</button>
+      <button class="btn btn-primary btn-sm float-right mr-2" data-toggle='modal' data-target=".modal.edit-external-link">{{ externalLink ? "Edit" : "Create +" }}</button>
+    </div>
+    <div class="card-body" *ngIf="!externalLink">
+      <p>An external link has not been created.</p>
+    </div>
+    <div class="card-body p-0" *ngIf="externalLink">
+      <div style="overflow-x: auto;">
+        <table class="table text-nowrap  table-responsive-sm">
+            <tbody>
+                <tr>
+                  <td>Text</td>
+                  <td>{{ externalLink.text ? externalLink.text : "Not Found" }}</td>
+                </tr>
+                <tr>
+                  <td>URL</td>
+                  <td>{{ externalLink.url ? externalLink.url : "Not Found" }}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div> -->
+  <app-external-link-container [externalLink]="externalLink" (updateLink)="saveExternalLink($event)" (removeLink)="removeExternalLink()"></app-external-link-container>
+  <br/>
+  <!-- <br *ngIf="activePermission === true">
+  <div class="card" *ngIf="activePermission === true">
+    <div class="card-header">
+      VRM Info
+      <button class="btn btn-primary btn-sm float-right" data-toggle='modal' data-target=".modal.edit-vrm-info">Edit</button>
+    </div>
+    <div class="card-body p-0">
+      <div style="overflow-x: auto;">
+        <table *ngIf="vrm" class="table text-nowrap  table-responsive-sm">
+            <tbody>
+                <tr>
+                  <td>Status</td>
+                  <td>{{ vrm.status ? vrm.status : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Last Visited By</td>
+                  <td>{{ vrm.lastVisitBy ? vrm.lastVisitBy : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Last Visit</td>
+                  <td type="date">{{ vrm.lastVisit ? vrm.lastVisit : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Logins Provided</td>
+                  <td>{{ vrm.loginsGiven ? vrm.loginsGiven : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Venue Marketing Consent</td>
+                  <td>{{ vrm.marketingConsent ? vrm.marketingConsent : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Last Photoshoot</td>
+                  <td type="date">{{ vrm.lastPhotoshoot ? vrm.lastPhotoshoot : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Google Drive</td>
+                  <td>{{ vrm.cloudDir ? vrm.cloudDir : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Locale</td>
+                  <td>{{ localeConcat ? localeConcat : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Assignee</td>
+                  <td>{{ vrm.assignee ? vrm.assignee : "No Info" }}</td>
+                </tr>
+                <tr>
+                  <td>Note</td>
+                  <td>{{ vrm.note ? vrm.note : "No Info" }}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+  </div> -->
+  <app-vrm-info-container *ngIf="activePermission" [vrm]="vrm" [locale]="locale" (vrmUpdate)="saveVrmInfo($event)"></app-vrm-info-container>
+</div>

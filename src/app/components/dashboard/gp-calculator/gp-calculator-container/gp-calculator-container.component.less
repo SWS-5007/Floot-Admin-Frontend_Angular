@@ -1,0 +1,127 @@
+#gp-calculator-title {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+  .print,
+  .send,
+  .download {
+    margin-left: 10px;
+    font-size: 40px;
+  }
+}
+.print {
+  color: black;
+}
+.send {
+  color: hotpink;
+}
+.download {
+  color: blue;
+}
+
+h1 {
+  font-weight: bold;
+  span {
+    font-weight: normal;
+  }
+}
+
+#gp-calculator-container {
+  display: grid;
+  // grid-template-columns: 35% 35% 30%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 10vh 90vh;
+  //flex-direction: row;
+  width: 90vw;
+  justify-content: center;
+  margin: auto;
+}
+
+#title-action-bar {
+  width: 100%;
+  //padding: 50px;
+
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+
+#selected-Product {
+  width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+#product-list {
+  width: 100%;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+
+#calendar {
+  width: 100%;
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  margin-top: 40px;
+}
+
+#title-action-bar {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  #gp-calculator-title {
+    width: 50%;
+  }
+  #actions {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin: 0;
+    #action-buttons {
+      display: flex;
+      margin-left: 20px;
+    }
+  }
+}
+
+#selected-Product {
+  width: 100%;
+  // border-right: 2px solid black;
+  padding: 80px;
+}
+#product-list {
+  width: 100%;
+}
+.pdetails {
+  // border: 1px solid purple;
+  // border-radius: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+}
+.create-save-product {
+  width: 180px;
+  height: 46px;
+  background-color: #c7460f;
+  border: 1px solid #c7460f;
+  border-radius: 10px;
+  color: #fff;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  span {
+    font-weight: bold;
+  }
+}

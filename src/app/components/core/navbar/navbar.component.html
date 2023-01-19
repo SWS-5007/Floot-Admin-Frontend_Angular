@@ -1,0 +1,21 @@
+<nav class='navbar '>
+  <div class='container-fluid'>
+    <div *ngIf='shouldAccountNameDisplay' class="dropdown">
+      <span class='float-right' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{accountName}}
+        <span style='margin-left: 5px'>
+          <i class='fa fa-chevron-down'></i>
+        </span>
+      </span>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a [routerLink]='["/account/view-account"]' class="dropdown-item" href="#">
+          <i class='fa fa-user'></i> Your Account
+        </a>
+        <a class="dropdown-item" (click)='signOut()' href="#">
+          <i class='fa fa-sign-out'></i> Sign Out
+        </a>
+      </div>
+    </div>
+
+  </div>
+</nav>

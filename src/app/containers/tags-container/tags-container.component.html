@@ -1,0 +1,14 @@
+<app-section-container>
+    <div class="heading">
+        <span>Tags</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onUpdate()">Edit</button>
+    </div>
+    <div class="section-content">
+        <p *ngIf="tags.length === 0">The venue is not linked to any tags.</p>
+      <div class="badge-wrap">
+        <span class="badge badge-pill" *ngFor="let tag of tags">{{ tag.title ? tag.title : "Not Found" }}</span>
+      </div>
+    </div>
+</app-section-container>

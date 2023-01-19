@@ -1,0 +1,56 @@
+<app-section-container>
+    <div class="heading">
+        <span>Opening Hours</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onEdit()">Edit</button>
+    </div>
+    <div class="section-content">
+        <table class="table text-nowrap  table-responsive-sm" *ngIf="openingTimes">
+            <thead>
+                <tr>
+                  <th>Day of the Week</th>
+                  <th>Opening Time</th>
+                  <th>Closing Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Monday</td>
+                    <td>{{ openingTimes.monday.open !== null || openingTimes.monday.close !== null ? ( openingTimes.monday.open !==null ? convertTimeToString(openingTimes.monday.open) : "Not Found" ) : "CLOSED" }}</td>
+                    <td>{{ openingTimes.monday.open !== null || openingTimes.monday.close !== null ? ( openingTimes.monday.close !== null ? convertTimeToString(openingTimes.monday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td>{{ openingTimes.tuesday.open !== null || openingTimes.tuesday.close !== null ? ( openingTimes.tuesday.open !==null ? convertTimeToString(openingTimes.tuesday.open) : "Not Found" ) : "CLOSED" }}</td>
+                    <td>{{ openingTimes.tuesday.open !== null || openingTimes.tuesday.close !== null ? ( openingTimes.tuesday.close !==null ? convertTimeToString(openingTimes.tuesday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <td>{{ openingTimes.wednesday.open !== null || openingTimes.wednesday.close !== null ? ( openingTimes.wednesday.open !==null ? convertTimeToString(openingTimes.wednesday.open) : "Not Found" ) : "CLOSED" }}</td>
+                  <td>{{ openingTimes.wednesday.open !== null || openingTimes.wednesday.close !== null ? ( openingTimes.wednesday.close !==null ? convertTimeToString(openingTimes.wednesday.close) : "Not Found" ) : "CLOSED" }}</td>
+                </tr>
+                <tr>
+                  <td>Thursday</td>
+                  <td>{{ openingTimes.thursday.open !== null || openingTimes.thursday.close !== null ? ( openingTimes.thursday.open !==null ? convertTimeToString(openingTimes.thursday.open) : "Not Found" ) : "CLOSED" }}</td>
+                  <td>{{ openingTimes.thursday.open !== null || openingTimes.thursday.close !== null ? ( openingTimes.thursday.close !==null ? convertTimeToString(openingTimes.thursday.close) : "Not Found" ) : "CLOSED" }}</td>
+               </tr>
+               <tr>
+                <td>Friday</td>
+                <td>{{ openingTimes.friday.open !== null || openingTimes.friday.close !== null ? ( openingTimes.friday.open !==null ? convertTimeToString(openingTimes.friday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.friday.open !== null || openingTimes.friday.close !== null ? ( openingTimes.friday.close !==null ? convertTimeToString(openingTimes.friday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+              <tr>
+                <td>Saturday</td>
+                <td>{{ openingTimes.saturday.open !== null || openingTimes.saturday.close !== null ? ( openingTimes.saturday.open !== null ? convertTimeToString(openingTimes.saturday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.saturday.open !== null || openingTimes.saturday.close !== null ? ( openingTimes.saturday.close !== null ? convertTimeToString(openingTimes.saturday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+              <tr>
+                <td>Sunday</td>
+                <td>{{ openingTimes.sunday.open !== null || openingTimes.sunday.close !== null ? ( openingTimes.sunday.open !== null ? convertTimeToString(openingTimes.sunday.open) : "Not Found" ) : "CLOSED" }}</td>
+                <td>{{ openingTimes.sunday.open !== null || openingTimes.sunday.close !== null ? ( openingTimes.sunday.close !== null ? convertTimeToString(openingTimes.sunday.close) : "Not Found" ) : "CLOSED" }}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</app-section-container>

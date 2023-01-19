@@ -1,0 +1,24 @@
+.row:not(:last-child){
+    margin-bottom: 1rem;
+}
+
+.label{
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 12px;
+}
+.value{
+    color: var(--primary-brand);
+    font-size: 16px;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid;
+}
+
+button.mat-flat-button{
+    &.success{
+        background-color: var(--green);
+    }
+    &.warn{
+        background-color: var(--red);
+    }
+}

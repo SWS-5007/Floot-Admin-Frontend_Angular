@@ -1,0 +1,60 @@
+<div class='auth-body-wrap'>
+  <div class='background'>
+
+  </div>
+  <div class='form-sidebar'>
+    <!-- <img src='./../../../../assets/branding/logo.png' style="max-height: 100px"> -->
+      <img src='./../../../../assets/branding/logo.png' style="max-height: 126px;">
+
+    <h4 class='leading'>Welcome, please sign in.</h4>
+
+    <ng-container *ngIf='error'>
+      <br>
+      <div class='alert alert-danger error-alert'>
+        {{error}} <a type="button" class='close' (click)='dismissError()'>&times;</a>
+      </div>
+    </ng-container>
+
+    <div class='form-group username'>
+      <label>Email</label>
+      <input [(ngModel)]='email' class='form-control'>
+    </div>
+    <div class='form-group password'>
+      <label>Password</label>
+      <input [(ngModel)]='password' type='password' class='form-control'>
+      <br><br>
+      <a type="button" [routerLink]='["/authentication/reset-password"]' href='#'>Forgot your password?</a>
+      <br><br>
+      <input [(ngModel)]="termsConditionsCheckbox" type="checkbox" id="terms-conditions" >
+      <label for="terms-conditions" id="terms-conditions-label">I agree to the&nbsp;</label>
+      <a id="terms-conditions-button" class="link" type="button" (click)="toggleTermsConditionsPopup(true)" >Terms and Conditions</a>
+      <br>
+      <label *ngIf="termsConditionsError" class="small" style="color:red">Make sure to read and accept our Terms and Conditions</label>
+    </div>
+
+    <div *ngIf='termsConditionsPopup' class='modal' id='terms-popup' style='display: block;'>
+      <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+          <div class='modal-body' style="overflow-y: auto; height: 75vh;">
+            <h4 class='text-primary'>Terms and Conditions</h4>
+            <p>
+              {{termsConditionsFull}}
+            </p>
+          </div>
+          <div class='modal-footer'>
+            <button class='btn btn-outline-primary' (click)='toggleTermsConditionsPopup(false)'>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class='form-group'>
+      <button
+        [disabled]='!email || !password'
+        (click)='performLoginRequest()'
+        class='btn btn-outline-primary btn-lg float-right'>Sign in</button>
+    </div>
+  </div>
+</div>

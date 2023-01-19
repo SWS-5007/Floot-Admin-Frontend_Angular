@@ -1,0 +1,55 @@
+<table mat-table
+       [dataSource]="posts" multiTemplateDataRows
+       class="mat-elevation-z8">
+  <ng-container matColumnDef="caption">
+    <th mat-header-cell *matHeaderCellDef>Caption</th>
+    <td mat-cell *matCellDef="let element">
+        <p class="caption-wrap">{{element.caption}}</p>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="created">
+    <th mat-header-cell *matHeaderCellDef>Created on</th>
+    <td mat-cell class="text-nowrap" *matCellDef="let element">{{element.created | date: 'dd/MM/yy hh:mm'}}</td>
+  </ng-container>
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="element-detail-content">
+            <div class="img-wrap">
+                <img *ngIf="element.imageUrl" [src]="element.imageUrl">
+                <span *ngIf="!element.imageUrl">No image</span>
+            </div>
+            <div class="post-details">
+                <p class="caption">{{element.caption}}</p>
+                <p class="created">Created on {{element.created | date: 'dd/MM/yy hh:mm'}}</p>
+                <div class="actions">
+                    <a role="button" tabindex="0" mat-button color="primary">Edit</a>
+                    <a role="button" tabindex="0" mat-button color="warn" (click)="onDeletePost(element.id)">Remove</a>
+                </div>
+            </div>
+        </div>   
+        
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>

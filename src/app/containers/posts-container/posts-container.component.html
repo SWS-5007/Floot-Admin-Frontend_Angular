@@ -1,0 +1,17 @@
+<app-section-container>
+    <div class="heading">
+        <span>Posts</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button [routerLink]="['/venues', 'posts', venueId]">View All</button>
+        <button mat-stroked-button (click)="createPost.emit()">Create Post+</button>
+    </div>
+    <div class="section-content">
+        <ng-container *ngIf="posts?.length > 0">
+            <app-venue-posts-table [posts]="posts" (deletePost)="deletePost.emit($event)"></app-venue-posts-table>
+        </ng-container>
+        <ng-container *ngIf="!(posts?.length > 0)">
+            <p>The venue has not created any posts.</p>
+        </ng-container>
+    </div>
+</app-section-container>

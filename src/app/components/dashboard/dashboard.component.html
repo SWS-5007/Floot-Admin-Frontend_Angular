@@ -1,0 +1,337 @@
+<section class="content dashboard">
+    <div class="container-fluid pt-4">
+        <div class="mt-5">
+            <hr />
+        </div>
+        <!-- Widgets -->
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 order-info-box7 Sales">
+                    <div class="info-box7-block">
+                        <h4 class="">£ {{dashTiles[0].value}}</h4>
+                        <h2 class="m-0">Sales</h2>
+                        <p class="m-b-0">Last 30 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 order-info-box7 Overheads">
+                    <div class="info-box7-block">
+                        <h4 class=" ">£ {{dashTiles[1].value}}</h4>
+                        <h2 class="m-0">Overheads</h2>
+                        <p class="m-b-0">Last 30 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 order-info-box7 bg-light">
+                    <div class="info-box7-block">
+                        <h4 class=" ">£ {{dashTiles[2].value}}</h4>
+                        <h2 class="text-start m-0">Avg. Margin</h2>
+                        <p class="m-b-0">Last 30 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 order-info-box7 bg-light">
+                    <div class="info-box7-block">
+                        <div class="process m-b-20"></div>
+                        <h2 class="text-start m-0">Occupancy</h2>
+                        <p class="m-b-0">Coming Soon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Widgets -->
+        <div class="row mb-5">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <div class="details suppliers mb-3">
+                    <div class="mx-3 header d-flex justify-content-between my-3 ">
+                        <h2 class="text-left">Sales</h2>
+
+                        <div class="">
+                            <h2 class="text-left m-0">+34%</h2>
+                            <p class="m-0">weekly</p>
+                        </div>
+                        <div class="">
+                            <h2 class="text-left m-0">+12%</h2>
+                            <p class="m-0">monthly</p>
+                        </div>
+                        <div class="">
+                            <h2 class="text-left m-0">+7%</h2>
+                            <p class="m-0">yearly</p>
+                        </div>
+                        <button data-toggle='modal' data-target=".modal.supplier-contact-form" class="btn btn-primary sales_button" type="button">
+                          Enter Sales Manually
+                        </button>
+
+                        <div class='modal fade supplier-contact-form'>
+                            <div class='modal-dialog'>
+                                <div class='modal-content'>
+                                    <form (ngSubmit)="onSubmit(manualSalesFormdata.value)">
+                                        <div class='modal-header'>
+                                            Enter Sales
+                                            <a type="button" class='close' data-dismiss="modal">&times;</a>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <mat-form-field appearance="fill" class="w-100">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="picker">
+                                                    <input matStartDate placeholder="Start date" #dateRangeStart>
+                                                    <input matEndDate placeholder="End date" #dateRangeEnd>
+                                                </mat-date-range-input>
+
+                                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+
+                                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker (closed)="handleDateRange(dateRangeStart, dateRangeEnd)"></mat-date-range-picker>
+                                            </mat-form-field>
+
+                                            <div class="mt-4">
+                                                <h2 class="pb-3">Sales</h2>
+                                                <div class="tableBody">
+                                                    <div class="table-responsive">
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Date </th>
+                                                                    <th>Total</th>
+                                                                    <th>Cash</th>
+                                                                    <th>Card</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <tr *ngFor="let formData of manualSalesFormdata.controls; let i = index" [formGroup]="formData">
+                                                                    <td>
+                                                                        <div *ngFor="let date of salesDates; let j = index">
+                                                                            <ng-container *ngIf="i == j;  then iAmDone;">
+                                                                            </ng-container>
+
+                                                                            <ng-template #iAmDone>
+                                                                                <p>{{date | date:'EEEE'}}</p>
+                                                                                <p>{{date | date:'dd/MM/YYYY'}}</p>
+                                                                            </ng-template>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline">
+                                                                            <input matInput class="total saleInput" type='tel' name="total" formControlName="total">
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline">
+                                                                            <input matInput class="cash saleInput" type='tel' name="cash" formControlName="cash">
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field appearance="outline">
+                                                                            <input matInput class="card saleInput" type='tel' name="card" formControlName="card">
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='modal-footer'>
+                                            <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+                                            <button type="submit" class='btn btn-success'>Sumbit</button>
+                                            <!-- <button type="submit" data-dismiss='modal' class='btn btn-success'>Sumbit</button> -->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [dataLabels]="chartOptions.dataLabels">
+                    </apx-chart>
+
+                    <div class="d-flex Sales-icon">
+                        <div class="btn-group">
+                            <label class="btn border-0" [ngClass]="name=='hour' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Hour'" (click)="handleChangeTimeFrame($event,'hour')">Hour</label>
+                            <label class="btn border-0" [ngClass]="name=='day' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Day'" (click)="handleChangeTimeFrame($event,'day')">Day</label>
+                            <label class="btn border-0" [ngClass]="name=='week' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Week'" (click)="handleChangeTimeFrame($event,'week')">Week</label>
+                            <label class="btn border-0" [ngClass]="name=='month' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Month'" (click)="handleChangeTimeFrame($event,'month')">Month</label>
+                            <label class="btn border-0" [ngClass]="name=='year' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'year'" (click)="handleChangeTimeFrame($event,'year')">year</label>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="material-symbols-outlined"> search </span>
+                            <span class="material-symbols-outlined"> zoom_in </span>
+                            <span class="material-symbols-outlined"> zoom_out </span>
+                            <span class="material-symbols-outlined text-black-50"> back_hand </span>
+                            <span class="material-symbols-outlined cancel text-black-50"> cancel </span>
+                            <span class="material-symbols-outlined"> download </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details suppliers mb-4">
+                    <div class="header d-flex justify-content-between my-3">
+                        <h2 class="text-left">Invoices</h2>
+                        <button data-toggle='modal' data-target=".modal.Invoice" class="btn btn-primary sales_button" type="button">Upload Invoice</button>
+                        <div class='modal fade Invoice'>
+                            <div class='modal-dialog'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        Upload Invoice <a type="button" class='close' data-dismiss="modal">&times;</a>
+                                    </div>
+                                    <div class='modal-body'>
+                                        <div class="invoice-drop p-4">
+                                            <app-invoice-drop></app-invoice-drop>
+
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <div class='modal-footer'>
+                                        <button class='btn btn-secondary' data-dismiss='modal'>Cancel</button>
+                                        <button data-dismiss='modal' class='btn btn-success'>Sumbit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tableBody">
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Supplier</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-img">1</td>
+                                        <td>John Deo</td>
+                                        <td>15-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">2</td>
+                                        <td>Jens Brincker</td>
+                                        <td>16-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">3</td>
+                                        <td>Mark Hay</td>
+                                        <td>18-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">4</td>
+                                        <td>Anthony Davie</td>
+                                        <td>17-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">5</td>
+                                        <td>Alan Gilchrist</td>
+                                        <td>23-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">6</td>
+                                        <td>Sue Woodger</td>
+                                        <td>26-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">7</td>
+                                        <td>David Perry</td>
+                                        <td>29-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-img">8</td>
+                                        <td>Sneha Pandit</td>
+                                        <td>28-08-2019</td>
+                                        <td>£1523.00</td>
+                                        <td>
+                                            <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+                                            <button mat-icon-button class="btn-tbl-delete"><mat-icon>delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="card p-4">
+                    <div class="switch-wrap">
+                        <mat-slide-toggle>Auto-send to accountant</mat-slide-toggle>
+                    </div>
+                </div>
+                <div class="info-box7 order-info-box7 mb-3 bg-light">
+                    <div class="info-box7-block position-relative">
+                        <h4 class=" ">£ {{dashTiles[3].value}}</h4>
+                        <h2 class=" ">VAT Liability</h2>
+                        <p class="m-b-0 d-flex">Last return date:
+                            <input class="form-control basicDatepicker" [matDatepicker]="basicDatepicker" #vatLastDate>
+                        </p>
+                        <div class="calendar-icon">
+
+                            <mat-datepicker-toggle matIconSuffix [for]="basicDatepicker"></mat-datepicker-toggle>
+                            <mat-datepicker #basicDatepicker (closed)="handleVATDate(vatLastDate)"></mat-datepicker>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="info-box7 order-info-box7 bg-light">
+                    <div class="info-box7-block position-relative">
+                        <app-calendar></app-calendar>
+                        <h4 class="border-bottom my-3">January 12th</h4>
+                        <p class="mb-1 mt-3">10:00 AM - 10:30 AM</p>
+                        <h3 class="text-dark">Daily Meeting</h3>
+                        <hr/>
+                        <p class="mb-1">5:00 PM - 6:00 PM</p>
+                        <h3 class="text-dark">Cupping Masterclass</h3>
+                        <hr/>
+                        <p class="mb-1">8:00 PM - 12:00 PM</p>
+                        <h3 class="text-dark">Back to Work Party</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

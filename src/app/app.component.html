@@ -1,0 +1,153 @@
+<nav class='navbar '>
+  <div class='container-fluid'>
+   
+
+
+
+    <ul *ngIf="shouldDisplayVenueChoice" class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {{ selectedVenueName }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="position: absolute">
+          <button *ngFor="let venue of accountVenues" class="dropdown-item" (click)="changeSelectedVenue(venue)">{{
+            venue.name }}</button>
+        </div>
+      </li>
+    </ul>
+
+    <div *ngIf='shouldAccountNameDisplay' class="dropdown user-settings">
+      <!-- <button class="btn btn-primary mr-3" (click)="sidebarShouldDisplay = !sidebarShouldDisplay"><i class="fa fa-bars"
+          aria-hidden="true"></i></button> -->
+      <span class='float-right text-body' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        {{accountName}}
+        <span style='margin-left: 5px'>
+          <i class='fa fa-chevron-down'></i>
+        </span>
+      </span>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a [routerLink]='["/account/view-account"]' class="dropdown-item" href="#">
+          <i class='fa fa-user'></i> Your Account
+        </a>
+        <a class="dropdown-item" (click)='signOut()' href="#">
+          <i class='fa fa-sign-out'></i> Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  style="background: rgba(0,0,0,0); 
+    border: none;
+    margin: 0px;
+    padding: 10px;
+    display: inline;
+    color: purple;
+    float: left;"
+  >
+    <mat-icon>more_vert</mat-icon>
+    selected venue 
+  </button>
+  <mat-menu #menu="matMenu" style="background: purple;">
+    <button 
+      mat-menu-item
+      *ngFor="let venue of accountVenues"
+      (click)="changeSelectedVenue(venue)"
+    >
+      <span>{{ venue.name }}</span>
+    </button>
+  </mat-menu> -->
+  <!-- <div *ngIf="shouldDisplayVenueChoice === true">
+    <mat-form-field appearance="fill">
+      <mat-label>Venues</mat-label>
+      <mat-select (selectionChange)="changeSelectedVenue()" [(ngModel)]="selectedVenueId">
+        <mat-option *ngFor="let venue of accountVenues" [value]="venue.id">
+          {{ venue.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> -->
+
+  <!-- <div *ngIf="shouldDisplayVenueChoice === true"> -->
+  <!-- </div> -->
+
+</nav>
+
+<div *ngIf='errorHasBeenThrown' class='modal' style='display: block;'>
+  <div class='modal-dialog modal-lg'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        A system error has been reported
+        <a (click)='clearThrownError()' data-dismiss='modal' class='close'>&times;</a>
+      </div>
+      <div class='modal-body'>
+        <h4 class='text-danger'>{{ thrownError.displayMessage }}</h4>
+        <p>
+          You can continue to use the application, although it is highly advised
+          that you refresh your website browser tab. More information regarding
+          the reported issue can be found below. If the issue persists, then please
+          contact customer support.
+        </p>
+      </div>
+      <div class='modal-footer'>
+        <button (click)='clearThrownError()' class='btn btn-outline-secondary'>Dismiss</button>
+        <button (click)='refreshBrowserTab()' class='btn btn-outline-primary'>Refresh Tab</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf='pendingSaveHasBeenNotified' class='modal' style='display: block;'>
+  <div class='modal-dialog modal-lg'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        You have unsaved changes on this page
+        <a (click)='pendingSaveHasBeenNotified = false' data-dismiss='modal' class='close'>&times;</a>
+      </div>
+      <div class='modal-body'>
+        <h4 class='text-primary'>You have not saved changes</h4>
+        <p>
+          To continue, please save your changes, or discard them using the continue anyway
+          button below.
+        </p>
+      </div>
+      <div class='modal-footer'>
+        <button (click)='pendingSaveHasBeenNotified = false' class='btn btn-outline-secondary'>Cancel</button>
+        <button (click)='navigateUnsaved()' class='btn btn-outline-primary'>Proceed Anyway</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class='sidebar-wrapper' *ngIf='sidebarShouldDisplay'>
+  <app-sidebar></app-sidebar>
+</div> -->
+
+<div class="container-fluid p-0">
+  <div class="row p-0 m-0" style="height: calc(100vh - 75px);">
+
+    <aside class="p-0" *ngIf="sidebarShouldDisplay">
+
+      <app-sidebar></app-sidebar>
+
+    </aside>
+    <div class='router-outlet-wrapper bg-grey' [class.sidebar-open]="sidebarShouldDisplay">
+
+      <div class='page-content-wrapper'>
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
+
+        <!-- <div class='footer-wrapper'>
+          <app-footer></app-footer>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

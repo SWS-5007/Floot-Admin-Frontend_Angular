@@ -1,0 +1,123 @@
+<h2 mat-dialog-title>Edit Opening Times</h2>
+<div mat-dialog-content>
+  <form [formGroup]="openingTimesForm">
+    <h3>Monday</h3>
+    <div class="row" formGroupName="monday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+    <h3>Tuesday</h3>
+
+    <div class="row" formGroupName="tuesday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+    <h3>Wednesday</h3>
+
+    <div class="row" formGroupName="wednesday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+    <h3>Thursday</h3>
+
+    <div class="row" formGroupName="thursday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+
+    <h3>Friday</h3>
+
+    <div class="row" formGroupName="friday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+
+    <h3>Saturday</h3>
+
+    <div class="row" formGroupName="saturday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+
+    <h3>Sunday</h3>
+
+    <div class="row" formGroupName="sunday">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Open</label>
+          <input formControlName="open" class="form-control" type="time" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Close</label>
+          <input formControlName="close" class="form-control" type="time" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onSave()">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

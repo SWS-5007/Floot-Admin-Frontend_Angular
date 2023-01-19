@@ -1,0 +1,166 @@
+<!-- Start delete confirm modal -->
+<div class='modal fade confirm-delete'>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+              Confirm deletion
+              <a type="button" class='close' data-dismiss='modal'>&times;</a>
+          </div>
+          <div class='modal-body'>
+              <h5 class='text-danger'>Confirm delete</h5>
+              <p>Once an account has been deleted, it cannot be restored. Please confirm to continue.</p>
+          </div>
+          <div class='modal-footer'>
+              <button class='btn btn-secondary' (click)="setPendingDeleteId(null)" data-dismiss='modal'>Cancel</button>
+              <button data-dismiss='modal' (click)='deleteUser()' class='btn btn-danger'>Delete</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End delete confirm modal-->
+
+<ul class='breadcrumb'>
+    <li class='breadcrumb-item'><a type="button" [routerLink]="['/supplier-team']">Supplier Team</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+    <h1>Search Supplier Admin Accounts</h1>
+    <br>
+    <div *ngIf='userCreated' class='alert alert-success'>
+      The admin was created.
+      <a type="button" href='#' (click)='userCreated = "";' class='close'>&times;</a>
+    </div>
+    <div *ngIf='userEdited' class='alert alert-success'>
+      The admin was edited.
+      <a type="button" href='#' (click)='userDeleted = "";' class='close'>&times;</a>
+    </div>
+    <div *ngIf='userDeleted' class='alert alert-danger'>
+      The admin was deleted.
+      <a type="button" href='#' (click)='userDeleted = "";' class='close'>&times;</a>
+    </div>
+    <form [formGroup]="searchForm">
+      <div class="card">
+          <div class="card-header">
+              Search
+          </div>
+          <div class='card-body'>
+              <div class='row'>
+                  <div class='col-md-6'>
+                      <div class="form-group">
+                          <label>Search</label>
+                          <input class="form-control" placeholder="Search" formControlName="searchText" type="text"/>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <div class="card-footer">
+            <button class='btn btn-primary float-right ml-2 mb-2' (click)="searchAdmins()">
+              Search
+            </button>
+            <button class='btn btn-secondary float-right ml-2 mb-2' (click)="clearSearch()">
+              Clear Search
+            </button>
+          </div>
+        </div>
+    </form>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            Supplier Team
+        </div>
+        <div class="card-body" *ngIf="accounts.length === 0">
+          <p>There are no admins in the database.</p>
+        </div>
+        <div class="card-body p-0" *ngIf="accounts.length > 0">
+          <div style="overflow-x: auto;">
+                <table class="table text-nowrap  table-responsive-sm">
+                    <thead>
+                        <tr>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Email</th>
+                          <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let account of accounts">
+                        <td>{{account.firstName }}</td>
+                        <td>{{account.lastName }}</td>
+                        <td>{{account.email}}</td>
+                        <td>
+                          <button
+                            [routerLink]="['/supplier-team', 'edit-supplier-team-member', account.id]"
+                            class="btn btn-sm btn-primary mr-2 mb-2"
+                          >
+                              Edit
+                          </button>
+                          <button
+                            class="btn btn-sm btn-danger mr-2 mb-2"
+                            data-toggle='modal'
+                            data-target='.modal.confirm-delete'
+                            (click)='setPendingDeleteId(account.id)'
+                          >Delete</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer" *ngIf="accounts.length > 0">
+          <div class="row">
+              <div class="col-12">
+                  <nav>
+                      <ul class="pagination mt-3 justify-content-center">
+                          <li class="page-item disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(1)"><i class="fa fa-step-backward"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left disabled" *ngIf="currentPageNo === 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                          <li class="page-item page-item-Left" *ngIf="currentPageNo > 1">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                          </li>
+                              <div *ngFor="let page of availablePages">
+                                  <li class="page-item active" *ngIf="currentPageNo === page">
+                                      <button class="page-link">{{ page }}</button>
+                                  </li>
+                                  <li class="page-item" *ngIf="currentPageNo !== page">
+                                      <button class="page-link" type="submit" (click)="changePageNo(page)">{{ page }}</button>
+                                  </li>
+                              </div>
+                          <li class="page-item page-item-right disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item page-item-right" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                          </li>
+                          <li class="page-item disabled" *ngIf="currentPageNo === totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                          <li class="page-item" *ngIf="currentPageNo < totalPageCount">
+                              <button class="page-link page-link-control" type="submit" (click)="changePageNo(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+              <div class="col-12">
+                  <p class="text-center">
+                      You're on page <span class="font-weight-bold">{{ currentPageNo }} of {{ totalPageCount }}</span>,
+                      with
+                      <select (change)="changeResultsNo($event.target.value)" value="{{ resultsPerPage }}">
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                      </select>
+                      results per page.
+                  </p>
+              </div>
+          </div>
+        </div>
+    </div>
+</div>

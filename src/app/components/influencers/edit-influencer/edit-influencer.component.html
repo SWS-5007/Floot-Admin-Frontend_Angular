@@ -1,0 +1,45 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/influencers">Influencers</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/influencers', 'profile', influencerId]">{{ influencerName }}</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/influencers', 'edit-influencer']">Edit Influencer</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Edit Influencer</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Edit Influencer
+    </div>
+    <div class="card-body" [formGroup]="editInfluencerForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" formControlName="name" (change)='onUserInputEvent()' type="text" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Profile Image (max 50mb)</label>
+            <input *ngIf="!existingProfileImageUrl" class="form-control-file" formControlName="profileImage" accept=".png,.jpg,.jpeg" (change)='onImageSelected($event)' type="file" />
+            <div *ngIf="existingProfileImageUrl">
+              <div style="background-color: lightgrey; width: 100px; height: 100px">
+                <img [src]="existingProfileImageUrl ? existingProfileImageUrl : '../.././../../assets/template-image.png'" alt="" width="100px" height="100px" style="border-radius: 50px; object-fit: cover;">
+              </div>
+              <button class="btn btn-danger btn-sm ml-2" (click)="removeProfileImage()">Remove</button>
+            </div>
+            <p class="text-danger" *ngIf="editInfluencerForm.errors" >File too large!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button
+          [disabled]='!editInfluencerForm.valid'
+          class="btn btn-primary float-right"
+          (click)="editInfluencer()"
+      >Save Changes</button>
+    </div>
+  </div>
+</div>

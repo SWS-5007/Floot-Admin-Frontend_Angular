@@ -1,0 +1,92 @@
+<ul class='breadcrumb'>
+  <li class='breadcrumb-item'><a routerLink="/posts">Posts</a></li>
+  <li class='breadcrumb-item active'><a [routerLink]="['/posts', 'create-post']">Create Post</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+  <h1>Create Posttt</h1>
+  <br>
+  <div class="card">
+    <div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+      Create Post
+    </div>
+    <div class="card-body" [formGroup]="createPostForm">
+      <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label>Publishing Venue</label>
+                <select class="form-control" formControlName="venueId" (change)='onUserInputEvent()' >
+                  <option *ngFor="let venue of venues" [disabled]="venue.status !== 'active'" [value]="venue.id">{{ venue.name ? venue.name : "Not Found" }} - {{ venue.address ? venue.address : "Not Found" }} - {{ venue.status ? venue.status : "Not Found" }}</option>
+                </select>
+            </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <h3>Post Content</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label>Caption (max characters 1200)</label>
+            <textarea class="form-control" formControlName="caption" rows="4" cols="50" maxLength="1200" (change)='onUserInputEvent()' type="text" ></textarea>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+              <label>Image/Video</label>
+              <input class="form-control-file" accept=".png,.jpg,.jpeg,.mp4" (change)='onImageSelected($event)' type="file" />
+              <!--<mat-progress-bar *ngIf="progress > 0" mode="determinate" [value]="progress"></mat-progress-bar>
+              <label *ngIf="progress === 100">Upload Complete ✓</label> -->
+              <label>Your images & videos will look their best in a square (1:1) format!</label>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <h3>Question</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input mt-0l" type="checkbox" (change)="addOptionsChecked = !addOptionsChecked" value="false"/>
+            <label>
+                Add Question to Post
+            </label>
+        </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="addOptionsChecked === true">
+        <div class="col-12">
+          <div class="form-group">
+            <div formArrayName="optionsInput">
+              <div class="input-group" style="margin-bottom: 18px" *ngFor="let option of optionsArr; let i = index">
+                <input type="text" class="form-control" [formControlName]="i" placeholder="Enter option {{ i + 1 }}" >
+                <div class="input-group-append">
+                  <span class="input-group-text prepend-container">
+                    <a type="button" style="color: red;" (click)="removeOption(i)">Remove</a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button *ngIf="optionsArr.length < 4" type="button" class="btn btn-primary" (click)="addOption()">Add Option +</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button *ngIf="posting === false"
+          [disabled]='!createPostForm.valid'
+          class="btn btn-primary float-right"
+          (click)="createPost()"
+      >Create Post</button>
+      <mat-spinner *ngIf="posting === true"
+          diameter="40"
+          class="float-right"></mat-spinner>
+    </div>
+  </div>
+</div>
