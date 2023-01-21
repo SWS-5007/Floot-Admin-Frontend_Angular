@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { TimeFrame } from "src/app/app.component";
 import { ProcessDataService } from "src/app/services/dataProcess/process-data.service";
 import { SalesDataService } from "src/app/services/sales-data/sales-data.service";
-import {FormGroup, FormControl} from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 
 import {
@@ -47,7 +47,7 @@ export type DashTilesData = {
 }
 
 export type DashTile = {
-  name: string, 
+  name: string,
   value: number,
   class: string
 }
@@ -60,7 +60,7 @@ export type ChartOptions1 = {
 };
 export type GrowthData = {
   weekly: number,
-  monthly: number, 
+  monthly: number,
   yearly: number
 }
 
@@ -82,8 +82,13 @@ export class SalesComponent implements OnInit {
 
   cityView = false;
 
+  salesDates = [];
+
   maxDate: Date = null;
   minDate: Date = null;
+
+  rangeStartDate: Date = null;
+  rangeEndDate: Date = null;
 
   salesOptions: {} = {
     vAxis: { minValue: 0, viewWindow: { min: 0 } },
@@ -115,27 +120,12 @@ export class SalesComponent implements OnInit {
     startDate: new FormControl<Date | null>(null),
     endDate: new FormControl<Date | null>(null),
   });
-  open(arg,name){
-    this.name=name
+  open(arg, name) {
+    this.name = name
   }
-  
 
-  constructor(public dialog: MatDialog,public salesDataService: SalesDataService) {
-    this.chartOptions = {
-      series: [
-        {
-          name: "My-series",
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "bar"
-      },
-      xaxis: {
-        categories: ["Jan", "Feb",  "Mar",  "Apr",  "May",  "Jun",  "Jul",  "Aug", "Sep"]
-      }
-    };
+
+  constructor(public dialog: MatDialog, public salesDataService: SalesDataService) {
     this.ChartOptions1 = {
       series: [
         {
@@ -170,7 +160,7 @@ export class SalesComponent implements OnInit {
         ]
       }
     };
-}
+  }
   // public generateData(baseval, count, yrange) {
   //   var i = 0;
   //   var series = [];
@@ -187,7 +177,7 @@ export class SalesComponent implements OnInit {
   //   return series;
   // }
   async loadSales() {
-    
+
     await this.salesDataService.getDateRange().then((res) => {
       console.log(res)
       this.maxDate = new Date();
@@ -217,19 +207,19 @@ export class SalesComponent implements OnInit {
       this.growthData = res;
       console.log(this.growthData)
 
-      if(this.growthData.weekly < 1) {
+      if (this.growthData.weekly < 1) {
         this.growthDisplay.weekly = Math.round((1 - this.growthData.weekly) * 100)
       } else {
         this.growthDisplay.weekly = Math.round((this.growthData.weekly - 1) * 100)
       }
 
-      if(this.growthData.monthly < 1) {
+      if (this.growthData.monthly < 1) {
         this.growthDisplay.monthly = Math.round((1 - this.growthData.monthly) * 100)
       } else {
         this.growthDisplay.monthly = Math.round((this.growthData.monthly - 1) * 100)
       }
 
-      if(this.growthData.yearly < 1) {
+      if (this.growthData.yearly < 1) {
         this.growthDisplay.yearly = Math.round((1 - this.growthData.yearly) * 100)
       } else {
         this.growthDisplay.yearly = Math.round((this.growthData.yearly - 1) * 100)
@@ -252,77 +242,24 @@ export class SalesComponent implements OnInit {
     //this.chartOptions.xaxis.categories = xData;
     console.log("this.salesDatathis.salesData", this.chartOptions);
 
-      for (let i = 1; i < this.salesData.length; i++) {
-        this.totalSales += this.salesData[i][1];
-      }
+    for (let i = 1; i < this.salesData.length; i++) {
+      this.totalSales += this.salesData[i][1];
+    }
 
-      let res = await this.salesDataService.getAVGDaySales(this.range.value.startDate);
-      this.avgSales = parseFloat(res.avg);
+    let res = await this.salesDataService.getAVGDaySales(this.range.value.startDate);
+    this.avgSales = parseFloat(res.avg);
 
-      this.growth = this.totalSales / this.avgSales;
-      this.chartDisplay();
+    this.growth = this.totalSales / this.avgSales;
+    // this.chart1();
   }
 
-  async changeDateRange(event: any) {
-    console.log("MADE IT IN THE FUNCTION")
-    let startDate = new Date(this.range.value.startDate);
-    console.log(startDate)
-    startDate.setMinutes(
-      startDate.getMinutes() - startDate.getTimezoneOffset()
-    );
-    console.log("the end dateeee")
-    console.log(this.range.value.endDate)
-    let endDate = new Date(this.range.value.endDate);
-    console.log(endDate)
-    endDate.setMinutes(
-      endDate.getMinutes() - endDate.getTimezoneOffset()
-    )
-
-    console.log(startDate)
-    console.log(endDate)
-    this.salesData = await this.salesDataService.getSalesData(
-      startDate,
-      endDate,
-      this.timeFrame
-    );
-    this.yData = [];
-    this.xData = [];
-    this.salesData.forEach((x, i) => {
-      if (i > 0) {
-        this.yData.push(x[1]);
-        this.xData.push(x[0]);
-      }
-    });
-    console.log(this.salesData)
-    this.chartDisplay();
-  }
-
-  async changeTimeFrame(event: TimeFrame) {
-    this.timeFrame = event;
-    this.salesData = await this.salesDataService.getSalesData(
-      this.range.value.startDate,
-      this.range.value.endDate,
-      this.timeFrame
-    );
-    this.yData = [];
-    this.xData = [];
-    this.salesData.forEach((x, i) => {
-      if (i > 0) {
-        this.yData.push(x[1]);
-        this.xData.push(x[0]);
-      }
-    });
-
-    this.chartDisplay();
-  }
-
-  onManualEntry(){
+  onManualEntry() {
     const dialog = this.dialog.open(SalesEntryModalComponent, {
       data: null
     })
 
     dialog.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         console.log(result);
       }
     })
@@ -349,16 +286,78 @@ export class SalesComponent implements OnInit {
     domain: ['#45b6fe', '#3792cb', '#296d98', '#1c4966']
   };
   ngOnInit(): void {
-    this.chart1();
-    this.chart2();
+    // this.chart1();
+    // this.chart2();
     this.loadSales();
   }
+
+  async handleDateRange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
+    if (dateRangeEnd.value) {
+      this.rangeStartDate = new Date(dateRangeStart.value);
+      this.rangeEndDate = new Date(dateRangeEnd.value);
+
+      this.salesData = await this.salesDataService.getSalesData(
+        this.rangeStartDate,
+        this.rangeEndDate,
+        this.timeFrame
+      );
+      this.yData = [];
+      this.xData = [];
+      this.salesData.forEach((x, i) => {
+        if (i > 0) {
+          this.yData.push(x[1]);
+          this.xData.push(x[0]);
+        }
+      });
+      console.log(this.salesData)
+      this.chart1();
+    }
+  }
+
+  async handleChangeTimeFrame(event: TimeFrame, flag: String) {
+    switch (flag) {
+      case 'hour':
+        this.timeFrame = TimeFrame.hourly;
+        break;
+      case 'day':
+        this.timeFrame = TimeFrame.daily;
+        break;
+      case 'week':
+        this.timeFrame = TimeFrame.weekly;
+        break;
+      case 'month':
+        this.timeFrame = TimeFrame.monthly;
+        break;
+      case 'year':
+        this.timeFrame = TimeFrame.yearly;
+        break;
+      default:
+        break;
+    }
+
+    this.salesData = await this.salesDataService.getSalesData(
+      this.rangeStartDate,
+      this.rangeEndDate,
+      this.timeFrame
+    );
+    this.yData = [];
+    this.xData = [];
+    this.salesData.forEach((x, i) => {
+      if (i > 0) {
+        this.yData.push(x[1]);
+        this.xData.push(x[0]);
+      }
+    });
+
+    this.chart1();
+  }
+
   private chart1() {
     this.chartOptions = {
       series: [
         {
           name: "High - 2013",
-          data: [15, 13, 30, 23, 13, 32, 27],
+          data: this.yData,
         },
         // {
         //   name: "Low - 2013",
@@ -366,7 +365,7 @@ export class SalesComponent implements OnInit {
         // },
       ],
       chart: {
-        height: 250,
+        height: 350,
         type: "line",
         foreColor: "#9aa0ac",
         dropShadow: {
@@ -396,7 +395,7 @@ export class SalesComponent implements OnInit {
         size: 3,
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories: this.xData,
         title: {
           text: "Month",
         },
@@ -485,37 +484,9 @@ export class SalesComponent implements OnInit {
     //       show: true,
     //     },
     //   },
-      
+
     // };
   }
-
-  chartDisplay() {
-    console.log(this.yData);
-    this.chartOptions = {
-      series: [
-        {
-          data: this.yData,
-        },
-      ],
-      chart: {
-        height: 425,
-        type: "area",
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      xaxis: {
-        categories: this.xData,
-        
-      },
-    };
-    console.log(this.chartOptions.series);
-  }
-
-  
 
   onSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
@@ -528,4 +499,5 @@ export class SalesComponent implements OnInit {
   onDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
+
 }
