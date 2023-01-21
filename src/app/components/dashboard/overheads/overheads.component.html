@@ -1,259 +1,249 @@
-<div class="sales m-4">
+<div class=" outgoing  m-4">
     <div class="mt-5">
-      <hr />
+        <hr />
     </div>
-    <div class="graph-wrapper">
-      <div class="details">
-       
-        <!-- <h2 class="text-center">Sales Revenue - Past 30 Days</h2> -->
-          <!-- <div class="side-buttons d-flex align-items-center">
-                        <div class="col-8">
-                            <div class="row">
-                                <mat-form-field #dayPicker appearance="fill">
-                                    <mat-label>Choose a Day</mat-label>
-                                    <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker2"
-                                        (dateChange)="changeDay($event)" placeholder="Chosen Date">
-                                    <mat-hint>MM/DD/YYYY</mat-hint>
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div class="row">
-                                <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker>
-                            </div>
-                        </div>
-                        <div class="col-4 ml-5">
-                            <button type="button" class="supplierbutton" (click)="toggleCityView()">Toggle City
-                                Data</button>
-                        </div>
-                    </div> -->
-          
-            <!-- <div class="invoice-drop-wrap">
-              <div class="invoice-drop">
-                <app-invoice-drop></app-invoice-drop>
-              </div>
-              <div class="manual-entry">
-                  <button mat-button (click)="onManualEntry()"> Enter sales reports manually</button>
-              </div>
-            </div> -->
-            <div class="graph-controls d-flex p-2">
-              <!-- <mat-form-field #dayPicker appearance="outline">
-                <mat-label>Choose a Day</mat-label>
-                <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker2"
-                    (dateChange)="changeDay($event)" placeholder="Chosen Date">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field> -->
-              <h2 class="m-0">Overheads</h2>
-             
-              <!-- <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker> -->
-             
-              <div class="ml-auto Overheads">
-                <mat-form-field appearance="fill" >
-                    <mat-label>Select dates</mat-label>
-                    <mat-date-range-input [rangePicker]="picker" >
-                      <input matStartDate placeholder="Start date">
-                      <input matEndDate placeholder="End date">
+
+
+    <div class="details ">
+        <div class="graph-controls d-flex p-2">
+            <h2 class="m-0">Overheads</h2>
+
+            <div class="col-md-4 ml-auto Overheads">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate" [min]="minDate" [formGroup]="dateRange">
+                        <input matStartDate placeholder="Start date" formControlName="start" #dateRangeStart>
+                        <input matEndDate placeholder="End date" formControlName="end" #dateRangeEnd>
                     </mat-date-range-input>
-                   
+
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                  </mat-form-field>
-              </div>
+                    <mat-date-range-picker #picker (closed)="handleDateRange(dateRangeStart, dateRangeEnd)"></mat-date-range-picker>
+                </mat-form-field>
             </div>
-          
-  
-        <!-- <div *ngIf="timeFrame == 0 || timeFrame == 1">
-                                <p>Total Sales: {{totalSales}}</p>
-                                <p>Avg Sales: {{avgSales}}</p>
-                                <p>Growth: {{growth}}</p>
-                            </div> -->
-      </div>
+        </div>
+
+        <div class="summary-section">
+            <div class="tile-container">
+                <div class="info-box7 l-bg-card2 order-info-box7">
+                    <div class="info-box7-block">
+                        <h2 class="m-b-20 white">Total Overheads</h2>
+                        <h2 class="text-end white">
+                            <i class="fa fa-truck float-left"></i>
+                            <span>{{ totalOverheads |currency:'GBP'}}</span>
+                        </h2>
+                        <p class="m-0 text-left" style="font-size:15px">18% Higher Then Last Month</p>
+                    </div>
+                </div>
+                <div *ngIf="selectedSupplierId">
+                    <div class="info-box7 l-bg-card1 order-info-box7">
+                        <div class="info-box7-block">
+                            <h2 class="m-b-20 white text-capitalize">{{ suppliersSearch[selectedSupplierId].name }}</h2>
+                            <h2 class="text-end white">
+                                <i class="fa fa-truck float-left"></i>
+                                <span>{{ suppliersSearch[selectedSupplierId].overhead | currency:'GBP' }}</span>
+                            </h2>
+                            <p class="m-0 text-left" style="font-size:15px">18% Higher Then Last Month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="invoice-container">
+                <app-invoice-drop></app-invoice-drop>
+                <app-invoice-drop></app-invoice-drop>
+            </div>
+        </div>
     </div>
-    <div class="details mt-3">
-      <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [labels]="chartOptions.labels"
-      [responsive]="chartOptions.responsive"
-    ></apx-chart>
+
+
+    <div class="details suppliers mt-4">
+        <div class="supplier-container">
+            <!-- <mat-radio-group aria-label="Select an option"> -->
+            <div *ngFor="let supplier of suppliers" class="supplier">
+
+                <!-- <mat-radio-button class="mr-4" *ngFor="let supplier of suppliers" value="{{supplier.id}}"
+                    (change)="setSelectedSupplier(supplier.id)">
+                    {{supplier.name}}
+                </mat-radio-button> -->
+
+                <button [class]="activeButton==supplier.id?'active supplierbutton':'supplierbutton'" (click)="setSelectedSupplier(supplier.id)">
+                {{supplier.name}}
+            </button>
+            </div>
+        </div>
+        <div class="pie-chart row d-flex justify-content-center align-items-center">
+            <!-- <app-pie-chart [data]="chartData" [options]="chartOptions"></app-pie-chart> -->
+            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"></apx-chart>
+        </div>
 
     </div>
-    <!-- <div class="side-buttons col-4 overflow-hidden">
-      <div class="row">
-          <mat-form-field #dayPicker appearance="fill">
-              <mat-label>Choose a Day</mat-label>
-              <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker2"
-                  (dateChange)="changeDay($event)" placeholder="Chosen Date">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-          </mat-form-field>
-      </div>
-      <div class="row">
-          <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker>
-      </div>
-      <div class="d-flex justify-content-center">
-          <button type="button" class="toggle-button" (click)="toggleCityView()">Toggle City
-              Data</button> -->
-    <!-- <button type="button" class="toggle-button">Toggle Overheads</button> -->
-    <!-- </div> -->
-    <!-- <div class="row">
-          <app-vat-liability></app-vat-liability>
-      </div> -->
-    <!-- <div class="slider row m25">
-          <mat-slide-toggle color="primary">Auto Send Data</mat-slide-toggle>
-      </div> -->
-    <!-- </div> -->
-    <div class="details suppliers my-4">
-        <div class="graph-controls d-flex px-3 py-2">
-            <h2 class="m-0">Invoices</h2>
-            <button class="btn btn-primary sales_button ml-auto" type="button">Upload Invoice</button>
+
+    <div class="details suppliers mt-4">
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="mb-4">
+                <app-invoice-drop></app-invoice-drop>
+            </div>
+            <div class="tableBody">
+                <div class="table-responsive">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Supplier</th>
+                                <th>Invoice Date</th>
+                                <th class="text-center">Download Invoice link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-img">
+                                    1
+                                </td>
+                                <td>John Deo</td>
+                                <td>15-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    2
+                                </td>
+                                <td>Jens Brincker</td>
+                                <td>16-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    3
+                                </td>
+                                <td>Mark Hay</td>
+                                <td>18-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    4
+                                </td>
+                                <td>Anthony Davie</td>
+                                <td>17-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    5
+                                </td>
+                                <td>Alan Gilchrist</td>
+                                <td>23-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    6
+                                </td>
+                                <td>Sue Woodger</td>
+                                <td>26-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    7
+                                </td>
+                                <td>David Perry</td>
+                                <td>29-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-img">
+                                    8
+                                </td>
+                                <td>Sneha Pandit</td>
+                                <td>28-08-2019</td>
+                                <td class="text-center">
+                                    <button mat-icon-button>
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+
+                                </td>
+                                <td>
+                                    <button mat-icon-button class="btn-tbl-delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      <div class="tableBody">
-        <div class="table-responsive">
-          <table class="table text-center">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Supplier</th>
-                <th>Invoice Date</th>
-                <th class="text-center">Download Invoice link</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="table-img">1</td>
-                <td>John Deo</td>
-                <td>15-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">2</td>
-                <td>Jens Brincker</td>
-                <td>16-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">3</td>
-                <td>Mark Hay</td>
-                <td>18-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">4</td>
-                <td>Anthony Davie</td>
-                <td>17-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">5</td>
-                <td>Alan Gilchrist</td>
-                <td>23-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">6</td>
-                <td>Sue Woodger</td>
-                <td>26-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">7</td>
-                <td>David Perry</td>
-                <td>29-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table-img">8</td>
-                <td>Sneha Pandit</td>
-                <td>28-08-2019</td>
-                <td class="text-center">
-                  <button mat-icon-button>
-                    <mat-icon>cloud_download</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button mat-icon-button class="btn-tbl-delete">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- <div class="container-fluid">
-  <div class="row">
-      <app-calendar></app-calendar>
-  </div>
-  </div> -->
-  
-  
+</div>

@@ -1,11 +1,11 @@
 <div class="sales m-4">
-  <div class="mt-5">
-    <hr />
-  </div>
-  <div class="graph-wrapper">
-    <div class="details">
-      <!-- <h2 class="text-center">Sales Revenue - Past 30 Days</h2> -->
-        <!-- <div class="side-buttons d-flex align-items-center">
+    <div class="mt-5">
+        <hr />
+    </div>
+    <div class="graph-wrapper">
+        <div class="details">
+            <!-- <h2 class="text-center">Sales Revenue - Past 30 Days</h2> -->
+            <!-- <div class="side-buttons d-flex align-items-center">
                       <div class="col-8">
                           <div class="row">
                               <mat-form-field #dayPicker appearance="fill">
@@ -26,8 +26,8 @@
                               Data</button>
                       </div>
                   </div> -->
-        
-          <!-- <div class="invoice-drop-wrap">
+
+            <!-- <div class="invoice-drop-wrap">
             <div class="invoice-drop">
               <app-invoice-drop></app-invoice-drop>
             </div>
@@ -35,8 +35,8 @@
                 <button mat-button (click)="onManualEntry()"> Enter sales reports manually</button>
             </div>
           </div> -->
-          <div class="graph-controls d-flex justify-content-around py-2">
-            <!-- <mat-form-field #dayPicker appearance="outline">
+            <div class="graph-controls d-flex justify-content-around py-2">
+                <!-- <mat-form-field #dayPicker appearance="outline">
               <mat-label>Choose a Day</mat-label>
               <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker2"
                   (dateChange)="changeDay($event)" placeholder="Chosen Date">
@@ -44,116 +44,68 @@
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field> -->
-            <h2>Sales</h2>
-            <div>
-              <mat-form-field appearance="outline">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date">
-                  <input matEndDate placeholder="End date">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
+                <h2>Sales</h2>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="Start date" #dateRangeStart>
+                            <input matEndDate placeholder="End date" #dateRangeEnd>
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker (closed)="handleDateRange(dateRangeStart, dateRangeEnd)"></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <!-- <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker> -->
+                <div class="switch-wrap">
+                    <mat-slide-toggle>City View</mat-slide-toggle>
+                </div>
+                <div class="switch-wrap">
+                    <mat-slide-toggle>Overheads</mat-slide-toggle>
+                </div>
+                <div>
+                    <button class="btn btn-primary sales_button">Enter Manually</button>
+                </div>
             </div>
-            <!-- <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker> -->
-            <div class="switch-wrap">
-              <mat-slide-toggle>City View</mat-slide-toggle>
-            </div>
-            <div class="switch-wrap">
-              <mat-slide-toggle>Overheads</mat-slide-toggle>
-            </div>
-            <div>
-              <button class="btn btn-primary sales_button">Enter Manually</button>
-            </div>
-          </div>
-        
 
-      <!-- <div *ngIf="timeFrame == 0 || timeFrame == 1">
+
+            <!-- <div *ngIf="timeFrame == 0 || timeFrame == 1">
                               <p>Total Sales: {{totalSales}}</p>
                               <p>Avg Sales: {{avgSales}}</p>
                               <p>Growth: {{growth}}</p>
                           </div> -->
+        </div>
     </div>
-  </div>
-  <div class="details suppliers my-3">
-    <div class="d-flex Sales-icon">
-      <div class="btn-group">
-        <label
-          class="btn border-0"
-          [ngClass]="name=='hour' ? 'active' : ''"
-          ng-model="radioModel"
-          uib-btn-radio="'Hour'"
-          (click)="open($event,'hour')"
-          >Hour</label
-        >
-        <label
-          class="btn border-0"
-          [ngClass]="name=='day' ? 'active' : ''"
-          ng-model="radioModel"
-          uib-btn-radio="'Day'"
-          (click)="open($event,'day')"
-          >Day</label
-        >
-        <label
-          class="btn border-0"
-          [ngClass]="name=='week' ? 'active' : ''"
-          ng-model="radioModel"
-          uib-btn-radio="'Week'"
-          (click)="open($event,'week')"
-          >Week</label
-        >
-        <label
-          class="btn border-0"
-          [ngClass]="name=='month' ? 'active' : ''"
-          ng-model="radioModel"
-          uib-btn-radio="'Month'"
-          (click)="open($event,'month')"
-          >Month</label
-        >
-        <label
-          class="btn border-0"
-          [ngClass]="name=='year' ? 'active' : ''"
-          ng-model="radioModel"
-          uib-btn-radio="'year'"
-          (click)="open($event,'year')"
-          >year</label
-        >
-      </div>
-      <div class="ml-auto">
-        <span class="material-symbols-outlined"> search </span>
-        <span class="material-symbols-outlined"> zoom_in </span>
-        <span class="material-symbols-outlined"> zoom_out </span>
-        <span class="material-symbols-outlined text-black-50"> back_hand </span>
-        <span class="material-symbols-outlined cancel text-black-50"> cancel </span>
-        <span class="material-symbols-outlined"> download </span>
-      </div>
+    <div class="details suppliers my-3">
+        <div class="d-flex Sales-icon">
+            <div class="btn-group">
+                <label class="btn border-0" [ngClass]="name=='hour' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Hour'" (click)="handleChangeTimeFrame($event,'hour')">Hour</label>
+                <label class="btn border-0" [ngClass]="name=='day' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Day'" (click)="handleChangeTimeFrame($event,'day')">Day</label>
+                <label class="btn border-0" [ngClass]="name=='week' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Week'" (click)="handleChangeTimeFrame($event,'week')">Week</label>
+                <label class="btn border-0" [ngClass]="name=='month' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Month'" (click)="handleChangeTimeFrame($event,'month')">Month</label>
+                <label class="btn border-0" [ngClass]="name=='year' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'year'" (click)="handleChangeTimeFrame($event,'year')">year</label>
+            </div>
+            <div class="ml-auto">
+                <span class="material-symbols-outlined"> search </span>
+                <span class="material-symbols-outlined"> zoom_in </span>
+                <span class="material-symbols-outlined"> zoom_out </span>
+                <span class="material-symbols-outlined text-black-50"> back_hand </span>
+                <span class="material-symbols-outlined cancel text-black-50"> cancel </span>
+                <span class="material-symbols-outlined"> download </span>
+            </div>
+        </div>
+
+        <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [dataLabels]="chartOptions.dataLabels">
+        </apx-chart>
+
+
     </div>
-    <apx-chart
-    *ngIf="chartOptions"
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [stroke]="chartOptions.stroke"
-    [tooltip]="chartOptions.tooltip"
-    [dataLabels]="chartOptions.dataLabels"
-  >
-  </apx-chart>
 
-   
-  </div>
-
-  <div class="details px-3">
-    <h2 class="m-0">Product Revenues</h2>
-    <apx-chart
-    [series]="ChartOptions1.series"
-    [chart]="ChartOptions1.chart"
-    [dataLabels]="ChartOptions1.dataLabels"
-    [plotOptions]="ChartOptions1.plotOptions"
-    [xaxis]="ChartOptions1.xaxis"
-  ></apx-chart>
-  </div>
-  <!-- <div class="side-buttons col-4 overflow-hidden">
+    <div class="details px-3">
+        <h2 class="m-0">Product Revenues</h2>
+        <apx-chart [series]="ChartOptions1.series" [chart]="ChartOptions1.chart" [dataLabels]="ChartOptions1.dataLabels" [plotOptions]="ChartOptions1.plotOptions" [xaxis]="ChartOptions1.xaxis"></apx-chart>
+    </div>
+    <!-- <div class="side-buttons col-4 overflow-hidden">
     <div class="row">
         <mat-form-field #dayPicker appearance="fill">
             <mat-label>Choose a Day</mat-label>
@@ -170,16 +122,16 @@
     <div class="d-flex justify-content-center">
         <button type="button" class="toggle-button" (click)="toggleCityView()">Toggle City
             Data</button> -->
-  <!-- <button type="button" class="toggle-button">Toggle Overheads</button> -->
-  <!-- </div> -->
-  <!-- <div class="row">
+    <!-- <button type="button" class="toggle-button">Toggle Overheads</button> -->
+    <!-- </div> -->
+    <!-- <div class="row">
         <app-vat-liability></app-vat-liability>
     </div> -->
-  <!-- <div class="slider row m25">
+    <!-- <div class="slider row m25">
         <mat-slide-toggle color="primary">Auto Send Data</mat-slide-toggle>
     </div> -->
-  <!-- </div> -->
-  <!-- <div class="details suppliers my-4">
+    <!-- </div> -->
+    <!-- <div class="details suppliers my-4">
     <div class="tableBody">
       <div class="table-responsive">
         <table class="table text-center">
@@ -324,4 +276,3 @@
     <app-calendar></app-calendar>
 </div>
 </div> -->
-
