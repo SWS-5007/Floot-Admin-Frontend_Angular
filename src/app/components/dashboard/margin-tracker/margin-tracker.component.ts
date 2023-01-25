@@ -1,3 +1,4 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { environment } from "src/environments/environment";
@@ -6,13 +7,13 @@ import { MatTableDataSource } from "@angular/material/table";
 
 export interface Element {
   name: string;
-  gp_per_unit: number;
-  gross: number;
-  margin: number;
-  mls: number;
-  rate: number;
-  unitCost: number;
   cost: number;
+  rate: number;
+  mls: number;
+  unitCost: number;
+  gross: number;
+  gp_per_unit: number;
+  margin: number;
 }
 
 @Component({
@@ -20,15 +21,15 @@ export interface Element {
   templateUrl: "./margin-tracker.component.html",
   styleUrls: ["./margin-tracker.component.less"],
 })
-export class MarginTrackerComponent {
-  @ViewChild(MatSort) sort: MatSort;
+export class MarginTrackerComponent implements OnInit, AfterViewInit {
+  // @ViewChild(MatSort) sort: MatSort;
 
   displayColumns: string[] = [
     "name",
     "cost",
     "rate",
     "mls",
-    "unit_cost",
+    "unitCost",
     "gross",
     "gp_per_unit",
     "margin",
@@ -37,23 +38,38 @@ export class MarginTrackerComponent {
 
   dataSource = null;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private _liveAnnouncer: LiveAnnouncer
+  ) {
     this.loadTable();
+  }
+
+  // @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
+
+
+  announceSortChange(sortState: Sort) {
+    console.log('@@@@@@@########', sortState)
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 
   async loadTable() {
     await this.pullTableData().then((res) => {
-      console.log(this.tableData);
       this.tableData = res.map((x) => {
         return {
           name: x.name,
+          cost: parseFloat(x.cost),
           gp_per_unit: parseFloat(x.gp_per_uni),
           gross: parseFloat(x.gross),
           margin: parseFloat(x.margin),
           mls: parseFloat(x.mls),
           rate: parseFloat(x.rate),
           unitCost: parseFloat(x.unitCost),
-          cost: parseFloat(x.cost),
         };
       });
       this.dataSource = new MatTableDataSource(this.tableData);
@@ -68,12 +84,18 @@ export class MarginTrackerComponent {
           venue_id: 1,
         })
         .toPromise();
-      console.log("request is");
-      console.log(request);
       return request.payload;
     } catch (error) {
       console.log(error);
     }
+  }
+
+  ngOnInit() {
+    // this.loadTable();
+  }
+
+  ngAfterViewInit() {
+    // this.dataSource.sort = this.sort;
   }
 
   doFilter = (value: any) => {

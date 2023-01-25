@@ -86,6 +86,8 @@ import { OutgoingsComponent } from "./components/dashboard/outgoings/outgoings.c
 import { GpCalculatorContainerComponent } from "./components/dashboard/gp-calculator/gp-calculator-container/gp-calculator-container.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { HomeComponent } from "./components/dashboard/home/home.component";
+
+import { SpecSheetComponent } from "./components/dashboard/spec-sheet/spec-sheet.component";
 import { ProductsComponent } from "./components/dashboard/products/products.component";
 
 const routes: Routes = [
@@ -443,6 +445,10 @@ const routes: Routes = [
   {
     path: "supplier-space",
     component: SupplierSpaceComponent,
+  },
+  {
+    path: "spec-sheet",
+    component: SpecSheetComponent,
   },
 ];
 

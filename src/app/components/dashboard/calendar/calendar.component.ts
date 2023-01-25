@@ -23,9 +23,11 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  CalendarDateFormatter
 } from "angular-calendar";
 import { EventColor } from "calendar-utils";
 import { CalendarService } from "../../../services/calendar/calendar.service";
+import { CustomDateFormatter } from './ custom-date-formatter.provider';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -48,6 +50,12 @@ const colors: Record<string, EventColor> = {
   styleUrls: ["./calendar.component.less"],
   templateUrl: "./calendar.component.html",
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter,
+    },
+  ],
 })
 export class CalendarComponent implements OnInit {
   @ViewChild("modalContent", { static: true }) modalContent: TemplateRef<any>;
@@ -128,7 +136,7 @@ export class CalendarComponent implements OnInit {
     // },
   ];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
   constructor(
     private modal: NgbModal,

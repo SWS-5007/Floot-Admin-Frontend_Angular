@@ -13,7 +13,6 @@ import {
   ApexStroke,
   ApexYAxis,
 } from "ng-apexcharts";
-import { resolveSoa } from "dns";
 import { MatDialog } from "@angular/material/dialog";
 import { SalesEntryModalComponent } from "../modals/sales-entry-modal/sales-entry-modal.component";
 
@@ -273,5 +272,8 @@ export class HomeComponent implements OnInit {
       },
     };
     console.log(this.chartOptions.series);
+  }
+  onCSVUpload() {
+
   }
 }

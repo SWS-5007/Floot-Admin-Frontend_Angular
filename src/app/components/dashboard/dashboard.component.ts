@@ -79,10 +79,10 @@ export class DashboardComponent implements OnInit {
     ],
   };
 
-  range = new FormGroup({
-    startDate: new FormControl<Date | null>(null),
-    endDate: new FormControl<Date | null>(null),
-  });
+  // range = new FormGroup({
+  //   startDate: new FormControl<Date | null>(null),
+  //   endDate: new FormControl<Date | null>(null),
+  // });
 
   // manualSalesFormdata = new FormGroup({
   //   // date: new FormControl<String | null>(null),
@@ -94,8 +94,8 @@ export class DashboardComponent implements OnInit {
 
   manualSalesFormdata = new FormArray([]);
 
-  selectedDate: Date = null;
-  timeFrame: TimeFrame = TimeFrame.daily;
+  // selectedDate: Date = null;
+  // timeFrame: TimeFrame = TimeFrame.daily;
 
   salesData: any[] = [];
   public yData: any[] = [];
@@ -295,11 +295,11 @@ export class DashboardComponent implements OnInit {
     await this.salesDataService.getDateRange().then((res) => {
       this.maxDate = new Date(res.max);
       this.minDate = new Date(res.min);
-      this.selectedDate = new Date(this.maxDate);
-      this.selectedDate.setHours(0);
-      this.selectedDate.setMinutes(
-        this.selectedDate.getMinutes() - this.selectedDate.getTimezoneOffset()
-      );
+      // this.selectedDate = new Date(this.maxDate);
+      // this.selectedDate.setHours(0);
+      // this.selectedDate.setMinutes(
+      //   this.selectedDate.getMinutes() - this.selectedDate.getTimezoneOffset()
+      // );
     });
 
     let thirtyDaysBefore: Date = new Date(this.maxDate)
@@ -327,46 +327,46 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  @Output() changeTimeFrame = new EventEmitter<TimeFrame>();
+  // @Output() changeTimeFrame = new EventEmitter<TimeFrame>();
 
-  async handleChangeTimeFrame(event: TimeFrame, flag: String) {
-    switch (flag) {
-      case 'hour':
-        // this.changeTimeFrame.emit(TimeFrame.hourly);
-        this.timeFrame = TimeFrame.hourly;
-        break;
-      case 'day':
-        this.timeFrame = TimeFrame.daily;
-        break;
-      case 'week':
-        this.timeFrame = TimeFrame.weekly;
-        break;
-      case 'month':
-        this.timeFrame = TimeFrame.monthly;
-        break;
-      case 'year':
-        this.timeFrame = TimeFrame.yearly;
-        break;
-      default:
-        break;
-    }
+  // async handleChangeTimeFrame(event: TimeFrame, flag: String) {
+  //   switch (flag) {
+  //     case 'hour':
+  //       // this.changeTimeFrame.emit(TimeFrame.hourly);
+  //       this.timeFrame = TimeFrame.hourly;
+  //       break;
+  //     case 'day':
+  //       this.timeFrame = TimeFrame.daily;
+  //       break;
+  //     case 'week':
+  //       this.timeFrame = TimeFrame.weekly;
+  //       break;
+  //     case 'month':
+  //       this.timeFrame = TimeFrame.monthly;
+  //       break;
+  //     case 'year':
+  //       this.timeFrame = TimeFrame.yearly;
+  //       break;
+  //     default:
+  //       break;
+  //   }
 
-    this.salesData = await this.salesDataService.getSalesData(
-      this.beforeThirtyDays,
-      this.maxDate,
-      this.timeFrame
-    );
-    this.yData = [];
-    this.xData = [];
-    this.salesData.forEach((x, i) => {
-      if (i > 0) {
-        this.yData.push(x[1]);
-        this.xData.push(x[0]);
-      }
-    });
+  //   this.salesData = await this.salesDataService.getSalesData(
+  //     this.beforeThirtyDays,
+  //     this.maxDate,
+  //     this.timeFrame
+  //   );
+  //   this.yData = [];
+  //   this.xData = [];
+  //   this.salesData.forEach((x, i) => {
+  //     if (i > 0) {
+  //       this.yData.push(x[1]);
+  //       this.xData.push(x[0]);
+  //     }
+  //   });
 
-    this.chart1();
-  }
+  //   this.chart1();
+  // }
 
   // Chart 1
   private chart1() {

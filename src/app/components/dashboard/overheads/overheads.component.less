@@ -93,7 +93,7 @@ p {
   // border-radius: 15px;
   padding: 10px;
   background: #fff;
-  border-radius: 10px px;
+  border-radius: 10px;
 }
 
 .supplier-overhead {
@@ -137,6 +137,25 @@ p {
     width: 100%;
   }
 }
+
+.graph-controls{
+  align-items: center;
+}
+
+.Overheads{
+  display: flex;
+  gap: 1rem;
+
+  .picker-wrap{
+    max-width: 300px;
+  }
+  .switch-wrap{
+    display: flex;
+    align-items: center;
+    color: rgba(0,0,0,0.87);
+  }
+}
+
 
 .outgoing {
   .info-box7 .info-box7-block {
@@ -250,4 +269,8 @@ p {
 .table-bordered tr {
   border: none;
   border-bottom: 1px solid #dee2e6;
+}
+
+.table-back {
+  background-color: var(--background-color)
 }

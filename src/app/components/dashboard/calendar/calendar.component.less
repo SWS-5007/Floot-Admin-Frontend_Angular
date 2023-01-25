@@ -19,12 +19,89 @@ h1 span {
   align-items: center;
 }
 
+.cal-month-view .cal-header  {
+  opacity: 1;
+  color: var(--colour-medium-grey);
+  font-weight: normal;
+}
+
+.cal-month-view .cal-header .cal-weekend  {
+  color: hotpink;
+  opacity: 1;
+}
+
+.cal-month-view .cal-days {
+  border-style: none;
+}
+
+.cal-month-view {
+  background-color: #fff;
+}
+
+.cal-month-view .cal-days .cal-cell-row  {
+  border-style: none;
+}
+
+.cal-month-view .cal-days .cal-cell  {
+  border-style: none;
+}
+
+.cal-month-view .cal-day-cell.cal-weekend .cal-in-month .cal-day-number {
+  color: hotpink;
+  opacity: 1;
+}
+
+.cal-month-view .cal-day-cell {
+  min-height: 20px;
+  max-height: 50px;
+}
+
+.cal-month-view .cal-day-number {
+  opacity: 0.8;
+  font-size: 0.9em;
+  font-weight: 400;
+  margin-top: 15px;
+  margin-right: 15px;
+  float: right;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.cal-month-view .cal-day-cell.cal-today {
+  background-color: white;
+  border-style: 0px solid;
+}
+
+.cal-month-view .cal-day-cell.cal-today .cal-day-number {
+  opacity: 1;
+  background-color: #58a5ea;
+  font-size: 0.8em;
+  width: 25px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 25px;
+  color: white;
+}
+
 .leftData {
   text-align: -webkit-right;
 }
 .monthName {
   padding: 4%;
   font-size: 20px;
+}
+.circle {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--colour-medium-grey);
+  width: 22px;
+  height: 22px;
+  border-radius: 22px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 // @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 

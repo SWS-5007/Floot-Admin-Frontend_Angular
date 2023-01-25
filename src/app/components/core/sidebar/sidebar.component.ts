@@ -59,8 +59,9 @@ export class SidebarComponent implements OnInit {
     },
     {
       icon: "fa fa-truck",
-      title: "Suppliers",
-      link: "/supplier-space",
+      title: "Spec Sheet",
+      link: "/spec-sheet",
+      // link: "/supplier-space",
       children: null,
       isExpanded: false,
     },
@@ -72,59 +73,59 @@ export class SidebarComponent implements OnInit {
       isExpanded: false,
     },
    
-    {
-      icon: "fa fa-tachometer",
-      title: " Venue",
-      link: "/venue-profile",
-      children: null,
-      isExpanded: false,
-    },
+    // {
+    //   icon: "fa fa-tachometer",
+    //   title: " Venue",
+    //   link: "/venue-profile",
+    //   children: null,
+    //   isExpanded: false,
+    // },
 
-    {
-      icon: "fa fa-comment",
-      title: "Posts",
-      link: null,
-      children: [
-        {
-          icon: "fa fa-eye",
-          title: "Search Posts",
-          link: "/venue-posts",
-        },
-        {
-          icon: "fa fa-plus",
-          title: "Create Post",
-          link: "/venue-posts/create-post",
-        },
-      ],
-      isExpanded: false,
-    },
+    // {
+    //   icon: "fa fa-comment",
+    //   title: "Posts",
+    //   link: null,
+    //   children: [
+    //     {
+    //       icon: "fa fa-eye",
+    //       title: "Search Posts",
+    //       link: "/venue-posts",
+    //     },
+    //     {
+    //       icon: "fa fa-plus",
+    //       title: "Create Post",
+    //       link: "/venue-posts/create-post",
+    //     },
+    //   ],
+    //   isExpanded: false,
+    // },
 
-    {
-      icon: "fa fa-users",
-      title: "Team",
-      link: null,
-      children: [
-        {
-          icon: "fa fa-eye",
-          title: "View Team",
-          link: "/venue-team",
-        },
-        {
-          icon: "fa fa-plus",
-          title: "Add Team Member",
-          link: "/venue-team/add-venue-team-member",
-        },
-      ],
-      isExpanded: false,
-    },
+    // {
+    //   icon: "fa fa-users",
+    //   title: "Team",
+    //   link: null,
+    //   children: [
+    //     {
+    //       icon: "fa fa-eye",
+    //       title: "View Team",
+    //       link: "/venue-team",
+    //     },
+    //     {
+    //       icon: "fa fa-plus",
+    //       title: "Add Team Member",
+    //       link: "/venue-team/add-venue-team-member",
+    //     },
+    //   ],
+    //   isExpanded: false,
+    // },
     
-    {
-      icon: "fa fa-calculator",
-      title: "Spec Sheet",
-      link: "/dashboard/gp-calculator",
-      children: null,
-      isExpanded: false,
-    },
+    // {
+    //   icon: "fa fa-calculator",
+    //   title: "Spec Sheet",
+    //   link: "/dashboard/gp-calculator",
+    //   children: null,
+    //   isExpanded: false,
+    // },
    
 
     {

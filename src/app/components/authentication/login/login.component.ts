@@ -108,7 +108,12 @@ export class LoginComponent implements OnInit {
             window.localStorage.setItem('authToken',
             JSON.stringify({
               token: request.responseData.authToken,
-              role: request.responseData.role
+              role: request.responseData.role,
+            }));
+            window.localStorage.setItem('dataToken',
+            JSON.stringify({
+              dataToken: request.responseData.user.dataToken,
+              mappings: request.responseData.user.mappings,
             }));
   
             this.authService.authStateChange.emit();

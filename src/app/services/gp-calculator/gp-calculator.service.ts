@@ -37,12 +37,12 @@ export class ProductService {
     }
   }
 
-  public async getingredients(venue_id: number) {
+  public async getingredients(venueId: number) {
     try {
       const request: any = await this.http
         .post(environment.apiUrl + "/api/get-ingredients", {
           token: this.authService.getAuthenticationState().authenticationToken,
-          venue_id,
+          venueId,
         })
         .toPromise();
       console.log("request is:", request);

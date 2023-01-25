@@ -6,22 +6,26 @@
     <div class="d-flex justify-content-between">
       <div class="chevron" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="closeOpenMonthViewDay()">
-        <span class="material-symbols-outlined">
-          chevron_left
+        <div class="circle">
+          <span class="material-symbols-outlined">
+            chevron_left
           </span>
+        </div>
       </div>
       <h3> {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }} </h3>
       <div class="chevron" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="closeOpenMonthViewDay()">
-        <span class="material-symbols-outlined">
-          chevron_right
+        <div class="circle">
+          <span class="material-symbols-outlined">
+            chevron_right
           </span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <div [ngSwitch]="view">
-  <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+  <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [weekStartsOn]="1" [viewDate]="viewDate" [events]="events"
     [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
     (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-month-view>

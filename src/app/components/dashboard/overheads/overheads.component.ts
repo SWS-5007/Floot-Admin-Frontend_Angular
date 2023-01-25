@@ -3,17 +3,26 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { start } from "@popperjs/core";
 import { ProcessDataService } from "src/app/services/dataProcess/process-data.service";
 import { OverheadsService } from "src/app/services/overheads/overheads.service";
-import { ChartComponent } from "ng-apexcharts";
 import {
+  ChartComponent,
   ApexNonAxisChartSeries,
   ApexResponsive,
   ApexChart,
+  ApexTitleSubtitle,
+  ApexPlotOptions,
 } from "ng-apexcharts";
+import { MatDialog } from "@angular/material/dialog";
+import { CompareSuppliersModalComponent } from "../modals/compare-suppliers-modal/compare-suppliers-modal.component";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
   responsive: ApexResponsive[];
   labels: any;
+  title: ApexTitleSubtitle;
+  subtitle: ApexTitleSubtitle;
+  plotOptions: ApexPlotOptions,
 };
 
 @Component({
@@ -38,6 +47,10 @@ export class OverheadsComponent implements OnInit {
   xData: any[] = [];
   maxDate: Date = null;
   minDate: Date = null;
+  compareSupplier: boolean = false;
+
+  chartBasicColor: any[] = ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0',];
+  chartColorArray = [];
 
   dateRange = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -46,30 +59,99 @@ export class OverheadsComponent implements OnInit {
 
   constructor(
     private overheadsService: OverheadsService,
-    private processDataService: ProcessDataService
+    private processDataService: ProcessDataService,
+    private dialog: MatDialog,
   ) { }
 
   loadChart() {
+    var totalOverheadsValue = this.totalOverheads.toFixed(2);
     this.chartOptions = {
       series: this.yData,
       chart: {
-        width: 700,
-        type: "donut"
+        width: 600,
+        type: "donut",
+        zoom: {
+          enabled: true,
+          type: "x",
+          autoScaleYaxis: false,
+          zoomedArea: {
+            fill: {
+              color: "#90CAF9",
+              opacity: 0.4,
+            },
+            stroke: {
+              color: "#0D47A1",
+              opacity: 0.4,
+              width: 1,
+            },
+          },
+        },
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              name: {
+                show: true,
+                formatter: () => `£ ${totalOverheadsValue}`,
+                fontSize: '25px',
+                color: '#000000',
+              },
+              value: {
+                show: true,
+                formatter: () => 'Total Overheads',
+                fontSize: '20px',
+                color: '#442a6e',
+              },
+              total: {
+                show: true,
+                showAlways: true,
+                fontSize: '25px',
+                color: '#000000',
+                label: `£ ${totalOverheadsValue}`,
+                formatter: () => 'Total Overheads',
+              }
+            }
+          }
+        }
       },
       labels: this.xData,
+
+      // title: {
+      //   text: `£ ${this.totalOverheads}`,
+      //   // align: "center",
+      //   // margin: 30,
+      //   offsetX: 190,
+      //   offsetY: 250,
+      //   style: {
+      //     fontSize: '25px',
+      //   }
+      // },
+      // subtitle: {
+      //   text: 'Total Overheads',
+      //   // align: "center",
+      //   // margin: 30,
+      //   offsetX: 190,
+      //   offsetY: 290,
+      //   style: {
+      //     fontSize: '20px',
+      //   }
+      // },
+
       responsive: [
         {
           breakpoint: 480,
           options: {
             chart: {
-              width: 100
+              width: 400
             },
-            // legend: {
-            //   position: "bottom"
-            // }
+            legend: {
+              position: "bottom"
+            }
           }
         }
-      ]
+      ],
     };
   }
 
@@ -104,6 +186,8 @@ export class OverheadsComponent implements OnInit {
       start: new FormControl(new Date(startMonth)),
       end: new FormControl(new Date(this.maxDate)),
     });
+
+    this.loadChart();
   }
 
   setSelectedSupplier(supplierId: number) {
@@ -122,13 +206,14 @@ export class OverheadsComponent implements OnInit {
         {}
       );
 
-      this.formatChartData();
       this.activeButton = this.selectedSupplierId = this.suppliers[0].id;
 
       this.totalOverheads = this.suppliers.reduce(
         (total, current) => (total += current.overhead),
         0
       );
+
+      this.formatChartData();
     });
   }
 
@@ -150,6 +235,15 @@ export class OverheadsComponent implements OnInit {
         this.xData.push(x[0]);
       }
     });
+
+    this.chartColorArray = [];
+    var chartDataCounts = this.chartData.length * 1 - 1;
+
+    for (let i = 0; i < chartDataCounts; i++) {
+      var index = i % this.chartBasicColor.length;
+      this.chartColorArray.push(this.chartBasicColor[index]);
+    }
+
     this.loadChart();
   }
 
@@ -180,8 +274,21 @@ export class OverheadsComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    this.loadChart();
   }
 
-  ngOnChanges() { }
+  onToggleChange({checked}: MatSlideToggleChange){
+    if(!checked) return;
+    const dialog = this.dialog.open(CompareSuppliersModalComponent, {
+      width: '300px'
+    });
+
+    dialog.afterClosed().subscribe((result) => {
+      if(!result){
+        this.compareSupplier = false;
+        return;
+      }
+      // compare suppliers api call
+    })
+  }
+
 }
