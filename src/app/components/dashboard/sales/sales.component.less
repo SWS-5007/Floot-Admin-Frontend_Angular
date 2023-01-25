@@ -14,8 +14,15 @@
   padding-top: 8px;
   padding-left: 8px;
   padding-right: 8px;
-
+  border-radius: 10px;
 }
+
+.switch-wrap {
+  background: #f1f1f5;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
 span.material-symbols-outlined.cancel {
   border-right: 2.5px solid #949393;
 }
@@ -24,7 +31,7 @@ label.btn.border-0.active {
   box-shadow: 0px 8px 29px #beb7b78a;
 }
 .Sales-icon span.material-symbols-outlined {
-  font-size: 36px;
+  font-size: 30px;
   color: #585858;
   margin-top: 9px;
   padding: 0 7px;
@@ -144,7 +151,12 @@ label.btn.border-0.active {
   color: #555;
 }
 
-
+.sales_button {
+  background-color: #8816e4 !important;
+  border-color: #8816e4 !important;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
 
 .sales .selectedDate {
   font-size: 22px;
@@ -207,6 +219,10 @@ label.btn.border-0.active {
   border-bottom: 1px solid #dee2e6;
 }
 
+::ng-deep .cdk-overlay-container {
+  z-index:2000;
+}
+
 .sales::ng-deep {
   .cal-month-view .cal-open-day-events {
     padding: 0px !important;
@@ -214,6 +230,7 @@ label.btn.border-0.active {
   .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: transparent !important;
     font-size: 18px;
+    padding: 0% !important;
   }
 
   div.cal-cell.cal-past {

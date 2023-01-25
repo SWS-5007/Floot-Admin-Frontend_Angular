@@ -20,6 +20,8 @@ export interface AuthSessionState {
   isAuthenticated: boolean,
   authenticationToken: string | null,
   role: number | null,
+  dataToken: string | null,
+  mappings: object
 };
 
 
@@ -72,6 +74,7 @@ export class AuthService {
    */
   public signOut(): void {
     window.localStorage.removeItem('authToken');
+    window.localStorage.removeItem('dataToken');
     this.authStateChange.emit();
     this.router.navigateByUrl('/authentication/sign-in')
   }
@@ -87,7 +90,8 @@ export class AuthService {
     try {
       const authState = this.getAuthenticationState();
       const request: any = await this.http.post(environment.api + '/api/admin/auth/identity/get-current-user', {
-        token: authState.authenticationToken
+        token: authState.authenticationToken,
+        dataToken: authState.dataToken,
       }).toPromise();
 
       console.log('loaded account: ', request)
@@ -101,8 +105,13 @@ export class AuthService {
 
           window.localStorage.setItem('authToken', JSON.stringify({
             token: request.responseData.user.authToken,
-            role: request.responseData.user.role
+            role: request.responseData.user.role,
           }));
+
+          window.localStorage.setItem('dataToken', JSON.stringify({
+            mappings: request.responseData.user.mappings,
+            dataToken: request.responseData.user.dataToken,
+          }))
 
         }
         else {
@@ -137,15 +146,18 @@ export class AuthService {
    */
   public getAuthenticationState(): AuthSessionState {
     if(window.localStorage.getItem('authToken')) {
-      const data = JSON.parse(window.localStorage.getItem('authToken'))
+      const authData = JSON.parse(window.localStorage.getItem('authToken'))
+      const data = JSON.parse(window.localStorage.getItem('dataToken')) || {}
       console.log('parsed data: ', {
-        data
+        data: authData
       })
 
       return <AuthSessionState> {
         isAuthenticated: true,
-        authenticationToken: data.token,
-        role: data.role,
+        authenticationToken: authData.token,
+        role: authData.role,
+        dataToken: data.dataToken ?? '',
+        mappings: data.mappings ?? {},
       };
 
     }

@@ -30,15 +30,152 @@
 </ul> -->
 
 <div class='page-content-wrap'>
-  <div class="graph-controls details d-flex px-3 py-2 my-3">
+  <div class="graph-controls details d-flex px-4 py-3 my-3 align-items-center justify-content-between">
     <h2 class="m-0">Spec Sheet</h2>
-    <div class="search ml-auto">
+    <div class="search ml-auto mr-3">
       <i class='fa fa-search'></i>
       <input matInput type="text" class="form-control"  placeholder="Search">
   </div>
-    <button class="btn btn-primary  ml-2 d-flex" type="button"> <span class="material-symbols-outlined">
+    <button class="btn btn-primary d-flex" data-toggle='modal' data-target=".modal.Spec" type="button"> <span class="material-symbols-outlined">
       add_box
       </span> <span class="pt-sm-1 pl-1"> Add Spec </span></button>
+      
+            <div class='modal fade Spec'>
+              <div class='modal-dialog'>
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                 New Spec 
+                 <a type="button" class='close' data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class='modal-body'>
+                      <div class="row">
+                        
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <app-invoice-drop></app-invoice-drop>
+                            </div>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control mb-3" placeholder="Name"/>
+                              <div class="input-group mb-3">
+                             
+                                <input type="text" class="form-control" placeholder="List Price">
+                                <span class="input-group-text">£</span>
+                              </div>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text">Margin : </span>
+                                <input type="text" class="form-control">
+                                <span class="input-group-text">%</span>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control mb-3" placeholder="Glass"/>
+                              </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control mb-3" placeholder="Garnish"/>
+                            </div>
+                            <div class="col-md-12">
+                                  <input type="text" class="form-control mb-3" placeholder="Preparation"/>
+                            </div>
+                          </div>
+
+                          <h4 class="mt-4">Ingredients</h4>
+                          <div class="">
+                            <div class="row">
+                              <div class="col-md-7">
+                                <select class="form-select form-control" aria-label="Default select example">
+                                  <option selected>Stolichnaya Raspberry</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="input-group mb-3">
+                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                  <span class="input-group-text">Ml</span>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                 <button class="btn btn-light px-2 py-1" type="button"><span class="material-symbols-outlined">
+                                  close
+                                  </span></button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="">
+                            <div class="row">
+                              <div class="col-md-7">
+                                <select class="form-select form-control" aria-label="Default select example">
+                                  <option selected>Ingredient</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="input-group mb-3">
+                                  <input type="text" class="form-control" placeholder="Militres">
+                                  
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                 <button class="btn btn-light px-2 py-1" type="button"><span class="material-symbols-outlined">
+                                  close
+                                  </span></button>
+                              </div>
+                            </div>
+                          </div>
+                             <div class=" my-4">
+                              <button class="btn btn-outline-primery d-flex" type="button"><span class="material-symbols-outlined">
+                                add_box
+                                </span>
+                                <span class="pt-1 pl-2">
+                                  Add Ingredient
+                                </span>
+                                </button>
+                             </div>
+                             <div class="mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                              <label class="form-check-label" for="exampleCheck1">Check to account for fresh fruit, garnish, etc</label>
+                            </div>
+                            <div class="mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                              <label class="form-check-label" for="exampleCheck1">Live on list</label>
+                            </div>
+                           <div class="row">
+                            <div class="col-md-6">
+                              <button class='btn btn-outline-primery form-control' data-dismiss='modal'>Cancel</button>
+                            </div>
+                            <div class="col-md-6">
+                              <button data-dismiss='modal'  class='btn btn-primary form-control'>Add Product</button>
+                            </div>
+                           </div>
+                        </div>
+                        <!-- <div class="col-md-3">
+                          <!-- <div class="card">
+                            <div class="position-relative">
+                              <input type="text" class="form-control pl-4 border-0" placeholder="Search">
+                              <div class="aba_search"><span class="material-symbols-outlined">
+                                search
+                                </span></div>
+                            </div>
+                                  
+                            <div class="search_result">
+                               <p class="pointer">Stolichnaya Raspberry</p>
+                               <p class="pointer">Giffard Creme De Mure</p>
+                               <p class="pointer">Limoncello Di Capri</p>
+                               <p class="pointer">Pisco Aba</p>
+                            </div>
+                          </div> 
+                        </div> -->
+                      </div>
+                     
+                    </div>
+                  
+                  </div>
+              </div>
+            </div>
 </div>
     <!-- <div *ngIf="suppliers.length === 0" class="card">
       <div class="card-body">
@@ -98,9 +235,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(1)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==1">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -185,9 +330,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(2)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==2">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -272,9 +425,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(3)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==3">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -359,9 +520,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(4)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==4">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -446,9 +615,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(5)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==5">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -533,9 +710,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(6)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==6">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -620,9 +805,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(7)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==7">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -707,9 +900,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(8)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==8">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -794,9 +995,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(9)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==9">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share
@@ -881,9 +1090,17 @@
               
             </div>
             <div class="col-md-2 text-right">
-              <span class="material-symbols-outlined pointer">
+              <span class="material-symbols-outlined pointer" (click)="onclick(10)">
                 more_horiz
                 </span>
+                <div class="card rename_outline" *ngIf="visible && flag==10">
+                  <a href="" class="d-flex pb-2 px-2 pt-3"><span class="material-symbols-outlined">
+                    drive_file_rename_outline
+                    </span> Edit</a> <br/>
+                    <a href="" class="d-flex pb-2 px-2"><span class="material-symbols-outlined">
+                      delete
+                      </span>Delete</a> 
+                </div>
                 <br/>
               <span class="material-symbols-outlined pointer">
                 ios_share

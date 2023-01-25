@@ -147,6 +147,7 @@ import { NgxDropzoneModule } from "ngx-dropzone";
 import { InvoiceDropComponent } from "./components/dashboard/invoice-drop/invoice-drop.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { MatRadioModule } from "@angular/material/radio";
+import { SpecSheetComponent } from "./components/dashboard/spec-sheet/spec-sheet.component";
 import {
   PerfectScrollbarModule,
   PERFECT_SCROLLBAR_CONFIG,
@@ -157,6 +158,8 @@ import { IngredientComponent } from "./components/dashboard/gp-calculator/ingred
 import { SalesEntryModalComponent } from './components/dashboard/modals/sales-entry-modal/sales-entry-modal.component';
 import { HomeComponent } from './components/dashboard/home/home.component';
 import { ProductsComponent } from './components/dashboard/products/products.component';
+import { CsvUploadComponent } from './components/dashboard/csv-upload/csv-upload.component';
+import { CompareSuppliersModalComponent } from './components/dashboard/modals/compare-suppliers-modal/compare-suppliers-modal.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelPropagation: false,
@@ -226,6 +229,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CreateVenuePostComponent,
     EditVenuePostComponent,
 
+    SpecSheetComponent,
+
     MyInfluencerPostsComponent,
     CreateInfluencerPostComponent,
     EditInfluencerPostComponent,
@@ -286,6 +291,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SalesEntryModalComponent,
     HomeComponent,
     ProductsComponent,
+    CsvUploadComponent,
+    CompareSuppliersModalComponent,
   ],
   imports: [
     MatRadioModule,

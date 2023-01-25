@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-lg-3 col-sm-6">
-                <div class="info-box7 order-info-box7 bg-light">
+                <div class="info-box7 order-info-box7 bg-white">
                     <div class="info-box7-block">
                         <h4 class=" ">£ {{dashTiles[2].value}}</h4>
                         <h2 class="text-start m-0">Avg. Margin</h2>
@@ -35,8 +35,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
-                <div class="info-box7 order-info-box7 bg-light">
+            <div class="col-lg-3 col-sm-6 ">
+                <div class="info-box7 order-info-box7 bg-white">
                     <div class="info-box7-block">
                         <div class="process m-b-20"></div>
                         <h2 class="text-start m-0">Occupancy</h2>
@@ -67,6 +67,8 @@
                         <button data-toggle='modal' data-target=".modal.supplier-contact-form" class="btn btn-primary sales_button" type="button">
                           Enter Sales Manually
                         </button>
+                        <app-csv-upload></app-csv-upload>
+
 
                         <div class='modal fade supplier-contact-form'>
                             <div class='modal-dialog'>
@@ -153,7 +155,7 @@
                     <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [dataLabels]="chartOptions.dataLabels">
                     </apx-chart>
 
-                    <div class="d-flex Sales-icon">
+                    <!-- <div class="d-flex Sales-icon">
                         <div class="btn-group">
                             <label class="btn border-0" [ngClass]="name=='hour' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Hour'" (click)="handleChangeTimeFrame($event,'hour')">Hour</label>
                             <label class="btn border-0" [ngClass]="name=='day' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Day'" (click)="handleChangeTimeFrame($event,'day')">Day</label>
@@ -169,7 +171,7 @@
                             <span class="material-symbols-outlined cancel text-black-50"> cancel </span>
                             <span class="material-symbols-outlined"> download </span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="details suppliers mb-4">
@@ -297,30 +299,28 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <div class="card p-4">
+                <div class="card p-4 bg-white">
                     <div class="switch-wrap">
                         <mat-slide-toggle>Auto-send to accountant</mat-slide-toggle>
                     </div>
                 </div>
-                <div class="info-box7 order-info-box7 mb-3 bg-light">
+                <div class="info-box7 order-info-box7 mb-3 bg-white">
                     <div class="info-box7-block position-relative">
                         <h4 class=" ">£ {{dashTiles[3].value}}</h4>
-                        <h2 class=" ">VAT Liability</h2>
+                        <h3 class=" ">VAT Liability</h3>
                         <p class="m-b-0 d-flex">Last return date:
-                            <input class="form-control basicDatepicker" [matDatepicker]="basicDatepicker" #vatLastDate>
+                            <input class="form-control basicDatepicker bg-transparent"  [matDatepicker]="basicDatepicker" #vatLastDate>
                         </p>
                         <div class="calendar-icon">
-
                             <mat-datepicker-toggle matIconSuffix [for]="basicDatepicker"></mat-datepicker-toggle>
                             <mat-datepicker #basicDatepicker (closed)="handleVATDate(vatLastDate)"></mat-datepicker>
-
                         </div>
                     </div>
                 </div>
-                <div class="info-box7 order-info-box7 bg-light">
+                <div class="info-box7 order-info-box7 bg-white">
                     <div class="info-box7-block position-relative">
                         <app-calendar></app-calendar>
-                        <h4 class="border-bottom my-3">January 12th</h4>
+                        <h2 class="border-bottom my-3">January 12th</h2>
                         <p class="mb-1 mt-3">10:00 AM - 10:30 AM</p>
                         <h3 class="text-dark">Daily Meeting</h3>
                         <hr/>

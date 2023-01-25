@@ -54,6 +54,8 @@ export class SupplierSpaceComponent implements OnInit {
 
   public selectedFormFile: any = null;
 
+  public flag: any = null;
+
   public notificationSupplierIndex: number = -1;
   public showFormSent: boolean = false;
 
@@ -194,7 +196,19 @@ export class SupplierSpaceComponent implements OnInit {
       throw error;
     }
   }
+  ReadMore:boolean = true
 
+  //hiding info box
+  visible:boolean = false
+
+
+  //onclick toggling both
+  onclick(flag)
+  {
+    this.flag=flag
+    this.ReadMore = !this.ReadMore; //not equal to condition
+    this.visible = !this.visible
+  }
   public dismissContactForm(): void {
     try {
 

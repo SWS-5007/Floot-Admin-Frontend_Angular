@@ -1,66 +1,67 @@
 <div class="row clearfix  p-3">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        
-            <div class="mt-5">
-                <hr/>
-            </div>
+
+        <div class="mt-5">
+            <hr/>
+        </div>
         <div class="card mb-3">
             <div class="header px-3 py-3">
                 <h1 class="mb-0 text-dark">
-                    Margin Tracker 
+                    Margin Tracker
                 </h1>
                 <div class="search">
                     <i class='fa fa-search'></i>
-                    <input matInput type="text" class="form-control"  placeholder="Search">
+                    <input matInput type="text" class="form-control" (keyup)="doFilter($event.target)" placeholder="Search">
                 </div>
             </div>
-            </div>
-            <div class="card">
+        </div>
+
+        <div class="card">
             <div class="body table-responsive">
                 <div class="p-3">
                     <!-- <mat-form-field class="w-25" appearance="outline">
                         <mat-label>Filter</mat-label>
                         <input matInput type="text" (keyup)="doFilter($event.target)" placeholder="Filter">
                     </mat-form-field> -->
-                    <table mat-table [dataSource]="dataSource" matSort class="table">
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="table">
 
                         <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Product </th>
                             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="cost">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cost </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cost"> Cost </th>
                             <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="rate">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cost Per Ml </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by rate"> Cost Per Ml </th>
                             <td mat-cell *matCellDef="let element"> {{element.rate}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="mls">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit Size </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mls"> Unit Size </th>
                             <td mat-cell *matCellDef="let element"> {{element.mls}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="unit_cost">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit Cost </th>
-                            <td mat-cell *matCellDef="let element"> {{element.unit_cost}} </td>
+                        <ng-container matColumnDef="unitCost">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by unitCost"> Unit Cost </th>
+                            <td mat-cell *matCellDef="let element"> {{element.unitCost}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="gross">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit Sold At </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gross"> Unit Sold At </th>
                             <td mat-cell *matCellDef="let element"> {{element.gross}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="gp_per_unit">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> GP Per Unit </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gp_per_unit"> GP Per Unit </th>
                             <td mat-cell *matCellDef="let element"> {{element.gp_per_unit}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="margin">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Margin </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by margin"> Margin </th>
                             <td mat-cell *matCellDef="let element"> {{element.margin}} </td>
                         </ng-container>
 
