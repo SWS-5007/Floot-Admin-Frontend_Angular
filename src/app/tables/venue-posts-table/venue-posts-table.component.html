@@ -35,7 +35,7 @@
                 <p class="caption">{{element.caption}}</p>
                 <p class="created">Created on {{element.created | date: 'dd/MM/yy hh:mm'}}</p>
                 <div class="actions">
-                    <a role="button" tabindex="0" mat-button color="primary">Edit</a>
+                    <a role="button" tabindex="0" mat-button color="primary" (click)="editPost.emit(element.id)">Edit</a>
                     <a role="button" tabindex="0" mat-button color="warn" (click)="onDeletePost(element.id)">Remove</a>
                 </div>
             </div>

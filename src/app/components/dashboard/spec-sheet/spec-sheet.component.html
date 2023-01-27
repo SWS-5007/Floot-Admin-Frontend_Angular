@@ -171,7 +171,9 @@
                           <div class="col-md-12">
                             <div class="row">
                               <div class="col-md-6">
-                                <app-invoice-drop></app-invoice-drop>
+                                <ngx-dropzone disableClick="True">
+                                  <ngx-dropzone-label>Image upload coming soon</ngx-dropzone-label> 
+                                </ngx-dropzone>
                               </div>
                               <div class="col-md-6">
                                 <input type="text" class="form-control mb-3" placeholder="Name" formControlName="name" value={{selectedProductForm.value.name}}/>
@@ -304,11 +306,11 @@
                                   </button>
                                </div>
                                <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="add_pct">
                                 <label class="form-check-label" for="exampleCheck1">Check to account for fresh fruit, garnish, etc</label>
                               </div>
                               <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="live">
                                 <label class="form-check-label" for="exampleCheck1">Live on list</label>
                               </div>
                              <div class="row">
@@ -433,7 +435,9 @@
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <app-invoice-drop></app-invoice-drop>
+                            <ngx-dropzone disableClick="True">
+                              <ngx-dropzone-label>Image upload coming soon</ngx-dropzone-label> 
+                            </ngx-dropzone>
                           </div>
                           <div class="col-md-6">
                             <input type="text" class="form-control mb-3" placeholder="Name" formControlName="name" value={{product.name}}/>
@@ -566,11 +570,11 @@
                               </button>
                            </div>
                            <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="add_pct">
                             <label class="form-check-label" for="exampleCheck1">Check to account for fresh fruit, garnish, etc</label>
                           </div>
                           <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1"  formControlName="live">
                             <label class="form-check-label" for="exampleCheck1">Live on list</label>
                           </div>
                          <div class="row">
@@ -638,9 +642,13 @@
 
                  </div>
                 
-                  <div class="switch-wrap">
+                  <!-- <div class="switch-wrap">
                     <mat-slide-toggle>Live on menu</mat-slide-toggle>
-                  </div>
+                  </div> -->
+                  <div *ngIf="this.product.live; else notLive" class="margin">Live</div>
+                  <ng-template #notLive>
+                    <div class="margin">Not Live</div>
+                  </ng-template>
                 
               </div>
               <div class="col-md-2 text-right">

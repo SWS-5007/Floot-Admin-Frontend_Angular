@@ -7,16 +7,16 @@
       <div class="chevron" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="closeOpenMonthViewDay()">
         <div class="circle">
-          <span class="material-symbols-outlined">
+          <span class="material-symbols-outlined text-dark">
             chevron_left
           </span>
         </div>
       </div>
-      <h3> {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }} </h3>
+      <h2 class="text-dark"> {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }} </h2>
       <div class="chevron" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="closeOpenMonthViewDay()">
         <div class="circle">
-          <span class="material-symbols-outlined">
+          <span class="material-symbols-outlined text-dark">
             chevron_right
           </span>
         </div>
@@ -35,6 +35,23 @@
   <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
     (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-day-view>
+</div>
+<!-- <div class="info-box7-block position-relative"> -->
+<h2 class="border-bottom my-3 text-dark">January 12th</h2>
+<div *ngFor="let event of this.events let i = index">
+  <!-- *ngFor="let ingredientForm of this.ingredients.controls; let i = index" -->
+  <p class="mb-1 mt-3 text-secondary">10:00 AM - 10:30 AM</p>
+  <h3 class="text-dark">{{event.title}}</h3>
+  <hr/>
+  <!-- <h2 class="border-bottom my-3">January 12th</h2>
+  <p class="mb-1 mt-3">10:00 AM - 10:30 AM</p>
+  <h3 class="text-dark">Daily Meeting</h3>
+  <hr/>
+  <p class="mb-1">5:00 PM - 6:00 PM</p>
+  <h3 class="text-dark">Cupping Masterclass</h3>
+  <hr/>
+  <p class="mb-1">8:00 PM - 12:00 PM</p>
+  <h3 class="text-dark">Back to Work Party</h3> -->
 </div>
 
 <!-- Everything you see below is just for the demo, you don't need to include it in your app -->

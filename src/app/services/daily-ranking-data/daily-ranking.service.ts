@@ -11,7 +11,7 @@ export class DailyRankingService {
 
   public async getDateRange() {
     try{
-      const request: any = await this.http.post(environment.api + "/api/get-top-products-date-range", {
+      const request: any = await this.http.post(environment.apiUrl + "/api/get-top-products-date-range", {
         venueId: 1
       }).toPromise()
 
@@ -25,7 +25,7 @@ export class DailyRankingService {
 
   public async getTopProducts(startDay: Date, endDay: Date) {
     try {
-      const request: any = await this.http.post(environment.api + "/api/get-top-products", {
+      const request: any = await this.http.post(environment.apiUrl + "/api/get-top-products", {
         venueId: 1,
         startDay: startDay.toISOString(),
         endDay: endDay.toISOString()

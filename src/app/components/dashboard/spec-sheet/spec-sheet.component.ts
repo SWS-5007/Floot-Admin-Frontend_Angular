@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 
 // OLIS CODE
 import { ProductService } from "../../../services/gp-calculator/gp-calculator.service";
+import { VenueHandlerService } from 'src/app/services/identity/venue-handler.service';
 //import Product from "../../../../interfaces/ingredient.interface";
 
 // END OLIS CODE
@@ -125,6 +126,7 @@ export class SpecSheetComponent implements OnInit {
 
     // OLIS CODE
     private ProductService: ProductService,
+    private VenueHandlerService: VenueHandlerService,
     private fb: FormBuilder,
     //END OLIS CODE
   ) {
@@ -169,6 +171,11 @@ export class SpecSheetComponent implements OnInit {
 
 
 
+  public async getVenue() {
+    const res = await this.VenueHandlerService.load();
+    console.log("inside getVenue()", res)
+    //console.log(loadedVenue)
+  }
   public async loadProducts() {
     const res = await this.ProductService.getProducts(this.venue_id);
     console.log("loadProducts");
@@ -184,9 +191,29 @@ export class SpecSheetComponent implements OnInit {
   }
 
   async loadIngredients() {
-    this.ingredientsList = await this.ProductService.getingredients(
+    console.log("inside loadIng")
+    const sortedArray = await this.ProductService.getingredients(
       this.venue_id
-    );
+    ).then(res => {
+      console.log(res)
+      // order an array of objects with name
+      res.sort(function (a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+
+
+      return res.sort()
+    });
+
+    console.log(sortedArray)
+    
+    this.ingredientsList = sortedArray
   }
 
 
@@ -243,10 +270,17 @@ export class SpecSheetComponent implements OnInit {
   }
 
   calculateGPPTotal() {
+
+
+    // p.gross - p.cost AS gp_per_unit,
+    // round((p.gross - p.cost) / p.gross * 100::numeric, 1) AS margin
+
+
     //console.log("triggered calculateGPPTotal")
     const lineValueTotal = this.calculateLineValueTotal();
     let margin = null;
     let grossProfit = null;
+    let cost = lineValueTotal;
     if (this.selectedProductForm.value.add_pct) {
       let garnishCost = (lineValueTotal / 100) * 5;
       grossProfit = this.selectedProductForm.value.gross - (lineValueTotal + garnishCost);
@@ -260,7 +294,8 @@ export class SpecSheetComponent implements OnInit {
     // }
     return {
       margin,
-      grossProfit
+      grossProfit,
+      cost
     };
   }
 
@@ -384,7 +419,7 @@ export class SpecSheetComponent implements OnInit {
       add_pct: this.selectedProductForm.value.add_pct,
       margin: GppTotal.margin,
       live: this.selectedProductForm.value.live,
-      cost: this.selectedProductForm.value.gross,
+      cost: GppTotal.cost,
       garnish_description: this.selectedProductForm.value.garnish_description,
       gross_profit: GppTotal.grossProfit,
       preparation_method: this.selectedProductForm.value.preparation_method,
@@ -457,14 +492,14 @@ export class SpecSheetComponent implements OnInit {
       const totalVolume = this.calculateTotalProductVolume()
       const productChanges = {
         ml: totalVolume,
-        id: product.id,
+        id: this.selectedProductForm.value.id,
         venue_id: product.venue_id,
         gross: parseFloat(this.selectedProductForm.value.gross),
         name: this.selectedProductForm.value.name,
         add_pct: this.selectedProductForm.value.add_pct,
         margin: GppTotal.margin,
         live: this.selectedProductForm.value.live,
-        cost: this.selectedProductForm.value.gross,
+        cost: GppTotal.cost,
         garnish_description: this.selectedProductForm.value.garnish_description,
         gross_profit: GppTotal.grossProfit,
         preparation_method: this.selectedProductForm.value.preparation_method,
@@ -473,7 +508,7 @@ export class SpecSheetComponent implements OnInit {
   
       productChanges.ml = this.calculateTotalProductVolume();
   
-      console.log("product is: ", product)
+      // console.log("product is: ", product)
       console.log("productChanges are:", productChanges)
 
       const ingredientChanges = {
@@ -582,6 +617,46 @@ export class SpecSheetComponent implements OnInit {
 
   /// END OLI's CODE
 
+  // private async loadData(): Promise<void> {
+  //   try {
+  //     const request: any = await this.http.post(environment.api + '/api/admin/suppliers/venues/get-suppliers', {
+  //       token: this.authService.getAuthenticationState().authenticationToken,
+  //     }).toPromise();
+
+
+  //     if(request.status === 'ok') {
+        
+  //       this.suppliers = request.responseData.suppliers.sort((a, b) => a.name.toLowerCase() !== b.name.toLowerCase)
+  //      // OLIS CODE
+
+  //       //this.venue_id = 1;
+  //       console.log("request is:")
+  //       console.log(request)
+  //       //console.log(response)
+  //       this.getVenue()
+  //       this.loadProducts();
+  //       this.loadIngredients();
+
+
+  //      //END OLIS CODE
+  //     }
+  //     else {
+  //       this.errorHandlerService.throwError({
+  //         displayMessage: 'Could not load the suppliers.',
+  //         unsanitizedMessage: 'No stack trace.'
+  //       });
+  //     }
+
+  //   }
+  //   catch(error) {
+  //     this.errorHandlerService.throwError({
+  //       displayMessage: 'Could not load the suppliers.',
+  //       unsanitizedMessage: error
+  //     });
+
+  //   }
+  // }
+
   private async loadData(): Promise<void> {
     try {
       const request: any = await this.http.post(environment.api + '/api/admin/suppliers/venues/get-suppliers', {
@@ -595,6 +670,10 @@ export class SpecSheetComponent implements OnInit {
        // OLIS CODE
 
         //this.venue_id = 1;
+        console.log("request is:")
+        console.log(request)
+        //console.log(response)
+        this.getVenue()
         this.loadProducts();
         this.loadIngredients();
 
@@ -749,8 +828,8 @@ export class SpecSheetComponent implements OnInit {
     this.flag=flag
     this.ReadMore = !this.ReadMore; //not equal to condition
     this.visible = !this.visible
-    console.log(this.selectedProductForm)
-    console.log(this.ingredients)
+    // console.log(this.selectedProductForm)
+    // console.log(this.ingredients)
     
   }
 
@@ -759,7 +838,7 @@ export class SpecSheetComponent implements OnInit {
   }
 
   getProductData(product) {
-    console.log(product)
+    console.log("selected product is: ", product)
     this.selectedProductForm = this.fb.group({
       id: [product.id],
       name: [product.name],

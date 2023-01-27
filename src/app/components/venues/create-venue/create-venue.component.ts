@@ -15,7 +15,8 @@ import { environment } from 'src/environments/environment';
 export class CreateVenueComponent implements OnInit {
 
   public address: any = null;
-  public city: any = null;
+
+  readonly cityOptions = ['Nottingham', 'Birmingham', 'Greenville', 'Manchester', 'Bristol', 'Derby', 'Orlando', 'Leicester']
 
   public createVenueForm: FormGroup;
 
@@ -38,7 +39,8 @@ export class CreateVenueComponent implements OnInit {
 
       profileImage: new FormControl("", {
         validators: []
-      }),    
+      }),   
+      city: new FormControl("", Validators.required) 
     })
 
     this.createVenueForm.valueChanges.subscribe(async(change: any) => {

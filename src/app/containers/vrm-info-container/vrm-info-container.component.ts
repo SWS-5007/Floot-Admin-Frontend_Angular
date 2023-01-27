@@ -20,6 +20,7 @@ export class VrmInfoContainerComponent implements OnInit {
   }
 
   @Output() vrmUpdate = new EventEmitter<VRMFormData>();
+  @Output() venueProfile = new EventEmitter<void>();
 
   constructor(private dialog: MatDialog) { }
 

@@ -1,0 +1,40 @@
+<app-section-container>
+    <div class="heading">
+        <span>Brands and Products</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onUpdate()">Edit</button>
+    </div>
+    <div class="section-content">
+        <div class="attr-val-wrap row">
+            <div class="attr col-md-4 col-6">Wholesaler</div>
+            <div class="value col-md-8 col-6">{{brandsAndProductsData?.wholesaler || 'No Info'}}</div>
+        </div>
+        <div class="attr-val-wrap">
+            <h4 class="attr">Brands to watch</h4>
+            <div class="value padded">
+                <ng-container *ngIf="!brandsAndProductsData?.brandsToWatch?.length">
+                    <span>Currently no brands are being watched</span>
+                </ng-container>
+                <ng-container *ngIf="brandsAndProductsData?.brandsToWatch?.length > 0">
+                    <div class="badge-wrap">
+                        <span class="badge badge-pill" *ngFor="let item of brandsAndProductsData.brandsToWatch">{{item.brand}} - {{item.listingType}}</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="attr-val-wrap">
+            <h4 class="attr">Top 5 Agreements</h4>
+            <div class="value padded">
+                <ng-container *ngIf="!brandsAndProductsData?.agreements?.length">
+                    <span>Currently no agreements have been added</span>
+                </ng-container>
+                <ng-container *ngIf="brandsAndProductsData?.agreements?.length > 0">
+                    <ul class="agreement-list">
+                        <li class="agreement" *ngFor="let item of brandsAndProductsData?.agreements">{{item}}</li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</app-section-container>

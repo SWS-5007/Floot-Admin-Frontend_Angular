@@ -22,6 +22,7 @@ import {
 } from "ng-apexcharts";
 import { MatDialog } from "@angular/material/dialog";
 import { SalesEntryModalComponent } from "../modals/sales-entry-modal/sales-entry-modal.component";
+import { DailyRankingService } from "src/app/services/daily-ranking-data/daily-ranking.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -73,7 +74,11 @@ export class SalesComponent implements OnInit {
   // readonly tileClasses = ['card1', 'card2', 'purple', 'orange']
   public chartOptions: Partial<ChartOptions>;
   public ChartOptions1: Partial<ChartOptions>;
-  timeFrame: TimeFrame = TimeFrame.hourly;
+  timeFrame: TimeFrame = TimeFrame.weekly;
+
+  topProductsData: any = null;
+  topProductSales: number[] = []
+  topProductsNames: string[] = []
 
   salesData: any[] = [];
   public yData: any[] = [];
@@ -114,7 +119,7 @@ export class SalesComponent implements OnInit {
     monthly: null,
     yearly: null,
   }
-  name: string = "";
+  name: string = "hour";
   range = new FormGroup({
     startDate: new FormControl<Date | null>(null),
     endDate: new FormControl<Date | null>(null),
@@ -124,7 +129,11 @@ export class SalesComponent implements OnInit {
   }
 
 
-  constructor(public dialog: MatDialog, public salesDataService: SalesDataService) {
+  constructor(
+    public dialog: MatDialog, 
+    public salesDataService: SalesDataService,
+    private dailyRankingService: DailyRankingService
+    ) {
     this.ChartOptions1 = {
       series: [
         {
@@ -188,9 +197,15 @@ export class SalesComponent implements OnInit {
         this.range.value.startDate.getMinutes() - this.range.value.startDate.getTimezoneOffset()
       );
     });
+    let defaultStartDate = new Date('2022-05-01')
+    let defaultEndDate = new Date('2022-06-30')
+    this.rangeStartDate = new Date(defaultStartDate)
+    this.rangeEndDate = new Date(defaultEndDate)
+
+    console.log("e", defaultEndDate)
     this.salesData = await this.salesDataService.getSalesData(
-      this.range.value.startDate,
-      this.range.value.endDate,
+      this.rangeStartDate,
+      this.rangeEndDate,
       this.timeFrame
     );
 
@@ -284,10 +299,14 @@ export class SalesComponent implements OnInit {
   colorScheme = {
     domain: ['#45b6fe', '#3792cb', '#296d98', '#1c4966']
   };
-  ngOnInit(): void {
+  async ngOnInit() {
     // this.chart1();
     // this.chart2();
-    this.loadSales();
+
+    await this.loadSales();
+    await this.loadTopProductsData();
+    this.chart1();
+    this.chart2();
   }
 
   async handleDateRange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
@@ -310,25 +329,43 @@ export class SalesComponent implements OnInit {
       });
       console.log(this.salesData)
       this.chart1();
+
+      this.loadTopProductsData()
+      this.chart2();
     }
+  }
+
+  async loadTopProductsData() {
+    this.topProductsData = await this.dailyRankingService.getTopProducts(
+      this.rangeStartDate,
+      this.rangeEndDate
+    )
+
+    this.topProductSales = this.topProductsData.map(x => x.quantity)
+    this.topProductsNames = this.topProductsData.map(x => x.name)
   }
 
   async handleChangeTimeFrame(event: TimeFrame, flag: String) {
     switch (flag) {
       case 'hour':
         this.timeFrame = TimeFrame.hourly;
+        this.name = 'hour';
         break;
       case 'day':
         this.timeFrame = TimeFrame.daily;
+        this.name = 'day';
         break;
       case 'week':
         this.timeFrame = TimeFrame.weekly;
+        this.name = 'week';
         break;
       case 'month':
         this.timeFrame = TimeFrame.monthly;
+        this.name = 'month';
         break;
       case 'year':
         this.timeFrame = TimeFrame.yearly;
+        this.name = 'year';
         break;
       default:
         break;
@@ -424,67 +461,29 @@ export class SalesComponent implements OnInit {
 
   // Chart 2
   private chart2() {
-    // this.chartOptions2 = {
-    //   series: [
-    //     {
-    //       name: "blue",
-    //       data: [
-    //         {
-    //           x: "Team A",
-    //           y: [1, 5],
-    //         },
-    //         {
-    //           x: "Team B",
-    //           y: [4, 6],
-    //         },
-    //         {
-    //           x: "Team C",
-    //           y: [5, 8],
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       name: "green",
-    //       data: [
-    //         {
-    //           x: "Team A",
-    //           y: [2, 6],
-    //         },
-    //         {
-    //           x: "Team B",
-    //           y: [1, 3],
-    //         },
-    //         {
-    //           x: "Team C",
-    //           y: [7, 8],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   chart: {
-    //     type: "rangeBar",
-    //     height: 250,
-    //     foreColor: "#9aa0ac",
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       horizontal: false,
-    //     },
-    //   },
-    //   dataLabels: {
-    //     enabled: true,
-    //   },
-    //   tooltip: {
-    //     theme: "dark",
-    //     marker: {
-    //       show: true,
-    //     },
-    //     x: {
-    //       show: true,
-    //     },
-    //   },
-
-    // };
+    this.ChartOptions1 = {
+      series: [
+        {
+          name: "basic",
+          data: this.topProductSales
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: this.topProductsNames
+      }
+    };
   }
 
   onSelect(data): void {

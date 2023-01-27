@@ -8,7 +8,7 @@
     </div>
     <div class="section-content">
         <ng-container *ngIf="posts?.length > 0">
-            <app-venue-posts-table [posts]="posts" (deletePost)="deletePost.emit($event)"></app-venue-posts-table>
+            <app-venue-posts-table [posts]="posts" (deletePost)="deletePost.emit($event)" (editPost)="editPost.emit($event)"></app-venue-posts-table>
         </ng-container>
         <ng-container *ngIf="!(posts?.length > 0)">
             <p>The venue has not created any posts.</p>

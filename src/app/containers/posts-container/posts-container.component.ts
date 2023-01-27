@@ -13,6 +13,7 @@ export class PostsContainerComponent implements OnInit {
 
   @Output() createPost = new EventEmitter();
   @Output() deletePost = new EventEmitter<string>();
+  @Output() editPost = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit(): void {

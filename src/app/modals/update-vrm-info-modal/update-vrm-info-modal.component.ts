@@ -14,6 +14,7 @@ import {
 export class UpdateVrmInfoModalComponent implements OnInit {
   vrmForm = this.fb.group({
     status: "",
+    capacity: this.fb.nonNullable.control(null, Validators.pattern(/[\d]/)),
     lastVisitBy: "",
     lastVisit: "",
     loginsGiven: "",
@@ -34,7 +35,7 @@ export class UpdateVrmInfoModalComponent implements OnInit {
     lastVisit: ['Polly', 'Fred'],
     marketingConsent: ['Yes', 'No', 'Messaged'],
     loginsGiven: ['Done', 'Emailed', 'No'],
-    city: ['Nottingham', 'Birmingham', 'Greenville', 'Manchester', 'Bristol', 'Derby'],
+    city: ['Nottingham', 'Birmingham', 'Greenville', 'Manchester', 'Bristol', 'Derby', 'Orlando', 'Nashville', 'Leicester'],
     assignee: ['Polly', 'Fred']
   };
 
@@ -45,7 +46,11 @@ export class UpdateVrmInfoModalComponent implements OnInit {
   ) {
     if (data != null) {
       const { vrm, locale } = data;
-      this.vrmForm.setValue({locale: {...locale}, ...vrm });
+      this.vrmForm.setValue({
+        locale: {...locale}, 
+        capacity: vrm.capacity ?? null, 
+        ...vrm 
+      });
     }
   }
 

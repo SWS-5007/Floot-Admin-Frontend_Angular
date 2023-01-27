@@ -1,0 +1,25 @@
+<ul class='breadcrumb'>
+    <li class='breadcrumb-item'><a routerLink="/venues">Venues</a></li>
+    <li class='breadcrumb-item active'><a [routerLink]="['/venues/profile', venueId]">{{ venueName ?? "Loading..." }}</a></li>
+    <li class='breadcrumb-item active'><a [routerLink]="['/venues/vrm-details', venueId]">{{ "VRM Details" }}</a></li>
+</ul>
+
+<div class='page-content-wrap'>
+    <h1>VRM Details</h1>
+    
+    <app-vrm-info-container 
+    [vrm]="vrmBasicInfo" 
+    [locale]="vrmLocale" 
+    (vrmUpdate)="saveVrmInfo($event)"
+    (venueProfile)="navigateToVenueDetails()"></app-vrm-info-container>
+    <br/>
+    <app-vrm-ratings-container [vrmRatings]="vrmRatings" (updateVrmRatings)="saveVrmRatings($event)"></app-vrm-ratings-container>
+    <br/>
+    <app-vrm-visit-time-container [vrmVisitInfo]="vrmVisitInfo" (updateInfo)="saveVrmVisitInfo($event)"></app-vrm-visit-time-container>
+    <br/>
+    <app-vrm-technology-container [vrmTech]="vrmTechInfo" (updateTech)="saveVrmTech($event)"></app-vrm-technology-container>
+    <br/>
+    <app-activity-log-container [activityLogs]="activityLogs" (addActivity)="saveActivity($event)"></app-activity-log-container>
+    <br/>
+    <app-brands-and-products-container></app-brands-and-products-container>
+</div>

@@ -21,6 +21,14 @@
                             <label>Search</label>
                             <input class="form-control" placeholder="Enter the venue name to search" formControlName="searchText" type="text"/>
                         </div>
+                        <div class='form-group'>
+                          <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <mat-select formControlName="searchCity">
+                                <mat-option *ngFor="let city of displayOptions.city" [value]="city">{{city}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
                     </div>
                 </div>
 
@@ -62,6 +70,13 @@
                             <td>
                                 <button class='btn btn-sm btn-primary mr-1' type='submit' [routerLink]="['/venues', 'profile', venue.id]">
                                   Details
+                                </button>
+                                <button
+                                  *ngIf="activePermission"
+                                  [routerLink]="['/venues','vrm-details', venue.id]"
+                                  mat-flat-button
+                                  class="btn btn-sm mr-1">
+                                  VRM Details
                                 </button>
                             </td>
                         </tr>

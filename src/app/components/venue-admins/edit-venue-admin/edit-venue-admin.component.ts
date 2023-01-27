@@ -22,6 +22,7 @@ interface Venue {
 export class EditVenueAdminComponent implements OnInit {
 
   public venues: Venue[] = [];
+  assignedVenues: Venue[] = []
   public accountId: string = null;
 
   public editVenueAdminForm: FormGroup;
@@ -46,13 +47,12 @@ export class EditVenueAdminComponent implements OnInit {
       
     }
 
-    this.route.paramMap.subscribe((paramMap) => {
+    this.route.paramMap.subscribe(async (paramMap) => {
       if (paramMap.has('accountId')) {
 
         this.accountId = paramMap.get('accountId');
         
-        this.loadData();
-        this.loadVenues();
+        await this.init();
 
       } else {
         // go back to team list
@@ -78,7 +78,9 @@ export class EditVenueAdminComponent implements OnInit {
           Validators.minLength(3)
         ],
       }),
-      assignedVenue: new FormControl('', Validators.required)
+      assignedVenue: new FormControl('', Validators.required),
+      jobDescription: new FormControl(''),
+      decisionMaking: new FormControl(null)
     });
 
     // validate the email once it has been entered.
@@ -96,6 +98,15 @@ export class EditVenueAdminComponent implements OnInit {
         this.displayEmailExistsModal = false;
       }
     });
+
+    this.assignedVenue.valueChanges.subscribe(() => {
+      this.onAssignedVenueChange();
+    })
+  }
+
+  async init(){
+    await this.loadVenues();
+    await this.loadData();
   }
 
   private async loadData(): Promise<void> {
@@ -108,12 +119,14 @@ export class EditVenueAdminComponent implements OnInit {
       console.log(request)
 
       if(request.status === 'ok') {
-        
+        const account = request.responseData.account;
         this.editVenueAdminForm.patchValue({
-          firstName: request.responseData.account.firstName,
-          lastName: request.responseData.account.lastName,
-          email: request.responseData.account.email,
-          assignedVenue: request.responseData.account.assignedVenue,
+          firstName: account.firstName,
+          lastName: account.lastName,
+          email: account.email,
+          assignedVenue: account.assignedVenue,
+          jobDescription: account.jobDescription,
+          decisionMaking: account.decisionMaking,
         })
 
       }
@@ -170,6 +183,21 @@ export class EditVenueAdminComponent implements OnInit {
     }
   }
 
+  onAssignedVenueChange() {
+    const assignedIds = (this.assignedVenue.value ?? []) as string[];
+    this.assignedVenues = this.venues.filter(venue => assignedIds.includes(venue.id));
+
+    assignedIds.length == 0 ? this.decisionMaking.disable({emitEvent: false}) : this.decisionMaking.enable({emitEvent: false});
+
+    const decisionMakingIds = (this.decisionMaking.getRawValue() ?? []) as string[];
+    console.log('check',decisionMakingIds);
+    const filteredVals = decisionMakingIds.filter(id => assignedIds.includes(id));
+    this.decisionMaking.setValue(filteredVals);
+
+    console.log('here...');
+    this.onUserInputEvent();
+  }
+
   public onUserInputEvent(): void {
     this.pendingSaveService.setPendingChangeState(true);
   }
@@ -217,7 +245,9 @@ export class EditVenueAdminComponent implements OnInit {
         firstName: this.editVenueAdminForm.value.firstName,
         lastName: this.editVenueAdminForm.value.lastName,
         email: this.editVenueAdminForm.value.email,
-        assignedVenue: this.editVenueAdminForm.value.assignedVenue
+        assignedVenue: this.editVenueAdminForm.value.assignedVenue,
+        jobDescription: this.editVenueAdminForm.value.jobDescription,
+        decisionMaking: this.decisionMaking.getRawValue() ?? [],
       }).toPromise();
 
       console.log(request)
@@ -251,6 +281,10 @@ export class EditVenueAdminComponent implements OnInit {
 
   get assignedVenue(): FormControl{
     return this.editVenueAdminForm.get('assignedVenue') as FormControl;
+  }
+
+  get decisionMaking(): FormControl{
+    return this.editVenueAdminForm.get('decisionMaking') as FormControl;
   }
 
   ngOnInit(): void {

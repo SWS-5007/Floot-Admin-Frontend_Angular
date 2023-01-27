@@ -1,0 +1,38 @@
+<app-section-container>
+    <div class="heading">
+        <span>Technology</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onUpdate()">Edit</button>
+    </div>
+    <div class="section-content">
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">EPOS Till</div>
+            <div class="value col-6">{{ vrmTech?.eposTill || "No Info" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Integration</div>
+            <div class="value col-6">{{ vrmTech?.integration || "No Info" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Instagram Handle</div>
+            <div class="value col-6">{{ vrmTech?.instaHandle || "No Info" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Auto Instagram Enabled</div>
+            <div class="value col-6">{{ vrmTech?.instaEnabled || "false" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Instagram Hashtag Required</div>
+            <div class="value col-6">{{ vrmTech?.instaHashtagReq || "false" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Dashboard Enabled</div>
+            <div class="value col-6">{{ vrmTech?.dashboardEnabled || "false" }}</div>
+        </div>
+        <div class="attr-val-wrap row">
+            <div class="attr col-6">Dashboard Data Upload Method</div>
+            <div class="value col-6">{{ vrmTech?.dashboardDataMethod || "No Info" }}</div>
+        </div>
+    </div>
+</app-section-container>

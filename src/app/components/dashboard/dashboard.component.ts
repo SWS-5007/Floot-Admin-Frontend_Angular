@@ -4,6 +4,11 @@ import { ChartConfiguration } from "chart.js";
 
 import { SalesDataService } from "src/app/services/sales-data/sales-data.service";
 
+import { CompareSuppliersModalComponent } from "./modals/compare-suppliers-modal/compare-suppliers-modal.component";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+
+import { MatDialog } from "@angular/material/dialog";
+
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -60,7 +65,10 @@ import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 export class DashboardComponent implements OnInit {
   constructor(
     private salesDataService: SalesDataService,
+    private dialog: MatDialog
   ) { }
+
+  compareSupplier: boolean = false;
 
   @ViewChild("chart", { static: false }) chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
@@ -95,7 +103,7 @@ export class DashboardComponent implements OnInit {
   manualSalesFormdata = new FormArray([]);
 
   // selectedDate: Date = null;
-  // timeFrame: TimeFrame = TimeFrame.daily;
+  timeFrame: TimeFrame = TimeFrame.daily;
 
   salesData: any[] = [];
   public yData: any[] = [];
@@ -109,7 +117,7 @@ export class DashboardComponent implements OnInit {
 
   dashTiles: DashTile[] = []
 
-  name: string = "";
+  name: string = "hour";
   // public lineChartOptions: ChartOptions<"line"> = {
   //   responsive: false,
   // };
@@ -329,44 +337,49 @@ export class DashboardComponent implements OnInit {
 
   // @Output() changeTimeFrame = new EventEmitter<TimeFrame>();
 
-  // async handleChangeTimeFrame(event: TimeFrame, flag: String) {
-  //   switch (flag) {
-  //     case 'hour':
-  //       // this.changeTimeFrame.emit(TimeFrame.hourly);
-  //       this.timeFrame = TimeFrame.hourly;
-  //       break;
-  //     case 'day':
-  //       this.timeFrame = TimeFrame.daily;
-  //       break;
-  //     case 'week':
-  //       this.timeFrame = TimeFrame.weekly;
-  //       break;
-  //     case 'month':
-  //       this.timeFrame = TimeFrame.monthly;
-  //       break;
-  //     case 'year':
-  //       this.timeFrame = TimeFrame.yearly;
-  //       break;
-  //     default:
-  //       break;
-  //   }
+  async handleChangeTimeFrame(event: TimeFrame, flag: String) {
+    switch (flag) {
+      case 'hour':
+        // this.changeTimeFrame.emit(TimeFrame.hourly);
+        this.timeFrame = TimeFrame.hourly;
+        this.name = 'hour';
+        break;
+      case 'day':
+        this.timeFrame = TimeFrame.daily;
+        this.name = 'day';
+        break;
+      case 'week':
+        this.timeFrame = TimeFrame.weekly;
+        this.name = 'week';
+        break;
+      case 'month':
+        this.timeFrame = TimeFrame.monthly;
+        this.name = 'month';
+        break;
+      case 'year':
+        this.timeFrame = TimeFrame.yearly;
+        this.name = 'year';
+        break;
+      default:
+        break;
+    }
 
-  //   this.salesData = await this.salesDataService.getSalesData(
-  //     this.beforeThirtyDays,
-  //     this.maxDate,
-  //     this.timeFrame
-  //   );
-  //   this.yData = [];
-  //   this.xData = [];
-  //   this.salesData.forEach((x, i) => {
-  //     if (i > 0) {
-  //       this.yData.push(x[1]);
-  //       this.xData.push(x[0]);
-  //     }
-  //   });
+    //   this.salesData = await this.salesDataService.getSalesData(
+    //     this.beforeThirtyDays,
+    //     this.maxDate,
+    //     this.timeFrame
+    //   );
+    //   this.yData = [];
+    //   this.xData = [];
+    //   this.salesData.forEach((x, i) => {
+    //     if (i > 0) {
+    //       this.yData.push(x[1]);
+    //       this.xData.push(x[0]);
+    //     }
+    //   });
 
-  //   this.chart1();
-  // }
+    //   this.chart1();
+  }
 
   // Chart 1
   private chart1() {
@@ -508,7 +521,10 @@ export class DashboardComponent implements OnInit {
 
   handleDateRange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
     if (dateRangeEnd.value) {
+      // Intialize datas
       this.salesDates = [];
+      this.manualSalesFormdata = new FormArray([]);
+
       var startDate = new Date(dateRangeStart.value);
       var endDate = new Date(dateRangeEnd.value);
       var Difference_In_Time = endDate.getTime() - startDate.getTime();
@@ -520,7 +536,6 @@ export class DashboardComponent implements OnInit {
         this.salesDates.push(date.toISOString());
       }
 
-      console.log('@@@@@@@@@@@@@@', this.salesDates)
       for (let j = 0; j <= Difference_In_Days; j++) {
         const group = new FormGroup({
           total: new FormControl(''),
@@ -535,17 +550,37 @@ export class DashboardComponent implements OnInit {
       //     { ['cash_' + j]: new FormControl<String | null>(null) },
       //     { ['card_' + j]: new FormControl<String | null>(null) },
       //   );
+
+      const manualDailySalesData = this.salesDataService.getManualDailySales(
+        startDate, endDate
+      );
+      console.log('@@@@@@@manualDailySalesData', manualDailySalesData)
+      // this.salesDataService.getManualDailySales(startDate, endDate).then(() => {
+      // });
     }
   }
 
   handleVATDate(vatLastDate: HTMLInputElement) {
     if (vatLastDate.value) {
-      console.log('$$$$$$$$$$', vatLastDate.value)
       var vatDate = new Date(vatLastDate.value);
 
       this.salesDataService.postVatLastDate(vatDate).then(() => {
       });
     }
+  }
+
+  onToggleChange({ checked }: MatSlideToggleChange) {
+    if (!checked) return;
+    const dialog = this.dialog.open(CompareSuppliersModalComponent, {
+      width: '300px'
+    });
+
+    dialog.afterClosed().subscribe((result) => {
+      if (!result) {
+        this.compareSupplier = false;
+        return;
+      }
+    })
   }
 
 }
