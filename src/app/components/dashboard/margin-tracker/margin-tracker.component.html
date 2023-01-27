@@ -13,10 +13,12 @@
                     <i class='fa fa-search'></i>
                     <input matInput type="text" class="form-control" (keyup)="doFilter($event.target)" placeholder="Search">
                 </div>
+
             </div>
         </div>
 
         <div class="card">
+            <p class="note">Note that costs here are excluding VAT.</p>
             <div class="body table-responsive">
                 <div class="p-3">
                     <!-- <mat-form-field class="w-25" appearance="outline">
@@ -31,28 +33,25 @@
                         </ng-container>
 
                         <ng-container matColumnDef="cost">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cost"> Cost </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cost"> Bottle Cost </th>
                             <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="rate">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by rate"> Cost Per Ml </th>
-                            <td mat-cell *matCellDef="let element"> {{element.rate}} </td>
-                        </ng-container>
-
                         <ng-container matColumnDef="mls">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mls"> Unit Size </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mls"> Bottle Size (ml) </th>
                             <td mat-cell *matCellDef="let element"> {{element.mls}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="unitCost">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by unitCost"> Unit Cost </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by unitCost"> 25ml Cost </th>
                             <td mat-cell *matCellDef="let element"> {{element.unitCost}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="gross">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gross"> Unit Sold At </th>
-                            <td mat-cell *matCellDef="let element"> {{element.gross}} </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gross"> 25ml Gross </th>
+                            <td mat-cell *matCellDef="let element">
+                                <input matInput type="number" class="form-control gross-input" placeholder="Enter Price" value="{{element.gross}}" (keydown.enter)="saveGrossPrice($event, element.id)">
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="gp_per_unit">

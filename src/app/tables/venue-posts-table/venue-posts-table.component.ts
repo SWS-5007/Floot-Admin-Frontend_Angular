@@ -21,6 +21,7 @@ export class VenuePostsTableComponent implements OnInit {
   @Input() posts: Post[];
   
   @Output() deletePost = new EventEmitter<string>();
+  @Output() editPost = new EventEmitter<string>();
 
   columnsToDisplay = ['caption', 'created'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];

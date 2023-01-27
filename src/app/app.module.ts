@@ -164,6 +164,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelPropagation: false,
 };
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -328,6 +329,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgChartsModule,
 
     MatFormFieldModule,
+    MatInputModule,
     MatInputModule,
   ],
   exports: [CalendarComponent],

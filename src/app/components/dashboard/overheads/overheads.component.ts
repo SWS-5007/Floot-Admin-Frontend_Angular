@@ -15,6 +15,39 @@ import { MatDialog } from "@angular/material/dialog";
 import { CompareSuppliersModalComponent } from "../modals/compare-suppliers-modal/compare-suppliers-modal.component";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+
+
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+
+const moment: any = _rollupMoment || _moment;
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
+export type Invoice = {
+  id: number,
+  date: Date,
+  total: number,
+  supplier_id: number,
+  supplier_name: string, 
+  paid: boolean,
+}
+
+
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -28,7 +61,19 @@ export type ChartOptions = {
 @Component({
   selector: 'app-overheads',
   templateUrl: './overheads.component.html',
-  styleUrls: ['./overheads.component.less']
+  styleUrls: ['./overheads.component.less'],
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 
 export class OverheadsComponent implements OnInit {
@@ -37,6 +82,8 @@ export class OverheadsComponent implements OnInit {
 
   totalOverheads: number = 0;
   selectedSupplierId: number = null;
+
+  invoices: Invoice[] = []
 
   suppliers: any[] = [];
 
@@ -57,13 +104,43 @@ export class OverheadsComponent implements OnInit {
     end: new FormControl<Date | null>(null),
   });
 
+  date = new FormControl(moment())
+
   constructor(
     private overheadsService: OverheadsService,
     private processDataService: ProcessDataService,
     private dialog: MatDialog,
   ) { }
 
+  async setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value!;
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+    console.log("date chang: ", this.date.value._d)
+    console.log("month: ", this.date.value._d.getMonth())
+    console.log("year: ", this.date.value._d.getFullYear())
+    const month: number = this.date.value._d.getMonth() + 1
+    const year: number = this.date.value._d.getFullYear()
+
+    this.loadSupplierData(month, year)
+    this.loadInvoiceList(this.date.value._d)
+  }
+
+  async loadInvoiceList(month: Date) {
+    this.invoices = await this.overheadsService.getInvoiceList(month);
+
+  }
+
+  downloadInvoice(invoiceId: number) {
+
+  }
+
+  
+
   loadChart() {
+    console.log("xdata, ", this.xData)
     var totalOverheadsValue = this.totalOverheads.toFixed(2);
     this.chartOptions = {
       series: this.yData,
@@ -180,7 +257,7 @@ export class OverheadsComponent implements OnInit {
       startMonth = this.minDate;
     }
 
-    this.loadSupplierData(startMonth, endDay);
+    this.loadSupplierData(startMonth.getMonth() + 1, startMonth.getFullYear());
 
     this.dateRange = new FormGroup({
       start: new FormControl(new Date(startMonth)),
@@ -195,8 +272,9 @@ export class OverheadsComponent implements OnInit {
     this.selectedSupplierId = supplierId;
   }
 
-  loadSupplierData(startDay: Date, endDay: Date) {
-    this.overheadsService.getOverheads(startDay, endDay).then((res) => {
+  loadSupplierData(day: number, month: number) {
+    this.overheadsService.getOverheads(day, month).then((res) => {
+      console.log("query res: ", res)
       this.suppliers = res;
       this.suppliersSearch = this.suppliers.reduce(
         (obj, item) =>
@@ -247,29 +325,29 @@ export class OverheadsComponent implements OnInit {
     this.loadChart();
   }
 
-  changeDateRange() {
-    let endDay = new Date(this.dateRange.value.end);
-    endDay.setDate(endDay.getDate() + 1);
+  // changeDateRange() {
+  //   let endDay = new Date(this.dateRange.value.end);
+  //   endDay.setDate(endDay.getDate() + 1);
 
-    this.loadSupplierData(this.dateRange.value.start, endDay);
-    this.loadChart();
-  }
+  //   this.loadSupplierData(this.dateRange.value.start, endDay);
+  //   this.loadChart();
+  // }
 
-  handleDateRange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-    if (dateRangeEnd.value) {
-      var startDate = new Date(dateRangeStart.value);
-      var endDate = new Date(dateRangeEnd.value);
+  // handleDateRange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
+  //   if (dateRangeEnd.value) {
+  //     var startDate = new Date(dateRangeStart.value);
+  //     var endDate = new Date(dateRangeEnd.value);
 
-      this.dateRange = new FormGroup({
-        start: new FormControl(new Date(startDate)),
-        end: new FormControl(new Date(endDate)),
-      });
+  //     this.dateRange = new FormGroup({
+  //       start: new FormControl(new Date(startDate)),
+  //       end: new FormControl(new Date(endDate)),
+  //     });
 
 
-      this.loadSupplierData(startDate, endDate);
-      this.loadChart();
-    }
-  }
+  //     this.loadSupplierData(startDate, endDate);
+  //     this.loadChart();
+  //   }
+  // }
 
 
   ngOnInit() {

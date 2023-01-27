@@ -46,7 +46,7 @@ public async onSelect(event:any ) {
   }).then(async() => {
     try {
 
-      const request: any = await this.http.post(environment.api + '/api/upload-invoice', {
+      const request: any = await this.http.post(environment.apiUrl + '/api/upload-invoice', {
         venueJsonId: '6231c0e5386f0d9e3ccf151e',
         venueName: 'Tilt',
         file: this.selectedFile ? this.selectedFile : null,

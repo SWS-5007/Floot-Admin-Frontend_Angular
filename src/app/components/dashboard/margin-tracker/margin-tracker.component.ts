@@ -6,9 +6,9 @@ import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 
 export interface Element {
+  id: number;
   name: string;
   cost: number;
-  rate: number;
   mls: number;
   unitCost: number;
   gross: number;
@@ -27,7 +27,6 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
   displayColumns: string[] = [
     "name",
     "cost",
-    "rate",
     "mls",
     "unitCost",
     "gross",
@@ -62,6 +61,7 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
     await this.pullTableData().then((res) => {
       this.tableData = res.map((x) => {
         return {
+          id: x.id,
           name: x.name,
           cost: parseFloat(x.cost),
           gp_per_unit: parseFloat(x.gp_per_uni),
@@ -69,7 +69,7 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
           margin: parseFloat(x.margin),
           mls: parseFloat(x.mls),
           rate: parseFloat(x.rate),
-          unitCost: parseFloat(x.unitCost),
+          unitCost: parseFloat(x.unit_cost),
         };
       });
       this.dataSource = new MatTableDataSource(this.tableData);
@@ -84,6 +84,8 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
           venue_id: 1,
         })
         .toPromise();
+      console.log('read this payload: ');
+      console.log(request.payload);
       return request.payload;
     } catch (error) {
       console.log(error);
@@ -102,4 +104,22 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
     let v = (<HTMLTextAreaElement>value).value;
     this.dataSource.filter = v.trim().toLocaleLowerCase();
   };
+
+  async saveGrossPrice(event, id) {
+    var grossPrice = event.target.value;
+    try {
+      const request: any = await this.http
+        .post(environment.apiUrl + "/api/save-ingredient-gross", {
+          ingredientId: id,
+          grossPrice: grossPrice,
+        })
+        .toPromise();
+      console.log('@@@@@@@@@@@@@gross this payload: ');
+      console.log(request.payload);
+      this.loadTable();
+      return request.payload;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

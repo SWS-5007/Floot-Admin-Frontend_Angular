@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Add Menu Card</h2>
+<div mat-dialog-content>
+    <form [formGroup]="brandsAndProductsForm">
+        <div class="form-group">
+            <mat-form-field appearance="outline">
+                <mat-label>Wholesaler</mat-label>
+                <mat-select formControlName="wholesaler">
+                    <mat-option *ngFor="let option of wholesalerOptions" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field appearance="outline">
+                <mat-label>Brands to watch</mat-label>
+                <mat-select formControlName="brandsToWatch" multiple>
+                    <mat-select-trigger>
+                        {{brandsToWatch.value?.[0] ? brandsToWatch.value?.[0].brand + ' - ' + brandsToWatch.value?.[0].listingType : '' }}
+                        <span *ngIf="(brandsToWatch.value?.length || 0) > 1" class="example-additional-selection">
+                          (+{{(brandsToWatch.value?.length || 0) - 1}} {{brandsToWatch.value?.length === 2 ? 'other' : 'others'}})
+                        </span>
+                    </mat-select-trigger>
+                    <mat-optgroup *ngFor="let group of brandOptions" [label]="group">
+                        <mat-option *ngFor="let listing of listingTypes" [value]="{'brand': group, 'listingType': listing}">
+                            {{listing}}
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <h3>Agreements</h3>
+        <div class="form-group">
+            <mat-form-field appearance="outline">
+                <mat-label>Agreements</mat-label>
+                <mat-select formControlName="agreements" multiple>
+                    <mat-option *ngFor="let option of mockAgreements" [value]="option" [disabled]="isOptionDisabled(option)">
+                        {{option}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Select 5 agreements from the list</mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <h4>Top 5 Agreements</h4>
+            <div cdkDropList class="agreements-list" (cdkDropListDropped)="drop($event)">
+                <div class="agreements-box" *ngFor="let item of orderedAgreements" cdkDrag>{{item}}</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions class="actions-container">
+    <button mat-button (click)="onSave()" [disabled]="!brandsAndProductsForm?.valid">Save Changes</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+</div>

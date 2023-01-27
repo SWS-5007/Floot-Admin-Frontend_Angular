@@ -22,12 +22,12 @@ export class ProductService {
     }
   }
 
-  public async getProducts(venue_id: number) {
+  public async getProducts(venueId: number) {
     try {
       const request: any = await this.http
         .post(environment.apiUrl + "/api/get-products", {
           token: this.authService.getAuthenticationState().authenticationToken,
-          venue_id,
+          venueId,
         })
         .toPromise();
       console.log("request is:", request);

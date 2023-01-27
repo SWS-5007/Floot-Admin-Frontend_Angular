@@ -34,31 +34,32 @@ export class EditVenueTeamMemberComponent implements OnInit {
     private venueHandler: VenueHandlerService
   ) {
 
-    this.route.paramMap.subscribe((paramMap) => {
-      if (paramMap.has('accountId')) {
-        console.log("did it come from here");
-        this.accountId = paramMap.get('accountId');
-        console.log(this.accountId);
-      } else {
-        // go back to team list
-        this.router.navigateByUrl('/venue-team');
-      }
-    });
+   
 
     if(!this.venueHandler.venueExists) {
       this.venueHandler.venueLoaded.subscribe(() => {
         this.selectedVenueId = this.venueHandler.getChosenVenueId();
         this.selectedVenueName = this.venueHandler.getChosenVenueName();
-        this.loadData();
       });
     } else {
       this.selectedVenueId = this.venueHandler.getChosenVenueId();
       this.selectedVenueName = this.venueHandler.getChosenVenueName();
-      this.loadData();
     }
 
     this.venueHandler.venueChange.subscribe(() => {
       this.router.navigateByUrl('/venue-team');
+    });
+
+    this.route.paramMap.subscribe((paramMap) => {
+      if (paramMap.has('accountId')) {
+        console.log("did it come from here");
+        this.accountId = paramMap.get('accountId');
+        console.log(this.accountId);
+        this.loadData();
+      } else {
+        // go back to team list
+        this.router.navigateByUrl('/venue-team');
+      }
     });
 
     this.editVenueAdminForm = new FormGroup({
@@ -79,6 +80,7 @@ export class EditVenueTeamMemberComponent implements OnInit {
           Validators.minLength(3)
         ],
       }),
+      jobDescription: new FormControl(''),
     });
 
     // validate the email once it has been entered.
@@ -103,7 +105,7 @@ export class EditVenueTeamMemberComponent implements OnInit {
       const request: any = await this.http.post(environment.api + '/api/admin/accounts/venues/get-venue-admin', {
         token: this.authService.getAuthenticationState().authenticationToken,
         accountId: this.accountId,
-        selectedVenueId: this.selectedVenueId,
+        selectedVenueId: this.selectedVenueId
       }).toPromise();
 
       console.log(request)
@@ -115,6 +117,7 @@ export class EditVenueTeamMemberComponent implements OnInit {
           lastName: request.responseData.account.lastName,
           email: request.responseData.account.email,
           assignedVenue: request.responseData.account.assignedVenue,
+          jobDescription: request.responseData.account.jobDescription,
         })
 
       }
@@ -188,6 +191,7 @@ export class EditVenueTeamMemberComponent implements OnInit {
         firstName: this.editVenueAdminForm.value.firstName,
         lastName: this.editVenueAdminForm.value.lastName,
         email: this.editVenueAdminForm.value.email,
+        jobDescription: this.editVenueAdminForm.value.jobDescription,
       }).toPromise();
 
       console.log(request)

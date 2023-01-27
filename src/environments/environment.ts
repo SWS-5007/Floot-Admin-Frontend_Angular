@@ -7,7 +7,7 @@ export const environment = {
   //api: 'http://localhost:5001',
   // api: 'https://floot-testing-eu3.staging.trentvision.cloud'
   api: "https://ponosbe.amountaingoat.com",
-  apiUrl: "https://vddbe.wearefloot.co.uk",
+  apiUrl: 'https://vddbe.wearefloot.co.uk',
   //api: 'https://floot-eu1.customers.trentvision.cloud'
 };
 

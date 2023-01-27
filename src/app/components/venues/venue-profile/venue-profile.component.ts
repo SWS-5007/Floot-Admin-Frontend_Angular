@@ -104,7 +104,8 @@ export interface Vrm {
   lastPhotoshoot: string,
   cloudDir: string,
   assignee: string,
-  note: string
+  note: string,
+  capacity: number,
 }
 
 export interface FileData{
@@ -990,47 +991,7 @@ export class VenueProfileComponent {
     }
   }
 
-  public async saveVrmInfo({vrm, locale}: VRMFormData): Promise<void> {
-    try {
-
-      if (!(vrm && locale)) {
-        return;
-      }
-
-      console.log('here');
-      console.log(vrm, locale);
-
-      const request: any = await this.http.post(environment.api + '/api/admin/venues/profile/save-vrm-info', {
-        token: this.authService.getAuthenticationState().authenticationToken,
-        venueId: this.venueId,
-        ...vrm,
-        ...locale
-      }).toPromise();
-
-      console.log(request)
-
-      if(request.status === 'ok') {
-        
-        this.vrm = {...vrm};
-        this.locale = {...locale};
-
-      }
-      else {
-        this.errorHandlerService.throwError({
-          displayMessage: request.responseData.message,
-          unsanitizedMessage: 'No stack trace.'
-        });
-      }
-
-    }
-    catch(error) {
-      this.errorHandlerService.throwError({
-        displayMessage: "Could not edit the venue information.",
-        unsanitizedMessage: error
-      });
-
-    }
-  }
+  
 
   public async saveOpeningTimes(openingTimes: OpeningTimes) : Promise<void> {
     try {

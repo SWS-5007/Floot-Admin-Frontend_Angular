@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Add Activity</h2>
+<div mat-dialog-content>
+  <form [formGroup]="addActivityForm">
+    <div class='form-group'>
+      <mat-form-field appearance="outline">
+        <mat-label>Type of Activity</mat-label>
+        <mat-select formControlName="activityType">
+          <mat-option *ngFor="let activity of activityTypes" [value]="activity">{{activity}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class='form-group'>
+      <mat-form-field appearance="outline">
+        <mat-label>Time of Activity</mat-label>
+        <input matInput formControlName='activityDate' type='datetime-local' />
+      </mat-form-field>
+    </div> 
+    <div class='form-group'>
+      <mat-form-field appearance="outline">
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName='comment' type='text' rows='6'></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions class="actions-container">
+  <button mat-button (click)="onUpdate()" [disabled]="!addActivityForm.valid">Save Changes</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

@@ -3,13 +3,24 @@
         <span>VRM Info</span>
     </div>
     <div class="controls">
+        <button
+            mat-flat-button
+            class="btn btn-primary"
+            (click)="this.venueProfile.emit()">
+            Venue details
+        </button>
         <button mat-stroked-button (click)="onUpdateVrm()">Edit</button>
+        
     </div>
     <div class="section-content">
         <div class="vrm-info-wrap">
             <div class="attr-val-wrap row">
                 <div class="attr col-md-4 col-6">Status</div>
                 <div class="value col-md-8 col-6">{{ vrm?.status ? vrm.status : "No Info" }}</div>
+            </div>
+            <div class="attr-val-wrap row">
+                <div class="attr col-md-4 col-6">Capacity</div>
+                <div class="value col-md-8 col-6">{{ vrm?.capacity ?? "No Info" }}</div>
             </div>
             <div class="attr-val-wrap row">
                 <div class="attr col-md-4 col-6">Last Visited By</div>

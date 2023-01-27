@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from 'src/app/services/core/error-handler.service';
 import { AuthService } from 'src/app/services/identity/auth.service';
 import { environment } from 'src/environments/environment';
+import Roles from 'src/app/types/roles';
 
 interface Venue {
   id: string,
@@ -33,6 +34,16 @@ export class SearchVenuesComponent implements OnInit {
 
   public venueDeleted: boolean = false;
 
+  public activePermission: boolean = false;
+
+
+
+  readonly displayOptions = {
+    status: ['On board', 'To contact', 'In talks', 'Not interested'],
+    loginsGiven: ['Done', 'Emailed', 'No'],
+    city: ['Nottingham', 'Birmingham', 'Greenville', 'Manchester', 'Bristol', 'Derby', 'Orlando', 'Nashville', 'Leicester'],
+  };
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -40,6 +51,14 @@ export class SearchVenuesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+
+    const authState = this.authService.getAuthenticationState();
+    
+    if(authState.role === Roles.FlootAdmin) {
+      this.activePermission = true;
+    } else {
+      this.activePermission = false;
+    }
 
     if(this.router.getCurrentNavigation().extras.state) {
 
@@ -52,42 +71,17 @@ export class SearchVenuesComponent implements OnInit {
       }
     }
 
-    this.loadData();
 
     this.searchForm = new FormGroup({
       searchText: new FormControl("", {
         updateOn: "change",
       }),
-    })
-  }
+      searchCity: new FormControl("Nottingham", {
+        updateOn: "change"
+      })
+    });
 
-  private async loadData(): Promise<void> {
-    try {
-      const request: any = await this.http.post(environment.api + '/api/admin/venues/get-venues', {
-        token: this.authService.getAuthenticationState().authenticationToken,
-      }).toPromise();
-
-      console.log(request)
-
-      if(request.status === 'ok') {
-        this.venues = request.responseData.venues.sort((a, b) => a.name.toLowerCase() !== b.name.toLowerCase() ? a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1 : 0);;
-        this.refreshList();
-      }
-      else {
-        this.errorHandlerService.throwError({
-          displayMessage: request.responseData.message,
-          unsanitizedMessage: 'No stack trace.'
-        });
-      }
-
-    }
-    catch(error) {
-      this.errorHandlerService.throwError({
-        displayMessage: "Could not load the venues.",
-        unsanitizedMessage: error
-      });
-
-    }
+    this.searchVenues();
   }
 
   public changeResultsNo(input: string) : void {
@@ -155,7 +149,7 @@ export class SearchVenuesComponent implements OnInit {
       searchText: null,
     })
 
-    this.loadData();
+    this.searchVenues();
   }
 
   public async searchVenues(): Promise<void> {
@@ -167,7 +161,8 @@ export class SearchVenuesComponent implements OnInit {
 
       const request: any = await this.http.post(environment.api + '/api/admin/venues/get-venues', {
         token: this.authService.getAuthenticationState().authenticationToken,
-        searchText: this.searchForm.value.searchText
+        searchText: this.searchForm.value.searchText,
+        searchCity: this.searchForm.value.searchCity
       }).toPromise();
 
       console.log(request)

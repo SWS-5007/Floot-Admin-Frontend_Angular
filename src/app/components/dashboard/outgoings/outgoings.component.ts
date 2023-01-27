@@ -143,7 +143,7 @@ export class OutgoingsComponent implements OnInit {
   }
 
   loadSupplierData(startDay: Date, endDay: Date) {
-    this.overheadsService.getOverheads(startDay, endDay).then((res) => {
+    this.overheadsService.getOverheads(1, 2022).then((res) => {
       this.suppliers = res;
       this.suppliersSearch = this.suppliers.reduce(
         (obj, item) =>

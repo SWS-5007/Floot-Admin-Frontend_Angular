@@ -11,6 +11,12 @@
     </div>
     <div class='form-group'>
       <mat-form-field appearance="outline">
+        <mat-label>Capacity</mat-label>
+        <input matInput formControlName='capacity' type='number'>
+      </mat-form-field>
+    </div>
+    <div class='form-group'>
+      <mat-form-field appearance="outline">
         <mat-label>Last visited by</mat-label>
         <mat-select formControlName="lastVisitBy">
           <mat-option *ngFor="let lastVisit of displayOptions.lastVisit" [value]="lastVisit">{{lastVisit}}</mat-option>

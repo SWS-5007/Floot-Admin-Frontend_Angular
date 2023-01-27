@@ -44,7 +44,7 @@
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field> -->
-                <h1 class="mb-0 text-dark">Sales</h1>
+                <h1 class="mb-0 font-weight-bold text-dark">Sales</h1>
                 <div>
                     <mat-form-field appearance="outline">
                         <mat-label>Enter a date range</mat-label>
@@ -58,10 +58,10 @@
                 </div>
                 <!-- <app-time-frame-picker (changeTimeFrame)="changeTimeFrame($event)"></app-time-frame-picker> -->
                 <div class="switch-wrap">
-                    <mat-slide-toggle>City View</mat-slide-toggle>
+                    <mat-slide-toggle class="text-dark">By city</mat-slide-toggle>
                 </div>
                 <div class="switch-wrap">
-                    <mat-slide-toggle>Overheads</mat-slide-toggle>
+                    <mat-slide-toggle class="text-dark">Overheads</mat-slide-toggle>
                 </div>
                 <div>
                     <button class="btn btn-primary sales_button">Enter Manually</button>
@@ -79,11 +79,11 @@
     <div class="details suppliers my-3">
         <div class="d-flex Sales-icon">
             <div class="btn-group">
-                <label class="btn border-0" [ngClass]="name=='hour' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Hour'" (click)="handleChangeTimeFrame($event,'hour')">Hour</label>
-                <label class="btn border-0" [ngClass]="name=='day' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Day'" (click)="handleChangeTimeFrame($event,'day')">Day</label>
-                <label class="btn border-0" [ngClass]="name=='week' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Week'" (click)="handleChangeTimeFrame($event,'week')">Week</label>
-                <label class="btn border-0" [ngClass]="name=='month' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Month'" (click)="handleChangeTimeFrame($event,'month')">Month</label>
-                <label class="btn border-0" [ngClass]="name=='year' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'year'" (click)="handleChangeTimeFrame($event,'year')">year</label>
+                <label class="btn group-btn" [ngClass]="name=='hour' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Hour'" (click)="handleChangeTimeFrame($event,'hour')">Hour</label>
+                <label class="btn group-btn" [ngClass]="name=='day' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Day'" (click)="handleChangeTimeFrame($event,'day')">Day</label>
+                <label class="btn group-btn" [ngClass]="name=='week' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Week'" (click)="handleChangeTimeFrame($event,'week')">Week</label>
+                <label class="btn group-btn" [ngClass]="name=='month' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'Month'" (click)="handleChangeTimeFrame($event,'month')">Month</label>
+                <label class="btn group-btn" [ngClass]="name=='year' ? 'active' : ''" ng-model="radioModel" uib-btn-radio="'year'" (click)="handleChangeTimeFrame($event,'year')">Year</label>
             </div>
             <div class="ml-auto">
                 <span class="material-symbols-outlined"> search </span>

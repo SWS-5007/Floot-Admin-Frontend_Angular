@@ -1,0 +1,68 @@
+<app-section-container>
+    <div class="heading">
+        <span>Activity Logs</span>
+    </div>
+    <div class="controls">
+        <button mat-stroked-button (click)="onAddActivity()">Add +</button>
+    </div>
+    <div class="section-content">
+        <ng-container *ngIf="activityLogs.length">
+            <ul class="activities-list">
+                <li class="activity" *ngFor="let activity of activityLogs">
+                    <h3 class="title">{{activity.author.name}} - {{activity.author.role}} had a {{activity.activityType}} on {{activity.activityDate |date:'short'}}</h3>
+                    <p class="body">{{activity.comment}}</p>
+                    <p class="meta">Posted on {{activity.createdOn |date:'short'}}</p>
+                </li>
+            </ul>
+        </ng-container>
+        <ng-container *ngIf="!activityLogs.length">
+            <p class="fallback-msg">No activiy has been logged yet.</p>
+        </ng-container>
+        <div class="row" *ngIf="activityLogs?.length">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination mt-3 justify-content-center">
+                        <li class="page-item disabled" *ngIf="currentPage === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPage > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(1)"><i class="fa fa-step-backward"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left disabled" *ngIf="currentPage === 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                        <li class="page-item page-item-Left" *ngIf="currentPage > 1">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(currentPageNo-1)"><i class="fa fa-chevron-left"></i></button>
+                        </li>
+                            <div *ngFor="let page of availablePages">
+                                <li class="page-item active" *ngIf="currentPageNo === page">
+                                    <button class="page-link">{{ page }}</button>
+                                </li>
+                                <li class="page-item" *ngIf="currentPageNo !== page">
+                                    <button class="page-link" type="submit" (click)="changePage(page)">{{ page }}</button>
+                                </li>
+                            </div>
+                        <li class="page-item page-item-right disabled" *ngIf="currentPage === totalPages">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item page-item-right" *ngIf="currentPage < totalPages">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(currentPageNo+1)"><i class="fa fa-chevron-right"></i></button>
+                        </li>
+                        <li class="page-item disabled" *ngIf="currentPage === totalPages">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                        <li class="page-item" *ngIf="currentPage < totalPages">
+                            <button class="page-link page-link-control" type="submit" (click)="changePage(totalPageCount)"><i class="fa fa-step-forward"></i></button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-12">
+                <p class="text-center">
+                    You're on page <span class="font-weight-bold">{{ currentPage }} of {{ totalPages }}</span>,
+                    with {{resultsPerPage}} results per page.
+                </p>
+            </div>
+        </div>
+    </div>
+</app-section-container>

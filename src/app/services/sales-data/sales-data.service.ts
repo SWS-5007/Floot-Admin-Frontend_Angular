@@ -349,4 +349,13 @@ export class SalesDataService {
       console.log(error)
     }
   }
+
+  async getManualDailySales(startDate, endDate) {
+    const request: any = await this.http
+      .get(environment.apiUrl + "/api/get-manual-daily", {
+      
+      })
+      .toPromise();
+    console.log('$$$$$$$$$$', request.payload)
+  }
 }
