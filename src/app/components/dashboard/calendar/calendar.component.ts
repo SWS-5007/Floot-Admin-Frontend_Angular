@@ -95,6 +95,8 @@ export class CalendarComponent implements OnInit {
 
   refresh = new Subject<void>();
 
+  firstThreeEvents: CalendarEvent[] = [];
+
   events: CalendarEvent[] = [
     // {
     //   start: subDays(startOfDay(new Date()), 1),
@@ -235,17 +237,38 @@ export class CalendarComponent implements OnInit {
     );
   }
 
+  getOrdinalNum(number) {
+    let selector;
+  
+    if (number <= 0) {
+      selector = 4;
+    } else if ((number > 3 && number < 21) || number % 10 > 3) {
+      selector = 0;
+    } else {
+      selector = number % 10;
+    }
+  
+    return number + ['th', 'st', 'nd', 'rd', ''][selector];
+  };
+
   public async getEvents() {
     console.log("inside update event");
     const results = await this.CalendarService.getCalendarEvents(this.venue_id);
+    console.log("raw results is: " , results)
     const formatedResults = (results ?? []).map((event) => {
       event.start = startOfDay(new Date(event.start));
       event.end = endOfDay(new Date(event.end));
       return event;
     });
     console.log("formatedResults", formatedResults);
-
+    const newFormatedResults = formatedResults.map( (event) => {
+      let month = event.start.toLocaleDateString('en-gb', { month: 'long' } )
+      let day = event.start.toLocaleDateString('en-gb', { day: 'numeric'} )
+      event.startDay = `${this.getOrdinalNum(day)} ${month}`
+      return event
+    })
     this.events = formatedResults;
+    this.firstThreeEvents = newFormatedResults.slice(0, 3);
     this.refresh.next();
   }
 
