@@ -551,10 +551,10 @@ export class DashboardComponent implements OnInit {
       //     { ['card_' + j]: new FormControl<String | null>(null) },
       //   );
 
-      const manualDailySalesData = this.salesDataService.getManualDailySales(
-        startDate, endDate
-      );
-      console.log('@@@@@@@manualDailySalesData', manualDailySalesData)
+      // const manualDailySalesData = this.salesDataService.getManualDailySales(
+      //   startDate, endDate
+      // );
+      // console.log('@@@@@@@manualDailySalesData', manualDailySalesData)
       // this.salesDataService.getManualDailySales(startDate, endDate).then(() => {
       // });
     }

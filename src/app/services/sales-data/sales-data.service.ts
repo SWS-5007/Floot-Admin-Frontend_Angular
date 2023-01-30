@@ -350,12 +350,12 @@ export class SalesDataService {
     }
   }
 
-  async getManualDailySales(startDate, endDate) {
-    const request: any = await this.http
-      .get(environment.apiUrl + "/api/get-manual-daily", {
+  // async getManualDailySales(startDate, endDate) {
+  //   const request: any = await this.http
+  //     .get(environment.apiUrl + "/api/get-manual-daily", {
       
-      })
-      .toPromise();
-    console.log('$$$$$$$$$$', request.payload)
-  }
+  //     })
+  //     .toPromise();
+  //   console.log('$$$$$$$$$$', request.payload)
+  // }
 }

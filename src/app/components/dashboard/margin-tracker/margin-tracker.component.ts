@@ -64,7 +64,7 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
           id: x.id,
           name: x.name,
           cost: parseFloat(x.cost),
-          gp_per_unit: parseFloat(x.gp_per_uni),
+          gp_per_unit: parseFloat(x.gp_per_unit),
           gross: parseFloat(x.gross),
           margin: parseFloat(x.margin),
           mls: parseFloat(x.mls),
@@ -105,12 +105,12 @@ export class MarginTrackerComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = v.trim().toLocaleLowerCase();
   };
 
-  async saveGrossPrice(event, id) {
+  async saveGrossPrice(event, ingredientId) {
     var grossPrice = event.target.value;
     try {
       const request: any = await this.http
         .post(environment.apiUrl + "/api/save-ingredient-gross", {
-          ingredientId: id,
+          ingredientId: ingredientId,
           grossPrice: grossPrice,
         })
         .toPromise();

@@ -37,11 +37,13 @@
   </mwl-calendar-day-view>
 </div>
 <!-- <div class="info-box7-block position-relative"> -->
-<h2 class="border-bottom my-3 text-dark">January 12th</h2>
-<div *ngFor="let event of this.events let i = index">
+<div *ngFor="let event of this.firstThreeEvents let i = index">
   <!-- *ngFor="let ingredientForm of this.ingredients.controls; let i = index" -->
-  <p class="mb-1 mt-3 text-secondary">10:00 AM - 10:30 AM</p>
+  <!-- <h2 class="border-bottom my-3"><span>{{event.startDay}}</span><span>{{event.start.toLocaleDateString('en-gb', { month: 'long' } ) }}</span></h2> -->
+  <h2 class="border-bottom my-3">{{event.startDay}}</h2>
+  <p class="mb-1 mt-3"><span>{{event.start.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}}</span> - <span></span><span>{{event.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}}</span></p>
   <h3 class="text-dark">{{event.title}}</h3>
+  <h3 class="text-dark"></h3>
   <hr/>
   <!-- <h2 class="border-bottom my-3">January 12th</h2>
   <p class="mb-1 mt-3">10:00 AM - 10:30 AM</p>
